@@ -14,17 +14,21 @@ const buildingCategories = [
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState('');
 
-  const filteredLocations = locations.filter(loc =>
+  const filteredLocations = locations.filter(loc => 
     loc.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
     <div className="min-h-screen relative">
-      <div
-        className="absolute inset-1 bg-cover bg-center"
-        style={{ backgroundImage: "url('src/Asset/gateway.jpg')" }}
-      > <div className="absolute inset-0 bg-black/30" />
+      {/* Background Image */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center"
+        style={{ backgroundImage: "url('/Assets/gateway.jpg')" }}
+      >
+        <div className="absolute inset-0 bg-black/30" />
       </div>
+
+      {/* Content */}
       <div className="relative z-10 flex">
         {/* Left Sidebar */}
         <div className="w-64 min-h-[calc(100vh-64px)] bg-white/95 backdrop-blur-sm">
@@ -58,6 +62,8 @@ export default function Home() {
               ))}
             </div>
           </div>
+
+          {/* Search Results (if searching) */}
           {searchQuery && (
             <div className="p-4 border-t border-gray-200">
               <h4 className="text-xs font-semibold text-gray-500 mb-2">RESULTS</h4>
@@ -74,19 +80,22 @@ export default function Home() {
               </div>
             </div>
           )}
-          {/*Main content*/}
-          <div className="flex flex-col items-center justify-center min-h-[calc(100vh-64px)] ">
-            <div className="bg-white/190 p-4 backdrop-blur-sm rounded-2xl px-12 py-8 text-center mb-12 shadow-xl">
-              <h1 className="text-3xl md:text-4xl font-bold text-primary-700 leading-tight">
-                WELCOME TO OUR
-                <br />
-                CAMPUS
-                <br />
-                TOUR ASSISTANT
-              </h1>
-              <p className="text-black-600 mt-4">feel at ease finding directions</p>
-            </div>
+        </div>
+      
+        {/* Main Content */}
+        <div className="flex-1 flex flex-col items-center justify-center min-h-[calc(100vh-64px)] px-8">
+          {/* Welcome Card */}
+          <div className="bg-white/90 backdrop-blur-sm rounded-2xl px-12 py-8 text-center mb-12 shadow-xl">
+            <h1 className="text-3xl md:text-4xl font-bold text-primary-700 leading-tight">
+              WELCOME TO OUR
+              <br />
+              CAMPUS
+              <br />
+              TOUR ASSISTANT
+            </h1>
+            <p className="text-gray-600 mt-4">feel at ease finding directions</p>
           </div>
+
           {/* Action Buttons */}
           <div className="flex flex-wrap justify-center gap-6">
             <Link

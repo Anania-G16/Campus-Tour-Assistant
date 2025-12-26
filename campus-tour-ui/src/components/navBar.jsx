@@ -1,10 +1,9 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X,Lock } from 'lucide-react';
+import { Menu, X, Lock } from 'lucide-react';
 
-export default function NavBar() {
+export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-
   const location = useLocation();
 
   const navLinks = [
@@ -13,17 +12,18 @@ export default function NavBar() {
     { name: 'Contact', path: '/about' },
   ];
 
-   const isActive = (path) => location.pathname === path;
+  const isActive = (path) => location.pathname === path;
 
   return (
-    <nav className="bg-primary-700 sticky top-0 z-50">
+    <nav className="bg-primary-70 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="flex justify-between items-center h-16">
-      <Link to="/" className="flex items-center space-x-3">
+        <div className="flex justify-between items-center h-16">
+          {/* Logo */}
+          <Link to="/" className="flex items-center space-x-3">
             <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center overflow-hidden">
-              <img 
-                src="./Asset/logo.png" 
-                alt="Logo" 
+              <img
+                src="/map_assets/logo.png"
+                alt="Logo"
                 className="w-8 h-8 object-contain"
                 onError={(e) => {
                   e.target.style.display = 'none';
@@ -31,36 +31,36 @@ export default function NavBar() {
                 }}
               />
             </div>
-            <span className="text-lg font-bold text-blue">
+            <span className="text-lg font-bold text-white">
               ADDIS ABABA UNIVERSITY
             </span>
           </Link>
-      {/* Desktop Menu */}
-      <div className="hidden md:flex justify-between items-center space-x-8">
-        <Link to="/" className="text-white text-2xl font-bold">Campus Tour</Link>
-        <div className="flex gap-6 text-white">
-          <Link to="/" className="hover:text-primary-200">Home</Link>
-          <Link to="/" className="hover:text-primary-200">Map</Link>
-          <Link to="/" className="hover:text-primary-200">Tour</Link>
-        </div>
-      </div>
 
-      {/* Mobile menu button */}
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-8">
+            <Link to="/" className="text-white text-2xl font-bold">Campus Tour</Link>
+            <div className="flex gap-6 text-white">
+              <Link to="/" className="hover:text-primary-200">Home</Link>
+              <Link to="/search" className="hover:text-primary-200">Map</Link>
+              <Link to="/about" className="hover:text-primary-200">Contact</Link>
+            </div>
+          </div>
+
+          {/* Mobile menu button */}
           <button
             onClick={() => setIsOpen(!isOpen)}
             className="md:hidden p-2 rounded-lg hover:bg-primary-600 transition-colors duration-200"
             aria-label="Toggle menu"
           >
-
-      {/* Mobile Dropdown */}
-      {isOpen ? (
+            {isOpen ? (
               <X className="h-6 w-6 text-white" />
             ) : (
               <Menu className="h-6 w-6 text-white" />
             )}
-      </button>
-      </div>
-      {/* Mobile Navigation */}
+          </button>
+        </div>
+
+        {/* Mobile Navigation */}
         {isOpen && (
           <div className="md:hidden py-4 border-t border-primary-600">
             <div className="flex flex-col space-y-3">
@@ -88,7 +88,7 @@ export default function NavBar() {
             </div>
           </div>
         )}
-        </div>
+      </div>
     </nav>
   );
 }
