@@ -23,7 +23,7 @@ export default function Home() {
       {/* Background Image */}
       <div 
         className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: "url('/Assets/gateway.jpg')" }}
+        style={{ backgroundImage: "url('/map_assets/gateway.jpg')" }}
       >
         <div className="absolute inset-0 bg-black/30" />
       </div>

@@ -15,15 +15,15 @@ export default function Navbar() {
   const isActive = (path) => location.pathname === path;
 
   return (
-    <nav className="bg-primary-70 sticky top-0 z-50">
+    <nav className="bg-primary-700 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-3">
             <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center overflow-hidden">
-              <img
-                src="/map_assets/logo.png"
-                alt="Logo"
+              <img 
+                src="/map_assets/logo.png" 
+                alt="Logo" 
                 className="w-8 h-8 object-contain"
                 onError={(e) => {
                   e.target.style.display = 'none';
@@ -38,12 +38,28 @@ export default function Navbar() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            <Link to="/" className="text-white text-2xl font-bold">Campus Tour</Link>
-            <div className="flex gap-6 text-white">
-              <Link to="/" className="hover:text-primary-200">Home</Link>
-              <Link to="/search" className="hover:text-primary-200">Map</Link>
-              <Link to="/about" className="hover:text-primary-200">Contact</Link>
-            </div>
+            {navLinks.map((link) => (
+              <Link
+                key={link.name}
+                to={link.path}
+                className={`font-medium transition-colors duration-200 ${
+                  isActive(link.path)
+                    ? 'text-white border-b-2 border-white pb-1'
+                    : 'text-white/80 hover:text-white'
+                }`}
+              >
+                {link.name}
+              </Link>
+            ))}
+            
+            {/* Admin Login */}
+            <Link
+              to="/admin"
+              className="flex items-center space-x-2 text-white/80 hover:text-white font-medium transition-colors duration-200"
+            >
+              <Lock className="h-4 w-4" />
+              <span>Admin Login</span>
+            </Link>
           </div>
 
           {/* Mobile menu button */}
@@ -69,10 +85,11 @@ export default function Navbar() {
                   key={link.name}
                   to={link.path}
                   onClick={() => setIsOpen(false)}
-                  className={`px-4 py-2 rounded-lg font-medium transition-colors duration-200 ${isActive(link.path)
+                  className={`px-4 py-2 rounded-lg font-medium transition-colors duration-200 ${
+                    isActive(link.path)
                       ? 'bg-primary-600 text-white'
                       : 'text-white/80 hover:bg-primary-600'
-                    }`}
+                  }`}
                 >
                   {link.name}
                 </Link>
