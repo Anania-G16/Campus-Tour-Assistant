@@ -2,7 +2,7 @@ const {Router} = require('express');
 const router = Router();
 const {check} = require('express-validator');
 const {validationResult} = require('express-validator');
-const {login} = require('../controller/login');
+const {login} = require('../controller/auth.js');
 
 const validateInput = (req, res, next) => {
     const errors = validationResult(req);
