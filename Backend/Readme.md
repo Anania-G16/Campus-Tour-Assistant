@@ -1,7 +1,5 @@
 # Campus Tour Assistant — Backend & Database
 
-**Main Focus:** Database, Models, Backend Skeleton, Authentication  
-
 ---
 
 ## Table of Contents
