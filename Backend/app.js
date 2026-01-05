@@ -10,7 +10,6 @@ const { globalErrorHandler } = require("./middlewares/globalErrorHandler");
 server.app.use(express.json());
 server.app.use('/api/building', buildingRouter)
 
-server.listen();
 server.app.use("/api/feedback", feedbackRoutes);
 server.app.use(globalErrorHandler);
 server.listen();
