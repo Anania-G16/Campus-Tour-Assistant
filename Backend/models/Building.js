@@ -1,57 +1,58 @@
-const supabase = require ('../db/connector.js')
+const supabase = require('../db/connector.js')
 
-export const getAllBuildings = async () => {
-  const { data, error } = await supabase
-    .from('buildings')
-    .select('*')
-    .order('name', { ascending: true });
 
-  if (error) throw error;
-  return data;
+
+const getBuildingById = async(id) => {
+    const { data, error } = await supabase
+        .from('buildings')
+        .select('*')
+        .eq('building_id', id)
+        .single();
+
+    if (error) return null;
+    return data;
 };
 
-export const getBuildingByName = async (name) => {
-  const { data, error } = await supabase
-    .from('buildings')
-    .select('*')
-    .eq('name', name)
-    .single();
+const addBuilding = async(building) => {
+    const { data, error } = await supabase
+        .from('buildings')
+        .insert([building])
+        .select()
+        .single();
 
-  if (error) return null;
-  return data;
+    if (error) throw error;
+    return data;
 };
 
-export const addBuilding = async (building) => {
-  const { data, error } = await supabase
-    .from('buildings')
-    .insert([building])
-    .select()
-    .single();
+const updateBuilding = async(id, building) => {
+    const { data, error } = await supabase
+        .from('buildings')
+        .update(building)
+        .eq('building_id', id)
+        .select()
+        .single();
 
-  if (error) throw error;
-  return data;
+    if (error) throw error;
+    return data;
 };
 
-export const updateBuilding = async (id, building) => {
-  const { data, error } = await supabase
-    .from('buildings')
-    .update(building)
-    .eq('building_id', id)
-    .select()
-    .single();
+const deleteBuilding = async(id) => {
+    const { data, error } = await supabase
+        .from('buildings')
+        .delete()
+        .eq('building_id', id)
+        .select()
+        .single();
 
-  if (error) throw error;
-  return data;
+    if (error) throw error;
+    return data;
 };
 
-export const deleteBuilding = async (id) => {
-  const { data, error } = await supabase
-    .from('buildings')
-    .delete()
-    .eq('building_id', id)
-    .select()
-    .single();
 
-  if (error) throw error;
-  return data;
-};
+module.exports = {
+    addBuilding,
+    updateBuilding,
+    // getAllBuildings,
+    deleteBuilding,
+    getBuildingById
+}
