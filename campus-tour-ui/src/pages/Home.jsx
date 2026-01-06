@@ -86,7 +86,7 @@ export default function Home() {
               <br />
               TOUR ASSISTANT
             </h1>
-            <p className="text-gray-600 mt-4">feel at ease finding directions</p>
+            <p className="text-gray-600 mt-4">Feel at ease finding directions</p>
           </div>
 
           {/* Action Buttons */}
@@ -96,7 +96,7 @@ export default function Home() {
               className="flex flex-col items-center justify-center w-40 h-32 bg-white/90 backdrop-blur-sm rounded-xl border-2 border-primary-600 hover:bg-primary-50 transition-colors shadow-lg"
             >
               <Search className="h-8 w-8 text-primary-600 mb-2" />
-              <span className="text-sm font-medium text-primary-700">search for buildings</span>
+              <span className="text-sm font-medium text-primary-700">Search for buildings</span>
             </Link>
 
             <Link
@@ -104,7 +104,7 @@ export default function Home() {
               className="flex flex-col items-center justify-center w-40 h-32 bg-white/90 backdrop-blur-sm rounded-xl border-2 border-primary-600 hover:bg-primary-50 transition-colors shadow-lg"
             >
               <MapPin className="h-8 w-8 text-primary-600 mb-2" />
-              <span className="text-sm font-medium text-primary-700">interactive map</span>
+              <span className="text-sm font-medium text-primary-700">Interactive map</span>
             </Link>
 
             <Link
@@ -112,7 +112,7 @@ export default function Home() {
               className="flex flex-col items-center justify-center w-40 h-32 bg-white/90 backdrop-blur-sm rounded-xl border-2 border-primary-600 hover:bg-primary-50 transition-colors shadow-lg"
             >
               <Building2 className="h-8 w-8 text-primary-600 mb-2" />
-              <span className="text-sm font-medium text-primary-700">building details</span>
+              <span className="text-sm font-medium text-primary-700">Building details</span>
             </Link>
           </div>
         </div>

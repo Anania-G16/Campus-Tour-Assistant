@@ -55,7 +55,7 @@ export default function BuildingDetails() {
           <div className="lg:w-2/3">
             <div className="rounded-lg overflow-hidden shadow-lg">
               <img
-                src={location.image}
+                src={location.images[0]}
                 alt={location.name}
                 className="w-full h-[400px] lg:h-[500px] object-cover"
               />

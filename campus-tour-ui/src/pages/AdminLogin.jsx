@@ -14,7 +14,7 @@ function AdminLogin({ setIsAuthenticated }) {
         <div className="text-center mb-6">
           <div className="flex items-center justify-center gap-2 text-2xl font-bold text-slate-800">
             <i className="fas fa-wallet text-indigo-500"></i>
-            <span>Campuss Tour Assistance</span>
+            <span>Campus Tour Assistant</span>
           </div>
           <p className="text-slate-500 text-sm mt-2">
             Your Best Assistant

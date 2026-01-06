@@ -14,12 +14,16 @@ import AdminLogin from './pages/AdminLogin';
 import Feedback from './pages/FeedBack';
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(true); // Set to true for testing purposes
+  const [isAuthenticated, setIsAuthenticated] = useState(true); 
   const { darkMode } = useTheme();
+
+  // SHARED STATES FOR THE MAP PAGE
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [onBuildingSelect, setOnBuildingSelect] = useState(null);
 
   return (
     <div className={`min-h-screen ${darkMode ? 'bg-gray-900' : ''}`}>
-      {/* Background Image for Light Mode */}
       {!darkMode && (
         <div 
           className="fixed inset-0 bg-cover bg-center -z-10"
@@ -35,14 +39,25 @@ function App() {
         <main className="flex-grow">
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/search" element={<Search />} />
+            
+            {/* SEARCH ROUTE: This is now your Interactive Map Page */}
+            <Route path="/search" element={
+              <Search 
+                searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
+                selectedCategory={selectedCategory}
+                setSelectedCategory={setSelectedCategory}
+                onBuildingSelect={onBuildingSelect}
+                setOnBuildingSelect={setOnBuildingSelect}
+              />
+            } />
+
             <Route path="/categories" element={<Categories />} />
             <Route path="/about" element={<About />} />
             <Route path="/feedback" element={<Feedback />} />
             <Route path="/location/:id" element={<BuildingDetails />} />
             <Route path="/category/:category" element={<Categories />} />
 
-            {/* LOGIN */}
             <Route
               path="/login"
               element={
@@ -54,7 +69,6 @@ function App() {
               }
             />
 
-            {/* PROTECTED ADMIN */}
             <Route
               path="/admin"
               element={

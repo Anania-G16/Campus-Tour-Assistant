@@ -50,21 +50,23 @@ export default function About() {
       {/* Mission Section */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid md:grid-cols-2 gap-12 items-center">
-          <div>
+          
+          <div className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-md p-8 rounded-2xl border border-white/20 shadow-sm">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-6">
               Our Mission
             </h2>
-            <p className="text-gray-600 dark:text-gray-400 mb-4">
+            <p className="text-gray-800 dark:text-gray-200 mb-4 font-medium leading-relaxed">
               We believe that every student, staff member, and visitor should be able to navigate 
               campus with confidence. Our mission is to provide an accessible, user-friendly platform 
               that makes finding any location on campus quick and easy.
             </p>
-            <p className="text-gray-600 dark:text-gray-400">
+            <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
               Whether you're a new student exploring campus for the first time, a visitor attending 
               an event, or a long-time community member looking for a specific service, Campus Tour 
               Assistant is here to guide you every step of the way.
             </p>
           </div>
+
           <div className="relative">
             <img
               src="https://images.unsplash.com/photo-1562774053-701939374585?w=600"

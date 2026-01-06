@@ -7,7 +7,7 @@ export default function LocationCard({ location }) {
     name,
     category,
     description,
-    image,
+    images,
     rating,
     distance,
     location: locationName,
@@ -15,14 +15,15 @@ export default function LocationCard({ location }) {
     tags = []
   } = location;
 
+  // first image from the array, or a fallback if empty
+  const displayImage = images && images.length > 0 ? images[0] : '/api/placeholder/400/300';
+
   return (
     <Link to={`/location/${id}`} className="block">
       <div className="card overflow-visible group">
-        { 
-        }
         <div className="relative h-48 overflow-hidden">
           <img
-            src={src}
+            src={displayImage} 
             alt={name}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           />
