@@ -1,111 +1,128 @@
 import { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Lock } from 'lucide-react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Menu, X, Lock, LogOut, Sun, Moon } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
 
-export default function Navbar() {
+export default function Navbar({ isAuthenticated, setIsAuthenticated }) {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+  const { darkMode, toggleDarkMode } = useTheme();
 
-  const navLinks = [
+  const publicLinks = [
     { name: 'Home', path: '/' },
     { name: 'Map', path: '/search' },
+    { name: 'Categories', path: '/categories' },
     { name: 'Contact', path: '/about' },
+    { name: 'Feedback', path: '/feedback' },
   ];
 
-  const isActive = (path) => location.pathname === path;
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+    navigate('/login');
+  };
 
   return (
     <nav className="bg-primary-700 sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-          <Link to="/" className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center overflow-hidden">
-              <img 
-                src="/map_assets/logo.png" 
-                alt="Logo" 
-                className="w-8 h-8 object-contain"
-                onError={(e) => {
-                  e.target.style.display = 'none';
-                  e.target.parentElement.innerHTML = '<span class="text-primary-600 font-bold text-sm">AAU</span>';
-                }}
-              />
-            </div>
-            <span className="text-lg font-bold text-white">
-              ADDIS ABABA UNIVERSITY
-            </span>
-          </Link>
+      <div className="max-w-7xl mx-auto px-4 h-16 flex justify-between items-center">
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
-            {navLinks.map((link) => (
-              <Link
-                key={link.name}
-                to={link.path}
-                className={`font-medium transition-colors duration-200 ${
-                  isActive(link.path)
-                    ? 'text-white border-b-2 border-white pb-1'
-                    : 'text-white/80 hover:text-white'
-                }`}
-              >
-                {link.name}
-              </Link>
-            ))}
-            
-            {/* Admin Login */}
+        {/* LOGO */}
+        <Link to="/" className="text-white font-bold">
+          ADDIS ABABA UNIVERSITY
+        </Link>
+
+        {/* DESKTOP */}
+        <div className="hidden md:flex items-center space-x-6">
+          {publicLinks.map(link => (
             <Link
-              to="/admin"
-              className="flex items-center space-x-2 text-white/80 hover:text-white font-medium transition-colors duration-200"
+              key={link.path}
+              to={link.path}
+              className={`${
+                location.pathname === link.path
+                  ? 'text-white border-b-2'
+                  : 'text-white/80'
+              }`}
             >
-              <Lock className="h-4 w-4" />
-              <span>Admin Login</span>
+              {link.name}
             </Link>
-          </div>
+          ))}
 
-          {/* Mobile menu button */}
+          {/* Theme Toggle */}
           <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden p-2 rounded-lg hover:bg-primary-600 transition-colors duration-200"
-            aria-label="Toggle menu"
+            onClick={toggleDarkMode}
+            className="text-white hover:text-white/80 transition-colors"
+            aria-label="Toggle theme"
           >
-            {isOpen ? (
-              <X className="h-6 w-6 text-white" />
-            ) : (
-              <Menu className="h-6 w-6 text-white" />
-            )}
+            {darkMode ? <Sun size={20} /> : <Moon size={20} />}
           </button>
+
+          {!isAuthenticated ? (
+            <Link to="/login" className="flex items-center gap-2 text-white">
+              <Lock size={16} />
+              Admin Login
+            </Link>
+          ) : (
+            <>
+              <Link to="/admin" className="text-white font-semibold">
+                Admin
+              </Link>
+              <button
+                onClick={handleLogout}
+                className="flex items-center gap-2 text-white"
+              >
+                <LogOut size={16} />
+                Logout
+              </button>
+            </>
+          )}
         </div>
 
-        {/* Mobile Navigation */}
-        {isOpen && (
-          <div className="md:hidden py-4 border-t border-primary-600">
-            <div className="flex flex-col space-y-3">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.name}
-                  to={link.path}
-                  onClick={() => setIsOpen(false)}
-                  className={`px-4 py-2 rounded-lg font-medium transition-colors duration-200 ${
-                    isActive(link.path)
-                      ? 'bg-primary-600 text-white'
-                      : 'text-white/80 hover:bg-primary-600'
-                  }`}
-                >
-                  {link.name}
-                </Link>
-              ))}
-              <Link
-                to="/admin"
-                onClick={() => setIsOpen(false)}
-                className="flex items-center space-x-2 px-4 py-2 text-white/80 hover:bg-primary-600 rounded-lg"
-              >
-                <Lock className="h-4 w-4" />
-                <span>Admin Login</span>
-              </Link>
-            </div>
-          </div>
-        )}
+        {/* MOBILE BUTTON */}
+        <button onClick={() => setIsOpen(!isOpen)} className="md:hidden text-white">
+          {isOpen ? <X /> : <Menu />}
+        </button>
       </div>
+
+      {/* MOBILE MENU */}
+      {isOpen && (
+        <div className="md:hidden bg-primary-700 p-4 space-y-3">
+          {publicLinks.map(link => (
+            <Link
+              key={link.path}
+              to={link.path}
+              onClick={() => setIsOpen(false)}
+              className="block text-white"
+            >
+              {link.name}
+            </Link>
+          ))}
+
+          {/* Theme Toggle Mobile */}
+          <button
+            onClick={toggleDarkMode}
+            className="flex items-center gap-2 text-white"
+            aria-label="Toggle theme"
+          >
+            {darkMode ? <Sun size={16} /> : <Moon size={16} />}
+            {darkMode ? 'Light Mode' : 'Dark Mode'}
+          </button>
+
+          {!isAuthenticated ? (
+            <Link to="/login" className="block text-white">
+              Admin Login
+            </Link>
+          ) : (
+            <>
+              <Link to="/admin" className="block text-white">
+                Admin
+              </Link>
+              <button onClick={handleLogout} className="block text-white">
+                Logout
+              </button>
+            </>
+          )}
+        </div>
+      )}
     </nav>
   );
 }

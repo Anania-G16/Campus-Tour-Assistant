@@ -19,7 +19,14 @@ export default function Home() {
   );
 
   return (
-    <div className="min-h-screen relative"> 
+    <div className="min-h-screen relative">
+      {/* Background Image */}
+     <div 
+        className="absolute inset-0 bg-cover bg-center"
+        style={{ backgroundImage: "url('/map_assets/gateway.jpg')" }}
+      >
+        <div className="absolute inset-0 bg-black/30" />
+      </div> 
 
       {/* Content */}
       <div className="relative z-10 flex">

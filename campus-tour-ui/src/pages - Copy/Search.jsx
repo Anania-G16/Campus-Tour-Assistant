@@ -160,7 +160,7 @@ export default function Search() {
 
                 {/* Popup Card */}
                 {selectedLocation?.id === location.id && (
-                  <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-64 bg-white rounded-xl shadow-2xl overflow-hidden z-50">
+                  <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 bg-white rounded-xl shadow-2xl overflow-hidden z-50">
                     <img
                       src={location.image}
                       alt={location.name}

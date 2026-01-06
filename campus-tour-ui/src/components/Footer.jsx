@@ -32,12 +32,12 @@ export default function Footer() {
           {/* Brand Section */}
           <div className="space-y-4">
             <Link to="/" className="flex items-center space-x-2">
-              <div className="bg-primary-600 p-2 rounded-lg">
+              <div className="bg-[#1E40AF] p-2 rounded-lg">
                 <MapPin className="h-6 w-6 text-white" />
               </div>
               <span className="text-xl font-bold text-white">CampusTour</span>
             </Link>
-            <p className="text-sm text-gray-400">
+            <p className="text-sm text-[#94A3B8]">
               Your ultimate guide to exploring and navigating the campus. Discover buildings, facilities, and services with ease.
             </p>
             <div className="flex space-x-4">
@@ -45,7 +45,7 @@ export default function Footer() {
                 <a
                   key={social.label}
                   href={social.href}
-                  className="p-2 bg-gray-800 rounded-lg hover:bg-gray-700 transition-colors duration-200"
+                  className="p-2 bg-[#1E293B] rounded-lg hover:bg-[#475569] transition-colors duration-200"
                   aria-label={social.label}
                 >
                   <social.icon className="h-5 w-5" />
@@ -62,7 +62,7 @@ export default function Footer() {
                 <li key={link.name}>
                   <Link
                     to={link.path}
-                    className="text-gray-400 hover:text-primary-400 transition-colors duration-200"
+                    className="text-[#94A3B8] hover:text-[#1E40AF] transition-colors duration-200"
                   >
                     {link.name}
                   </Link>
@@ -79,7 +79,7 @@ export default function Footer() {
                 <li key={category.name}>
                   <Link
                     to={category.path}
-                    className="text-gray-400 hover:text-primary-400 transition-colors duration-200"
+                    className="text-[#94A3B8] hover:text-[#1E40AF] transition-colors duration-200"
                   >
                     {category.name}
                   </Link>
@@ -93,18 +93,18 @@ export default function Footer() {
             <h3 className="text-white font-semibold mb-4">Contact Us</h3>
             <ul className="space-y-3">
               <li className="flex items-center space-x-3">
-                <MapPin className="h-5 w-5 text-primary-400" />
-                <span className="text-gray-400">CTBE, Campus 5 Kilo</span>
+                <MapPin className="h-5 w-5 text-[#1E40AF]" />
+                <span className="text-[#94A3B8]">CTBE, Campus 5 Kilo</span>
               </li>
               <li className="flex items-center space-x-3">
-                <Mail className="h-5 w-5 text-primary-400" />
-                <a href="mailto:info@campustour.edu" className="text-gray-400 hover:text-primary-400 transition-colors">
+                <Mail className="h-5 w-5 text-[#1E40AF]" />
+                <a href="mailto:info@campustour.edu" className="text-[#94A3B8] hover:text-[#1E40AF] transition-colors">
                   info@campustour.edu
                 </a>
               </li>
               <li className="flex items-center space-x-3">
-                <Phone className="h-5 w-5 text-primary-400" />
-                <a href="tel:+1234567890" className="text-gray-400 hover:text-primary-400 transition-colors">
+                <Phone className="h-5 w-5 text-[#1E40AF]" />
+                <a href="tel:+1234567890" className="text-[#94A3B8] hover:text-[#1E40AF] transition-colors">
                   +251-90-000-000
                 </a>
               </li>
@@ -113,16 +113,16 @@ export default function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-12 pt-8 border-t border-gray-800">
+        <div className="mt-12 pt-8 border-t border-[#1E293B]">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-[#94A3B8]">
               © {currentYear} CampusTour. All rights reserved.
             </p>
             <div className="flex space-x-6 text-sm">
-              <Link to="/privacy" className="text-gray-500 hover:text-gray-400 transition-colors">
+              <Link to="/privacy" className="text-[#94A3B8] hover:text-[#1E40AF] transition-colors">
                 Privacy Policy
               </Link>
-              <Link to="/terms" className="text-gray-500 hover:text-gray-400 transition-colors">
+              <Link to="/terms" className="text-[#94A3B8] hover:text-[#1E40AF] transition-colors">
                 Terms of Service
               </Link>
             </div>

@@ -27,7 +27,7 @@ export default function Categories() {
   if (category) {
     // Show locations in the selected category
     return (
-      <div className="min-h-screen bg-white dark:bg-gray-800">
+      <div className="min-h-screen bg-gray-50 py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-6">
             <Link to="/categories" className="text-primary-600 hover:text-primary-700 text-sm">
