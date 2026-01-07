@@ -23,11 +23,11 @@ export default function Navbar({ isAuthenticated, setIsAuthenticated }) {
   };
 
   return (
-    <nav className="bg-primary-700 sticky top-0 z-50">
+    <nav className={`${darkMode ? 'bg-black text-blue-400' : 'bg-white text-blue-600'} sticky top-0 z-50`}>
       <div className="max-w-7xl mx-auto px-4 h-16 flex justify-between items-center">
 
         {/* LOGO */}
-        <Link to="/" className="text-white font-bold">
+        <Link to="/" className="text-current font-bold">
           ADDIS ABABA UNIVERSITY
         </Link>
 
@@ -39,8 +39,8 @@ export default function Navbar({ isAuthenticated, setIsAuthenticated }) {
               to={link.path}
               className={`${
                 location.pathname === link.path
-                  ? 'text-white border-b-2'
-                  : 'text-white/80'
+                  ? 'text-current border-b-2'
+                  : 'text-current/80'
               }`}
             >
               {link.name}
@@ -50,25 +50,25 @@ export default function Navbar({ isAuthenticated, setIsAuthenticated }) {
           {/* Theme Toggle */}
           <button
             onClick={toggleDarkMode}
-            className="text-white hover:text-white/80 transition-colors"
+            className="text-current hover:text-current/80 transition-colors"
             aria-label="Toggle theme"
           >
             {darkMode ? <Sun size={20} /> : <Moon size={20} />}
           </button>
 
           {!isAuthenticated ? (
-            <Link to="/login" className="flex items-center gap-2 text-white">
+            <Link to="/login" className="flex items-center gap-2 text-current">
               <Lock size={16} />
               Admin Login
             </Link>
           ) : (
             <>
-              <Link to="/admin" className="text-white font-semibold">
+              <Link to="/admin" className="text-current font-semibold">
                 Admin
               </Link>
               <button
                 onClick={handleLogout}
-                className="flex items-center gap-2 text-white"
+                className="flex items-center gap-2 text-current"
               >
                 <LogOut size={16} />
                 Logout
@@ -78,20 +78,20 @@ export default function Navbar({ isAuthenticated, setIsAuthenticated }) {
         </div>
 
         {/* MOBILE BUTTON */}
-        <button onClick={() => setIsOpen(!isOpen)} className="md:hidden text-white">
+        <button onClick={() => setIsOpen(!isOpen)} className="md:hidden text-current">
           {isOpen ? <X /> : <Menu />}
         </button>
       </div>
 
       {/* MOBILE MENU */}
       {isOpen && (
-        <div className="md:hidden bg-primary-700 p-4 space-y-3">
+        <div className={`md:hidden ${darkMode ? 'bg-black' : 'bg-white'} p-4 space-y-3`}>
           {publicLinks.map(link => (
             <Link
               key={link.path}
               to={link.path}
               onClick={() => setIsOpen(false)}
-              className="block text-white"
+              className="block text-current"
             >
               {link.name}
             </Link>
