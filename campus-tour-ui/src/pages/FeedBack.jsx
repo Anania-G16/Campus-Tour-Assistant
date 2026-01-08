@@ -1,13 +1,36 @@
-import { useState } from 'react';
-import { Send, Star } from 'lucide-react';
+import { useState } from "react";
+import { Send, Star } from "lucide-react";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 export default function Feedback() {
   const [rating, setRating] = useState(0);
   const [submitted, setSubmitted] = useState(false);
+  const [data, setData] = useState({
+    Feedback: "",
+    email: "",
+  });
 
-  const handleSubmit = (e) => {
+  const updateData = (e) => {
     e.preventDefault();
-    setSubmitted(true);
+    const { name, value } = e.target;
+
+    setData((pre) => ({ ...pre, [name]: value }));
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post(`${url}/api/feedback`, data);
+      if (response.data.success) {
+        setSubmitted(true);
+      } else {
+        toast.error("feedback not sent");
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("something wrong happen");
+    }
   };
 
   return (
@@ -43,10 +66,13 @@ export default function Feedback() {
                     key={star}
                     onClick={() => setRating(star)}
                     className={`${
-                      star <= rating ? 'text-yellow-400' : 'text-gray-300'
+                      star <= rating ? "text-yellow-400" : "text-gray-300"
                     }`}
                   >
-                    <Star size={28} fill={star <= rating ? 'currentColor' : 'none'} />
+                    <Star
+                      size={28}
+                      fill={star <= rating ? "currentColor" : "none"}
+                    />
                   </button>
                 ))}
               </div>
@@ -59,6 +85,9 @@ export default function Feedback() {
               </label>
               <textarea
                 required
+                onChange={updateData}
+                name="feedback"
+                value={data.Feedback}
                 rows={4}
                 placeholder="Tell us what worked well or what needs improvement..."
                 className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-primary-500 focus:outline-none"
@@ -71,6 +100,9 @@ export default function Feedback() {
                 Email (optional)
               </label>
               <input
+                value={data.email}
+                name="email"
+                onChange={updateData}
                 type="email"
                 placeholder="you@example.com"
                 className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-primary-500 focus:outline-none"

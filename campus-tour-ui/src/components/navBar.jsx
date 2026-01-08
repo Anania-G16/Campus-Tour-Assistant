@@ -1,46 +1,50 @@
-import { useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Menu, X, Lock, LogOut, Sun, Moon } from 'lucide-react';
-import { useTheme } from '../context/ThemeContext';
+import { useContext, useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { Menu, X, Lock, LogOut, Sun, Moon } from "lucide-react";
+import { storeContext, useTheme } from "../context/storeContext";
 
-export default function Navbar({ isAuthenticated, setIsAuthenticated }) {
+export default function Navbar() {
+  const { darkMode, toggleDarkMode } = useTheme();
+  const { isAuthenticated, adminLogOut} =useContext(storeContext)
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
-  const navigate = useNavigate();
-  const { darkMode, toggleDarkMode } = useTheme();
+
+  const {  getBuildings, locations} = useContext(storeContext);
+
+  useEffect(() => {
+    getBuildings();
+  }, []);
+
+  useEffect(()=>{
+    console.log(locations);
+
+  },[])
 
   const publicLinks = [
-    { name: 'Home', path: '/' },
-    { name: 'Map', path: '/search' },
-    { name: 'Categories', path: '/categories' },
-    { name: 'Contact', path: '/about' },
-    { name: 'Feedback', path: '/feedback' },
+    { name: "Home", path: "/" },
+    { name: "Map", path: "/search" },
+    { name: "Categories", path: "/categories" },
+    { name: "Contact", path: "/about" },
+    { name: "Feedback", path: "/feedback" },
   ];
-
-  const handleLogout = () => {
-    setIsAuthenticated(false);
-    navigate('/login');
-  };
 
   return (
     <nav className="bg-primary-700 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 h-16 flex justify-between items-center">
-
-        {/* LOGO */}
         <Link to="/" className="text-white font-bold">
           ADDIS ABABA UNIVERSITY
         </Link>
 
-        {/* DESKTOP */}
+        {/* DESKTOP MENU */}
         <div className="hidden md:flex items-center space-x-6">
-          {publicLinks.map(link => (
+          {publicLinks.map((link) => (
             <Link
               key={link.path}
               to={link.path}
               className={`${
                 location.pathname === link.path
-                  ? 'text-white border-b-2'
-                  : 'text-white/80'
+                  ? "text-white border-b-2"
+                  : "text-white/80"
               }`}
             >
               {link.name}
@@ -67,7 +71,7 @@ export default function Navbar({ isAuthenticated, setIsAuthenticated }) {
                 Admin
               </Link>
               <button
-                onClick={handleLogout}
+                onClick={adminLogOut}
                 className="flex items-center gap-2 text-white"
               >
                 <LogOut size={16} />
@@ -78,7 +82,10 @@ export default function Navbar({ isAuthenticated, setIsAuthenticated }) {
         </div>
 
         {/* MOBILE BUTTON */}
-        <button onClick={() => setIsOpen(!isOpen)} className="md:hidden text-white">
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className="md:hidden text-white"
+        >
           {isOpen ? <X /> : <Menu />}
         </button>
       </div>
@@ -86,7 +93,7 @@ export default function Navbar({ isAuthenticated, setIsAuthenticated }) {
       {/* MOBILE MENU */}
       {isOpen && (
         <div className="md:hidden bg-primary-700 p-4 space-y-3">
-          {publicLinks.map(link => (
+          {publicLinks.map((link) => (
             <Link
               key={link.path}
               to={link.path}
@@ -97,14 +104,13 @@ export default function Navbar({ isAuthenticated, setIsAuthenticated }) {
             </Link>
           ))}
 
-          {/* Theme Toggle Mobile */}
           <button
             onClick={toggleDarkMode}
             className="flex items-center gap-2 text-white"
             aria-label="Toggle theme"
           >
             {darkMode ? <Sun size={16} /> : <Moon size={16} />}
-            {darkMode ? 'Light Mode' : 'Dark Mode'}
+            {darkMode ? "Light Mode" : "Dark Mode"}
           </button>
 
           {!isAuthenticated ? (
@@ -116,7 +122,7 @@ export default function Navbar({ isAuthenticated, setIsAuthenticated }) {
               <Link to="/admin" className="block text-white">
                 Admin
               </Link>
-              <button onClick={handleLogout} className="block text-white">
+              <button onClick={adminLogOut} className="block text-white">
                 Logout
               </button>
             </>

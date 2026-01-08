@@ -27,10 +27,10 @@ const getBuildings = async(req, res) => {
 
         if (error) throw error;
 
-        res.json(data);
+        res.json({ success: true, buildings: data });
     } catch (err) {
         console.error(err);
-        res.status(500).json({ message: "Failed to fetch buildings" });
+        res.status(500).json({ succcess: false, message: "Failed to fetch buildings" });
     }
 };
 
@@ -41,13 +41,13 @@ const getBuilding = async(req, res) => {
         const building = await getBuildingById(id);
 
         if (!building) {
-            return res.status(404).json({ message: "Building not found" });
+            return res.status(404).json({ succcess: false, message: "Building not found" });
         }
 
-        res.json(building);
+        res.json({ success: true, building });
     } catch (err) {
         console.error(err);
-        res.status(500).json({ message: "Failed to fetch building" });
+        res.status(500).json({ succcess: false, message: "Failed to fetch building" });
     }
 };
 
@@ -58,14 +58,14 @@ const createBuilding = async(req, res) => {
         if (!req.file) {
             return res
                 .status(404)
-                .json({ success: false, message: "image is required" });
+                .json({ succcess: false, success: false, message: "image is required" });
         }
-        buildingData.image_url = req.file.filename;
+        buildingData.image = req.file.filename;
         const newBuilding = await addBuilding(buildingData);
-        res.status(201).json(newBuilding);
+        res.status(201).json({ success: true, newBuilding });
     } catch (err) {
         console.error(err);
-        res.status(500).json({ message: "Failed to create building" });
+        res.status(500).json({ succcess: false, message: "Failed to create building" });
     }
 };
 
@@ -75,14 +75,14 @@ const editBuilding = async(req, res) => {
         const { id } = req.params;
         const buildingData = req.body;
         if (req.file) {
-            buildingData.image_url = req.file.filename;
+            buildingData.image = req.file.filename;
         }
 
         const updatedBuilding = await updateBuilding(id, buildingData);
-        res.json(updatedBuilding);
+        res.json({ success: true, updatedBuilding });
     } catch (err) {
         console.error(err);
-        res.status(500).json({ message: "Failed to update building" });
+        res.status(500).json({ succcess: false, message: "Failed to update building" });
     }
 };
 
@@ -96,16 +96,16 @@ const removeBuilding = async(req, res) => {
             const filePath = path.join(
                 __dirname,
                 "../uploads/buildings",
-                deletedBuilding.image_url
+                deletedBuilding.image
             );
             fs.unlink(filePath, (err) => {
                 if (err) console.error("Failed to delete image file:", err);
             });
         }
-        res.json({ message: "Building deleted", deletedBuilding });
+        res.json({ succcess: true, message: "Building deleted", deletedBuilding });
     } catch (err) {
         console.error(err);
-        res.status(500).json({ message: "Failed to delete building" });
+        res.status(500).json({ succcess: false, message: "Failed to delete building" });
     }
 };
 

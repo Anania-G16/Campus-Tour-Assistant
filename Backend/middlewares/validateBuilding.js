@@ -5,7 +5,7 @@ const buildingSchema = Joi.object({
     latitude: Joi.number().required(),
     longitude: Joi.number().required(),
     category: Joi.string().max(50).optional(),
-    image_url: Joi.string().required(),
+    image: Joi.string().required(),
 });
 
 const validateBuilding = (req, res, next) => {
