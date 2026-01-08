@@ -11,5 +11,6 @@ server.app.use(express.json());
 server.app.use('/api/building', buildingRouter)
 
 server.app.use("/api/feedback", feedbackRoutes);
+P
 server.app.use(globalErrorHandler);
 server.listen();
