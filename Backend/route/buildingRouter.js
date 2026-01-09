@@ -14,7 +14,7 @@ const buildingRouter = express.Router();
 buildingRouter.get('/', getBuildings);
 buildingRouter.get('/:id', getBuilding);
 buildingRouter.post('/', validateBuilding, upload.single('image'), createBuilding);
-buildingRouter.put('/:id', validateBuilding, upload.single('image'), editBuilding);
+buildingRouter.put('/:id', upload.single('image'), editBuilding);
 buildingRouter.delete('/:id', removeBuilding);
 
 module.exports = buildingRouter;
