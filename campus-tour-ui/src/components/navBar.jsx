@@ -23,7 +23,7 @@ export default function Navbar({ isAuthenticated, setIsAuthenticated }) {
   };
 
   return (
-    <nav className={`${darkMode ? 'bg-black text-blue-400' : 'bg-white text-blue-600'} sticky top-0 z-50`}>
+    <nav className={`${darkMode ? 'bg-slate-900 text-blue-400' : 'bg-white text-blue-600'} sticky top-0 z-50`}>
       <div className="max-w-7xl mx-auto px-4 h-16 flex justify-between items-center">
 
         {/* LOGO */}
