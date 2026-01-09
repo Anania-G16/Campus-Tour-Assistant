@@ -214,7 +214,7 @@ export default function About() {
             everyone.
           </p>
           <a
-  href="mailto:info@campustour.edu"
+  href="https://mail.google.com/mail/?view=cm&fs=1&to=campustour2026.project@gmail.com&su=Campus%20Tour%20Assistant"
   className={`inline-flex items-center px-6 py-3 font-semibold rounded-lg
     transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md
     ${
