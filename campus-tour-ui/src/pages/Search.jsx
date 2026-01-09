@@ -34,13 +34,18 @@ export default function Search({
   const handleSelect = (loc) => {
     setOnBuildingSelect(null);
     setTimeout(() => setOnBuildingSelect(loc), 10);
-    setIsOpen(false); // Hide dropdown after selection
+    setIsOpen(false); 
   };
 
   const filteredLocations = locations.filter((location) => {
-    const matchesQuery = location.name.toLowerCase().includes(searchQuery.toLowerCase());
+    const q = searchQuery.toLowerCase().trim();
+    const matchesQuery = 
+      location.name.toLowerCase().includes(q) || 
+      (location.tags && location.tags.some(tag => tag.toLowerCase().includes(q)));
+    
     const matchesCategory = selectedCategory === "All" ||
-                           location.category.toLowerCase() === selectedCategory.toLowerCase();
+                            location.category.toLowerCase() === selectedCategory.toLowerCase();
+    
     return matchesQuery && matchesCategory;
   });
 

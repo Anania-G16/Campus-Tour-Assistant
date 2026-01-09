@@ -67,15 +67,26 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
-/* Fix Leaflet gray areas */
+
 .leaflet-container {
     width: 100% !important;
     height: 100% !important;
-    background: #f8fafc !important; /* Matches your UI */
+    background: #f8fafc !important; 
 }
 
-/* Ensure the parent has height */
+
 #root, body, html {
     height: 100%;
     margin: 0;
+}
+@keyframes dash {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.leaflet-polyline {
+  stroke-dasharray: 10, 10;
+  stroke-dashoffset: 100;
+  animation: dash 5s linear infinite;
 }
