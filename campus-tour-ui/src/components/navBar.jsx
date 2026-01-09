@@ -27,8 +27,9 @@ export default function Navbar({ isAuthenticated, setIsAuthenticated }) {
       <div className="max-w-7xl mx-auto px-4 h-16 flex justify-between items-center">
 
         {/* LOGO */}
-        <Link to="/" className="text-current font-bold">
-          ADDIS ABABA UNIVERSITY
+        <Link to="/" className="flex items-center space-x-2 text-current font-bold">
+          <img src="/src/images/logo.png" alt="Addis Ababa University Logo" className="h-8 w-8 rounded-full" />
+          <span>ADDIS ABABA UNIVERSITY</span>
         </Link>
 
         {/* DESKTOP */}
