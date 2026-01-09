@@ -68,3 +68,15 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+/* Fix Leaflet gray areas */
+.leaflet-container {
+    width: 100% !important;
+    height: 100% !important;
+    background: #f8fafc !important; /* Matches your UI */
+}
+
+/* Ensure the parent has height */
+#root, body, html {
+    height: 100%;
+    margin: 0;
+}
