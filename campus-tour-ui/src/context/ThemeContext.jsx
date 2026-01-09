@@ -9,7 +9,7 @@ export function ThemeProvider({ children }) {
       if (saved !== null) {
         return JSON.parse(saved);
       }
-      return window.matchMedia('(prefers-color-scheme: dark)').matches;
+      return false; // ✅ LIGHT by default (NO system preference)
     }
     return false;
   });
