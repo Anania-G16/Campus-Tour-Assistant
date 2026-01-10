@@ -1,116 +1,120 @@
-import { useEffect } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Search as SearchIcon, X } from 'lucide-react';
+import { Search as SearchIcon, X, MapPin } from 'lucide-react';
 import { locations } from '../data/locations';
 import CampusMapContainer from "../components/CampusMapContainer";
 
-export default function Search({ 
-  searchQuery, setSearchQuery, 
-  selectedCategory, setSelectedCategory, 
-  onBuildingSelect, setOnBuildingSelect 
+export default function Search({
+  searchQuery, setSearchQuery,
+  selectedCategory, setSelectedCategory,
+  onBuildingSelect, setOnBuildingSelect
 }) {
   const [searchParams] = useSearchParams();
+  const [isOpen, setIsOpen] = useState(false);
+  const searchWrapperRef = useRef(null);
+
+  // Close dropdown when clicking outside the search container
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (searchWrapperRef.current && !searchWrapperRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   useEffect(() => {
-  const q = searchParams.get('q');
-  const cat = searchParams.get('category');
-  
-  if (q) setSearchQuery(q);
-  if (cat) {
-    setSelectedCategory(cat);
-  }
-}, [searchParams, setSearchQuery, setSelectedCategory]);
-
- const filteredLocations = locations.filter((location) => {
-  const matchesQuery = location.name.toLowerCase().includes(searchQuery.toLowerCase());
-  const matchesCategory = selectedCategory === "All" || 
-                          location.category.toLowerCase() === selectedCategory.toLowerCase();
-  
-  return matchesQuery && matchesCategory;
-});
+    const q = searchParams.get('q');
+    const cat = searchParams.get('category');
+    if (q) setSearchQuery(q);
+    if (cat) setSelectedCategory(cat);
+  }, [searchParams, setSearchQuery, setSelectedCategory]);
 
   const handleSelect = (loc) => {
-    setOnBuildingSelect(null); 
+    setOnBuildingSelect(null);
     setTimeout(() => setOnBuildingSelect(loc), 10);
+    setIsOpen(false); 
   };
 
+  const filteredLocations = locations.filter((location) => {
+    const q = searchQuery.toLowerCase().trim();
+    const matchesQuery = 
+      location.name.toLowerCase().includes(q) || 
+      (location.tags && location.tags.some(tag => tag.toLowerCase().includes(q)));
+    
+    const matchesCategory = selectedCategory === "All" ||
+                            location.category.toLowerCase() === selectedCategory.toLowerCase();
+    
+    return matchesQuery && matchesCategory;
+  });
+
   return (
-    /* h-[calc(100vh-64px)] locks the container height to the viewport minus navbar */
-    <div className="flex flex-col lg:flex-row h-[calc(100vh-64px)] w-full overflow-hidden bg-white relative">
+    <div className="relative h-[calc(100vh-64px)] w-full overflow-hidden bg-white">
       
-      {/* Sidebar - z-index higher than map but lower than navbar */}
-      <div className="w-full lg:w-80 bg-white border-r flex flex-col z-[20] shadow-lg h-full">
-        
-        {/* Fixed Search Header */}
-        <div className="flex-none p-5 bg-white border-b sticky top-0 z-[30]">
-          <div className="relative group">
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <SearchIcon className="h-4 w-4 text-slate-400 group-focus-within:text-primary-600" />
+      {/* FLOATING SEARCH BAR - Top Center */}
+      <div
+        ref={searchWrapperRef}
+        className="absolute top-6 left-1/2 -translate-x-1/2 z-[1001] w-[90%] max-w-md"
+      >
+        <div className="bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden">
+          <div className="relative flex items-center p-1">
+            <div className="pl-4 flex items-center pointer-events-none">
+              <SearchIcon className="h-5 w-5 text-slate-400" />
             </div>
             <input
               type="text"
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search buildings..."
-              className="block w-full pl-10 pr-10 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all shadow-sm"
+              onFocus={() => setIsOpen(true)}
+              onChange={(e) => {
+                setSearchQuery(e.target.value);
+                setIsOpen(true);
+              }}
+              placeholder="Search buildings or keywords..."
+              className="block w-full pl-3 pr-10 py-4 text-base focus:outline-none bg-transparent"
             />
             {searchQuery && (
-              <button 
+              <button
                 onClick={() => setSearchQuery('')}
-                className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600"
+                className="pr-4 text-slate-400 hover:text-slate-600"
               >
-                <X className="h-4 w-4" />
+                <X className="h-5 w-5" />
               </button>
             )}
           </div>
-          <p className="mt-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest px-1">
-            {filteredLocations.length} Results
-          </p>
-        </div>
 
-        {/* Scrollable Results List */}
-        <div className="flex-1 overflow-y-auto overflow-x-hidden bg-white">
-          {filteredLocations.map((loc) => (
-            <button
-              key={loc.id}
-              onClick={() => handleSelect(loc)}
-              style={{ cursor: 'pointer' }}
-              className={`w-full text-left px-5 py-5 border-b border-slate-50 transition-all block relative z-[40] ${
-                onBuildingSelect?.id === loc.id 
-                ? "bg-primary-50 border-l-4 border-l-primary-600 shadow-inner" 
-                : "hover:bg-slate-50 border-l-4 border-l-transparent"
-              }`}
-            >
-              <div className="flex flex-col pt-1">
-                <div className={`text-sm font-semibold leading-tight ${onBuildingSelect?.id === loc.id ? "text-primary-700" : "text-slate-900"}`}>
-                  {loc.name}
-                </div>
-                <div className="text-[11px] text-slate-500 mt-1.5 flex items-center gap-1">
-                  <span className={`w-1.5 h-1.5 rounded-full ${onBuildingSelect?.id === loc.id ? 'bg-primary-400' : 'bg-slate-300'}`}></span>
-                  {loc.category}
-                </div>
-              </div>
-            </button>
-          ))}
-          {filteredLocations.length === 0 && (
-            <div className="p-10 text-center text-slate-400 text-sm italic">
-              No buildings found
+          {/* DROPDOWN RESULTS */}
+          {isOpen && searchQuery.length > 0 && (
+            <div className="max-h-[50vh] overflow-y-auto border-t border-slate-100 bg-white">
+              {filteredLocations.map((loc) => (
+                <button
+                  key={loc.id}
+                  onClick={() => handleSelect(loc)}
+                  className="w-full text-left px-5 py-4 border-b border-slate-50 hover:bg-slate-50 flex items-center gap-3 transition-colors"
+                >
+                  <MapPin className="h-4 w-4 text-blue-500" />
+                  <div>
+                    <div className="text-sm font-semibold text-slate-900">{loc.name}</div>
+                    <div className="text-[11px] text-slate-500 uppercase tracking-wider">{loc.category}</div>
+                  </div>
+                </button>
+              ))}
+              {filteredLocations.length === 0 && (
+                <div className="p-6 text-center text-slate-400 text-sm italic">No buildings found</div>
+              )}
             </div>
           )}
         </div>
       </div>
 
-      {/* Map Area - absolute inset-0 prevents the map from expanding beyond this container */}
-      <div className="flex-1 relative h-full min-h-0 z-[10] bg-slate-100"> 
-        <div className="absolute inset-0">
-          <CampusMapContainer 
-            searchQuery={searchQuery}
-            selectedCategory={selectedCategory}
-            onBuildingSelect={onBuildingSelect}
-          />
-        </div>
+      {/* FULL SCREEN MAP AREA */}
+      <div className="absolute inset-0 z-0">
+        <CampusMapContainer
+          searchQuery={searchQuery}
+          selectedCategory={selectedCategory}
+          onBuildingSelect={onBuildingSelect}
+        />
       </div>
-
     </div>
   );
 }

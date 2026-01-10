@@ -1,6 +1,5 @@
 import axios from "axios";
 import { useContext, useState } from "react";
-
 import { storeContext } from "../context/storeContext";
 import { ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -17,9 +16,10 @@ function AdminLogin() {
     const { name, value } = e.target;
     setData((prev) => ({ ...prev, [name]: value }));
   };
+
   const submitLogin = (e) => {
-    e.preventDefault()
-    adminLogin( data);
+    e.preventDefault();
+    adminLogin(data);
   };
 
   return (
@@ -27,11 +27,11 @@ function AdminLogin() {
       <div className="w-full max-w-md bg-white border border-slate-200 rounded-lg p-8">
         {/* Logo */}
         <div className="text-center items-center mb-6">
-          <div className="flex">
-          
-          </div>
+          <div className="flex"></div>
           <div className="flex items-center justify-center gap-12 text-2xl font-bold text-slate-800">
-           <Link to='/' className=" cursor-pointer text-indigo-500">   <ArrowLeft/></Link>
+            <Link to="/" className="cursor-pointer text-indigo-500">
+              <ArrowLeft />
+            </Link>
             <span>Campus Tour Assistant</span>
           </div>
           <p className="text-slate-500 text-sm mt-2">Your Best Assistant</p>

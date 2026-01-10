@@ -1,8 +1,8 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useContext, useState } from "react";
+import { useTheme } from "./context/ThemeContext";
 
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
+import Layout from "./components/Layout";
 import Home from "./pages/Home";
 import Search from "./pages/Search";
 import Categories from "./pages/Categories";
@@ -10,13 +10,15 @@ import About from "./pages/About";
 import BuildingDetails from "./pages/BuildingDetails";
 import Admin from "./pages/Admin";
 import AdminLogin from "./pages/AdminLogin";
+import AdminFeedbackReview from "./pages/AdminFeedbackReview";
 import Feedback from "./pages/FeedBack";
-import { Toaster } from "react-hot-toast";
+import { Toaster } from "react-hot-toast"; // Brought over from HEAD for notifications
 import { storeContext } from "./context/storeContext";
 
 function App() {
-  // const [isAuthenticated, setIsAuthenticated] = useState(true);
-  const { darkMode, isAuthenticated } = useContext(storeContext);
+  const { isAuthenticated, setIsAuthenticated } = useContext(storeContext);
+  // const [userRole, setUserRole] = useState(null);
+  const { darkMode } = useTheme();
 
   // SHARED STATES FOR THE MAP PAGE
   const [searchQuery, setSearchQuery] = useState("");
@@ -24,67 +26,72 @@ function App() {
   const [onBuildingSelect, setOnBuildingSelect] = useState(null);
 
   return (
-    <div className={`min-h-screen ${darkMode ? "bg-gray-900" : ""}`}>
-      {!darkMode && (
-        <div
-          className="fixed inset-0 bg-cover bg-center -z-10"
-          style={{ backgroundImage: "url('/gateway.jpg')" }}
-        >
-          <div className="absolute inset-0 bg-black/30" />
-        </div>
-      )}
+    <Layout
+     
+    >
+      <Toaster position="top-right" />
+      <Routes>
+        <Route path="/" element={<Home />} />
 
-      <div className="flex flex-col min-h-screen relative">
-        <Navbar />
-        <Toaster position="top-right" reverseOrder={false} />
-        <main className="flex-grow">
-          <Routes>
-            <Route path="/" element={<Home />} />
-
-            {/* SEARCH ROUTE: This is now your Interactive Map Page */}
-            <Route
-              path="/search"
-              element={
-                <Search
-                  searchQuery={searchQuery}
-                  setSearchQuery={setSearchQuery}
-                  selectedCategory={selectedCategory}
-                  setSelectedCategory={setSelectedCategory}
-                  onBuildingSelect={onBuildingSelect}
-                  setOnBuildingSelect={setOnBuildingSelect}
-                />
-              }
+        {/* SEARCH ROUTE (Interactive Map) */}
+        <Route
+          path="/search"
+          element={
+            <Search
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+              selectedCategory={selectedCategory}
+              setSelectedCategory={setSelectedCategory}
+              onBuildingSelect={onBuildingSelect}
+              setOnBuildingSelect={setOnBuildingSelect}
             />
+          }
+        />
 
-            <Route path="/categories" element={<Categories />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/feedback" element={<Feedback />} />
-            <Route path="/location/:id" element={<BuildingDetails />} />
-            <Route path="/category/:category" element={<Categories />} />
+        <Route path="/categories" element={<Categories />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/feedback" element={<Feedback />} />
+        <Route path="/location/:id" element={<BuildingDetails />} />
+        <Route path="/category/:category" element={<Categories />} />
 
-            <Route
-              path="/login"
-              element={
-                isAuthenticated ? (
-                  <Navigate to="/admin" replace />
-                ) : (
-                  <AdminLogin />
-                )
-              }
-            />
+        <Route
+          path="/login"
+          element={
+            isAuthenticated ? (
+              <Navigate to="/admin" replace />
+            ) : (
+              <AdminLogin
+                setIsAuthenticated={setIsAuthenticated}
+              
+              />
+            )
+          }
+        />
 
-            <Route
-              path="/admin"
-              element={
-                isAuthenticated ? <Admin /> : <Navigate to="/login" replace />
-              }
-            />
-          </Routes>
-        </main>
+        {/* Protected Admin Routes */}
+        <Route
+          path="/admin"
+          element={
+            isAuthenticated  ? (
+              <Admin />
+            ) : (
+              <Navigate to="/login" replace />
+            )
+          }
+        />
 
-        <Footer />
-      </div>
-    </div>
+        <Route
+          path="/admin/feedback"
+          element={
+            isAuthenticated ? (
+              <AdminFeedbackReview />
+            ) : (
+              <Navigate to="/login" replace />
+            )
+          }
+        />
+      </Routes>
+    </Layout>
   );
 }
 

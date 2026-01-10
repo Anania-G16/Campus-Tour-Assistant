@@ -20,7 +20,7 @@ export default function Admin() {
     lng: "",
     manualPath: "",
     hours: "",
-    locations: "",
+    location: "",
     tags: "",
   });
 
@@ -31,7 +31,7 @@ export default function Admin() {
       if (res.data.success) setBuildings(res.data.buildings);
     } catch (err) {
       console.error(err);
-      alert("Failed to fetch buildings");
+      alert("Failed to fetch buildings. Ensure your server is running on port 3000.");
     }
   };
 
@@ -77,8 +77,8 @@ export default function Admin() {
       lat: parseFloat(formData.lat),
       lng: parseFloat(formData.lng),
       manualPath: formData.manualPath
-        .split(";")
-        .map((coord) => coord.split(",").map(Number)),
+        ? formData.manualPath.split(";").map((coord) => coord.split(",").map(Number))
+        : [],
       hours: formData.hours,
       location: formData.location,
       tags: formData.tags.split(",").map((t) => t.trim()),
@@ -86,31 +86,15 @@ export default function Admin() {
 
     try {
       if (editingBuilding) {
-        // Update building
         await axios.put(
           `http://localhost:3000/api/buildings/${editingBuilding.id}`,
           buildingData
         );
       } else {
-        // Add new building
         await axios.post("http://localhost:3000/api/buildings", buildingData);
       }
       setEditingBuilding(null);
-      setFormData({
-        name: "",
-        category: "",
-        description: "",
-        floors: 1,
-        rooms: 1,
-        depts: "",
-        images: "",
-        lat: "",
-        lng: "",
-        manualPath: "",
-        hours: "",
-        location: "",
-        tags: "",
-      });
+      resetForm();
       fetchBuildings();
     } catch (err) {
       console.error(err);
@@ -129,31 +113,35 @@ export default function Admin() {
     }
   };
 
+  const resetForm = () => {
+    setFormData({
+      name: "",
+      category: "",
+      description: "",
+      floors: 1,
+      rooms: 1,
+      depts: "",
+      images: "",
+      lat: "",
+      lng: "",
+      manualPath: "",
+      hours: "",
+      location: "",
+      tags: "",
+    });
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 p-8">
       <div className="max-w-7xl mx-auto flex gap-8">
         {/* Table List */}
         <div className="flex-1 bg-white rounded-xl shadow-sm border p-6">
           <div className="flex justify-between mb-6">
-            <h2 className="text-xl font-bold">Campus Buildings</h2>
+            <h2 className="text-xl font-bold">Campus Buildings (Live Mode)</h2>
             <button
               onClick={() => {
                 setEditingBuilding(null);
-                setFormData({
-                  name: "",
-                  category: "",
-                  description: "",
-                  floors: 1,
-                  rooms: 1,
-                  depts: "",
-                  images: "",
-                  lat: "",
-                  lng: "",
-                  manualPath: "",
-                  hours: "",
-                  location: "",
-                  tags: "",
-                });
+                resetForm();
               }}
               className="bg-indigo-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-indigo-700 transition"
             >
@@ -199,7 +187,6 @@ export default function Admin() {
             {editingBuilding ? "Edit Building" : "Add Building"}
           </h2>
           <div className="space-y-4">
-            {/* Image preview */}
             <div className="w-full h-48 border rounded-lg flex items-center justify-center overflow-hidden bg-gray-100">
               <img
                 src={formData.images || DEFAULT_IMAGE}
@@ -210,121 +197,67 @@ export default function Admin() {
 
             <label className="w-full flex items-center gap-2 p-2 border rounded cursor-pointer bg-gray-50 hover:bg-gray-100 transition">
               <Upload size={18} /> Upload Image
-              <input
-                type="file"
-                className="hidden"
-                onChange={handleImageChange}
-              />
+              <input type="file" className="hidden" onChange={handleImageChange} />
             </label>
 
             <input
               className="w-full p-2 border rounded"
               placeholder="Building Name"
               value={formData.name}
-              onChange={(e) =>
-                setFormData({ ...formData, name: e.target.value })
-              }
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             />
+            
             <select
               className="w-full p-2 border rounded"
               value={formData.category}
-              onChange={(e) =>
-                setFormData({ ...formData, category: e.target.value })
-              }
+              onChange={(e) => setFormData({ ...formData, category: e.target.value })}
             >
               <option value="">Select Category</option>
               <option value="Academic">Academic</option>
               <option value="Libraries">Libraries</option>
-              <option value="Dining">Dining</option>
+              <option value="Sports">Sports</option>
+              <option value="Outdoor">Outdoor</option>
             </select>
+
             <div className="flex gap-2">
               <input
                 type="number"
                 className="w-1/2 p-2 border rounded"
                 placeholder="Floors"
                 value={formData.floors}
-                onChange={(e) =>
-                  setFormData({ ...formData, floors: e.target.value })
-                }
+                onChange={(e) => setFormData({ ...formData, floors: e.target.value })}
               />
               <input
                 type="number"
                 className="w-1/2 p-2 border rounded"
                 placeholder="Rooms"
                 value={formData.rooms}
-                onChange={(e) =>
-                  setFormData({ ...formData, rooms: e.target.value })
-                }
+                onChange={(e) => setFormData({ ...formData, rooms: e.target.value })}
               />
             </div>
+
             <textarea
               className="w-full p-2 border rounded"
               placeholder="Departments (comma separated)"
               value={formData.depts}
-              onChange={(e) =>
-                setFormData({ ...formData, depts: e.target.value })
-              }
+              onChange={(e) => setFormData({ ...formData, depts: e.target.value })}
             />
-            <textarea
-              className="w-full p-2 border rounded h-20"
-              placeholder="Description"
-              value={formData.description}
-              onChange={(e) =>
-                setFormData({ ...formData, description: e.target.value })
-              }
-            />
+
             <div className="flex gap-2">
               <input
-                type="number"
                 className="w-1/2 p-2 border rounded"
-                placeholder="Latitude"
+                placeholder="Lat"
                 value={formData.lat}
-                onChange={(e) =>
-                  setFormData({ ...formData, lat: e.target.value })
-                }
+                onChange={(e) => setFormData({ ...formData, lat: e.target.value })}
               />
               <input
-                type="number"
                 className="w-1/2 p-2 border rounded"
-                placeholder="Longitude"
+                placeholder="Lng"
                 value={formData.lng}
-                onChange={(e) =>
-                  setFormData({ ...formData, lng: e.target.value })
-                }
+              onChange={(e) => setFormData({ ...formData, lng: e.target.value })}
               />
             </div>
-            <textarea
-              className="w-full p-2 border rounded h-20"
-              placeholder="Manual Path (lat,lng;lat,lng;...)"
-              value={formData.manualPath}
-              onChange={(e) =>
-                setFormData({ ...formData, manualPath: e.target.value })
-              }
-            />
-            <input
-              className="w-full p-2 border rounded"
-              placeholder="Hours"
-              value={formData.hours}
-              onChange={(e) =>
-                setFormData({ ...formData, hours: e.target.value })
-              }
-            />
-            <input
-              className="w-full p-2 border rounded"
-              placeholder="Location"
-              value={formData.location}
-              onChange={(e) =>
-                setFormData({ ...formData, location: e.target.value })
-              }
-            />
-            <input
-              className="w-full p-2 border rounded"
-              placeholder="Tags (comma separated)"
-              value={formData.tags}
-              onChange={(e) =>
-                setFormData({ ...formData, tags: e.target.value })
-              }
-            />
+
             <button
               onClick={handleSave}
               className="w-full bg-indigo-600 text-white py-3 rounded-xl font-bold hover:bg-indigo-700 transition-colors"
