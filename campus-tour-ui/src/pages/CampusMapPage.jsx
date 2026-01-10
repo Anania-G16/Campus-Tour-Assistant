@@ -22,6 +22,7 @@ export default function CampusMapPage() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  // Performance optimized filtering logic
   const filteredResults = useMemo(() => {
     if (!query && selectedCategory === "All") return [];
     return BUILDINGS.filter(b => {
@@ -34,7 +35,7 @@ export default function CampusMapPage() {
   return (
     <div className="relative h-screen w-full overflow-hidden bg-gray-100">
       
-      {/* Floating Search Container - Top Center */}
+      {/* Floating Search Container - Positioned on top of the Map */}
       <div 
         ref={searchRef}
         className="absolute top-4 left-1/2 -translate-x-1/2 z-[1001] w-[95%] max-w-md transition-all"
@@ -51,7 +52,7 @@ export default function CampusMapPage() {
             />
           </div>
 
-          {/* Search Results Dropdown */}
+          {/* Search Results Dropdown logic */}
           {showDropdown && (query || selectedCategory !== "All") && (
             <div className="border-t max-h-[60vh] overflow-y-auto bg-white">
               {filteredResults.length > 0 ? (
@@ -76,7 +77,7 @@ export default function CampusMapPage() {
         </div>
       </div>
 
-      {/* Main Map Area */}
+      {/* Main Map Area - Full Screen */}
       <main className="h-full w-full">
         <CampusMapContainer 
           searchQuery={query} 

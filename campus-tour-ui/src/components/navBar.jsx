@@ -1,9 +1,13 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X, Lock, LogOut, Sun, Moon } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
+import { storeContext } from '../context/storeContext';
 
-export default function Navbar({ isAuthenticated, setIsAuthenticated }) {
+export default function Navbar() {
+
+const { isAuthenticated, setIsAuthenticated }=useContext(storeContext);
+
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
@@ -15,6 +19,13 @@ export default function Navbar({ isAuthenticated, setIsAuthenticated }) {
     { name: 'Categories', path: '/categories' },
     { name: 'Contact', path: '/about' },
     { name: 'Feedback', path: '/feedback' },
+  ];
+
+  const adminLinks = [
+    { name: 'Map', path: '/search' },
+    { name: 'Categories', path: '/categories' },
+    { name: 'Feedback Review', path: '/admin/feedback' },
+    { name: 'Admin Dashboard', path: '/admin' },
   ];
 
   const handleLogout = () => {
@@ -34,19 +45,35 @@ export default function Navbar({ isAuthenticated, setIsAuthenticated }) {
 
         {/* DESKTOP */}
         <div className="hidden md:flex items-center space-x-6">
-          {publicLinks.map(link => (
-            <Link
-              key={link.path}
-              to={link.path}
-              className={`${
-                location.pathname === link.path
-                  ? 'text-current border-b-2'
-                  : 'text-current/80'
-              }`}
-            >
-              {link.name}
-            </Link>
-          ))}
+          {isAuthenticated ? (
+            adminLinks.map(link => (
+              <Link
+                key={link.path}
+                to={link.path}
+                className={`${
+                  location.pathname === link.path
+                    ? 'text-current border-b-2'
+                    : 'text-current/80'
+                }`}
+              >
+                {link.name}
+              </Link>
+            ))
+          ) : (
+            publicLinks.map(link => (
+              <Link
+                key={link.path}
+                to={link.path}
+                className={`${
+                  location.pathname === link.path
+                    ? 'text-current border-b-2'
+                    : 'text-current/80'
+                }`}
+              >
+                {link.name}
+              </Link>
+            ))
+          )}
 
           {/* Theme Toggle */}
           <button
@@ -57,25 +84,22 @@ export default function Navbar({ isAuthenticated, setIsAuthenticated }) {
             {darkMode ? <Sun size={20} /> : <Moon size={20} />}
           </button>
 
-          {!isAuthenticated ? (
+          {!isAuthenticated && (
             <Link to="/login" className="flex items-center gap-2 text-current">
               <Lock size={16} />
               Admin Login
             </Link>
-          ) : (
-            <>
-              <Link to="/admin" className="text-current font-semibold">
-                Admin
-              </Link>
-              <button
-                onClick={handleLogout}
-                className="flex items-center gap-2 text-current"
-              >
-                <LogOut size={16} />
-                Logout
-              </button>
-            </>
           )}
+
+          {isAuthenticated ? (
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-2 text-current"
+            >
+              <LogOut size={16} />
+              Logout
+            </button>
+          ) : null}
         </div>
 
         {/* MOBILE BUTTON */}

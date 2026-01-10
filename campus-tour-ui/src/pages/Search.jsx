@@ -70,7 +70,7 @@ export default function Search({
                 setSearchQuery(e.target.value);
                 setIsOpen(true);
               }}
-              placeholder="Search buildings..."
+              placeholder="Search buildings or keywords..."
               className="block w-full pl-3 pr-10 py-4 text-base focus:outline-none bg-transparent"
             />
             {searchQuery && (
@@ -95,7 +95,7 @@ export default function Search({
                   <MapPin className="h-4 w-4 text-blue-500" />
                   <div>
                     <div className="text-sm font-semibold text-slate-900">{loc.name}</div>
-                    <div className="text-[11px] text-slate-500 uppercase">{loc.category}</div>
+                    <div className="text-[11px] text-slate-500 uppercase tracking-wider">{loc.category}</div>
                   </div>
                 </button>
               ))}

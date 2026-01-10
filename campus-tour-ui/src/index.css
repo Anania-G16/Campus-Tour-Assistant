@@ -68,17 +68,20 @@ button:focus-visible {
   }
 }
 
+/* --- MAP CORE FUNCTIONALITY (Required for UI_CORE) --- */
+
 .leaflet-container {
     width: 100% !important;
     height: 100% !important;
     background: #f8fafc !important; 
 }
 
-
 #root, body, html {
     height: 100%;
     margin: 0;
 }
+
+/* Route Path Animation (Marching Ants) */
 @keyframes dash {
   to {
     stroke-dashoffset: 0;

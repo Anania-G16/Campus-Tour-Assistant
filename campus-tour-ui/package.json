@@ -13,12 +13,14 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.18",
+    "axios": "^1.13.2",
     "leaflet": "^1.9.4",
     "lucide-react": "^0.562.0",
-    "ngraph.graph": "^20.1.1",
-    "ngraph.path": "^1.6.1",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
+    "react-hot-toast": "^2.6.0",
+    "ngraph.graph": "^20.1.1",
+    "ngraph.path": "^1.6.1",
     "react-leaflet": "^5.0.0",
     "react-router-dom": "^7.11.0"
   }

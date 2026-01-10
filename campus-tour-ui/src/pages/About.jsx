@@ -8,26 +8,22 @@ export default function About() {
     {
       icon: MapPin,
       title: 'Easy Navigation',
-      description:
-        'Find any building or facility on campus with our intuitive search and filter system.',
+      description: 'Find any building or facility on campus with our intuitive search and filter system.',
     },
     {
       icon: Users,
       title: 'Student-Focused',
-      description:
-        'Designed with students in mind, making campus exploration simple and efficient.',
+      description: 'Designed with students in mind, making campus exploration simple and efficient.',
     },
     {
       icon: Target,
       title: 'Accurate Information',
-      description:
-        'Up-to-date details about hours, services, and amenities for every location.',
+      description: 'Up-to-date details about hours, services, and amenities for every location.',
     },
     {
       icon: Heart,
       title: 'Community Driven',
-      description:
-        'Built with feedback from students and staff to serve the campus community better.',
+      description: 'Built with feedback from students and staff to serve the campus community better.',
     },
   ];
 
@@ -214,19 +210,18 @@ export default function About() {
             everyone.
           </p>
           <a
-  href="https://mail.google.com/mail/?view=cm&fs=1&to=campustour2026.project@gmail.com&su=Campus%20Tour%20Assistant"
-  className={`inline-flex items-center px-6 py-3 font-semibold rounded-lg
-    transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md
-    ${
-      darkMode
-        ? 'bg-slate-700 text-slate-100 hover:bg-slate-600'
-        : 'bg-slate-200 text-slate-700 hover:bg-slate-300'
-    }
-  `}
->
-  Contact Us
-</a>
-
+            href="https://mail.google.com/mail/?view=cm&fs=1&to=campustour2026.project@gmail.com&su=Campus%20Tour%20Assistant"
+            className={`inline-flex items-center px-6 py-3 font-semibold rounded-lg
+              transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md
+              ${
+                darkMode
+                  ? 'bg-slate-700 text-slate-100 hover:bg-slate-600'
+                  : 'bg-slate-200 text-slate-700 hover:bg-slate-300'
+              }
+            `}
+          >
+            Contact Us
+          </a>
         </div>
       </div>
     </div>
