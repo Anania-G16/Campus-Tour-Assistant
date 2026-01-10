@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Search, MapPin, Building2 } from "lucide-react";
-import { locations } from "../data/locations";
+// import { locations } from "../data/locations";
 import { useTheme } from "../context/ThemeContext";
+import { storeContext } from "../context/storeContext";
 
 const buildingCategories = [
   { id: "library", name: "Library", icon: Building2 },
@@ -15,6 +16,13 @@ const buildingCategories = [
 export default function Home() {
   const { darkMode } = useTheme();
   const [searchQuery, setSearchQuery] = useState("");
+
+
+  const {getBuildings,locations}=useContext(storeContext)
+
+  useEffect(()=>{
+    getBuildings()
+  },[])
 
   const filteredLocations = locations.filter((loc) =>
     loc.name.toLowerCase().includes(searchQuery.toLowerCase())

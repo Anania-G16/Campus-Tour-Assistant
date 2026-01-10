@@ -121,7 +121,7 @@ const [locations,setLocations]=useState([])
     }, []);
 
     useEffect(()=>{
-        console.log(locations);
+        console.log("location",locations);
     },[locations])
 
 
@@ -307,10 +307,10 @@ const [locations,setLocations]=useState([])
             <Popup>You are here</Popup>
           </Marker>
 
-          {filteredBuildings.map((b) => (
+          {filteredBuildings?.map((b) => (
             <Marker
               key={b.id}
-              position={[b.lat, b.lng]}
+              position={[Number(b.lat), Number(b.lng)]}
               icon={createIcon(getMarkerColor(b.category))}
               eventHandlers={{ click: () => handleBuildingClick(b) }}
             >

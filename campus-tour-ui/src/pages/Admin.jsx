@@ -19,7 +19,7 @@ export default function Admin() {
     images: "",
     lat: "",
     lng: "",
-
+    nearestNode: "",
     hours: "",
     location: "",
     tags: "",
@@ -46,13 +46,14 @@ export default function Admin() {
       name: building.name,
       category: building.category,
       description: building.description,
+      nearestNode: building.nearstNode,
       floors: building.floorinfo?.floors || 1,
       rooms: building.floorinfo?.rooms || 1,
       depts: building.floorinfo?.depts?.join(", ") || "",
       images: building.images || "",
       lat: building.lat || building.coordinates?.[0] || "",
       lng: building.lng || building.coordinates?.[1] || "",
-    
+
       hours: building.hours || "",
       location: building.location || "",
       tags: building.tags?.join(", ") || "",
@@ -69,15 +70,16 @@ export default function Admin() {
       name: formData.name,
       category: formData.category,
       description: formData.description,
+      nearestNode: formData.nearestNode,
       floorinfo: {
         floors: parseInt(formData.floors),
         rooms: parseInt(formData.rooms),
         depts: formData.depts.split(",").map((d) => d.trim()),
       },
-      images: formData.images ,
+      images: formData.images,
       lat: parseFloat(formData.lat),
       lng: parseFloat(formData.lng),
-  
+
       hours: formData.hours,
       location: formData.location,
       tags: formData.tags.split(",").map((t) => t.trim()),
@@ -107,7 +109,7 @@ export default function Admin() {
         images: "",
         lat: "",
         lng: "",
-    
+        nearstNode: "",
         hours: "",
         location: "",
         tags: "",
@@ -150,7 +152,7 @@ export default function Admin() {
                   images: "",
                   lat: "",
                   lng: "",
-              
+                  nearstNode: "",
                   hours: "",
                   location: "",
                   tags: "",
@@ -308,6 +310,14 @@ export default function Admin() {
               value={formData.hours}
               onChange={(e) =>
                 setFormData({ ...formData, hours: e.target.value })
+              }
+            />
+              <input
+              className="w-full p-2 border rounded"
+              placeholder="nearstNode"
+              value={formData.nearestNode}
+              onChange={(e) =>
+                setFormData({ ...formData, nearestNode: e.target.value })
               }
             />
             <input
