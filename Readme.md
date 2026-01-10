@@ -158,5 +158,3 @@ See `CONTRIBUTING.md` for contribution guidelines.
 
 ## 🧾 License
 This project is available under the MIT license — see `LICENSE`.
-
-
