@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-function AdminLogin({ setIsAuthenticated }) {
+function AdminLogin({ setIsAuthenticated, setUserRole }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
@@ -63,6 +63,7 @@ function AdminLogin({ setIsAuthenticated }) {
                 // Simple authentication check (replace with real API call)
                 if (email === 'admin@example.com' && password === 'password') {
                   setIsAuthenticated(true);
+                  setUserRole('admin');
                   navigate('/admin');
                 } else {
                   alert('Invalid credentials');

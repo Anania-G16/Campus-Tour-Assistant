@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Pencil, Trash2, Upload, Plus } from 'lucide-react';
+import { Pencil, Trash2, Upload, Plus, MessageSquare, Map, List } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { locations } from '../data/locations';
 
 export default function Admin() {

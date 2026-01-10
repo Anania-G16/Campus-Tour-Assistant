@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X, Lock, LogOut, Sun, Moon } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 
-export default function Navbar({ isAuthenticated, setIsAuthenticated }) {
+export default function Navbar({ isAuthenticated, setIsAuthenticated, userRole }) {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
@@ -15,6 +15,13 @@ export default function Navbar({ isAuthenticated, setIsAuthenticated }) {
     { name: 'Categories', path: '/categories' },
     { name: 'Contact', path: '/about' },
     { name: 'Feedback', path: '/feedback' },
+  ];
+
+  const adminLinks = [
+    { name: 'Map', path: '/search' },
+    { name: 'Categories', path: '/categories' },
+    { name: 'Feedback Review', path: '/admin/feedback' },
+    { name: 'Admin Dashboard', path: '/admin' },
   ];
 
   const handleLogout = () => {
@@ -34,19 +41,35 @@ export default function Navbar({ isAuthenticated, setIsAuthenticated }) {
 
         {/* DESKTOP */}
         <div className="hidden md:flex items-center space-x-6">
-          {publicLinks.map(link => (
-            <Link
-              key={link.path}
-              to={link.path}
-              className={`${
-                location.pathname === link.path
-                  ? 'text-current border-b-2'
-                  : 'text-current/80'
-              }`}
-            >
-              {link.name}
-            </Link>
-          ))}
+          {userRole === 'admin' ? (
+            adminLinks.map(link => (
+              <Link
+                key={link.path}
+                to={link.path}
+                className={`${
+                  location.pathname === link.path
+                    ? 'text-current border-b-2'
+                    : 'text-current/80'
+                }`}
+              >
+                {link.name}
+              </Link>
+            ))
+          ) : (
+            publicLinks.map(link => (
+              <Link
+                key={link.path}
+                to={link.path}
+                className={`${
+                  location.pathname === link.path
+                    ? 'text-current border-b-2'
+                    : 'text-current/80'
+                }`}
+              >
+                {link.name}
+              </Link>
+            ))
+          )}
 
           {/* Theme Toggle */}
           <button
@@ -62,20 +85,15 @@ export default function Navbar({ isAuthenticated, setIsAuthenticated }) {
               <Lock size={16} />
               Admin Login
             </Link>
-          ) : (
-            <>
-              <Link to="/admin" className="text-current font-semibold">
-                Admin
-              </Link>
-              <button
-                onClick={handleLogout}
-                className="flex items-center gap-2 text-current"
-              >
-                <LogOut size={16} />
-                Logout
-              </button>
-            </>
-          )}
+          ) : userRole === 'admin' ? (
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-2 text-current"
+            >
+              <LogOut size={16} />
+              Logout
+            </button>
+          ) : null}
         </div>
 
         {/* MOBILE BUTTON */}
