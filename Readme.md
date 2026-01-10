@@ -1,10 +1,12 @@
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE) [![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=white)](https://reactjs.org) [![Vite](https://img.shields.io/badge/Vite-%5E5-646cff?logo=vite&logoColor=white)](https://vitejs.dev) [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.1-38B2AC?logo=tailwindcss&logoColor=white)](https://tailwindcss.com) [![Node.js](https://img.shields.io/badge/Node.js-18-339933?logo=node.js&logoColor=white)](https://nodejs.org) [![Express](https://img.shields.io/badge/Express-5-000000?logo=express&logoColor=white)](https://expressjs.com) [![Supabase](https://img.shields.io/badge/Supabase-2-00abff?logo=supabase&logoColor=white)](https://supabase.com) [![Postgres](https://img.shields.io/badge/Postgres-15-316192?logo=postgres&logoColor=white)](https://www.postgresql.org) [![Leaflet](https://img.shields.io/badge/Leaflet-1.9-4DBF00?logo=leaflet&logoColor=white)](https://leafletjs.com)
+
 # Campus Tour Assistant 🏫🗺️
 
 A lightweight Campus Tour Assistant with a React + Vite frontend and an Express backend using Supabase for data storage. It provides a searchable campus map, building details, an admin panel for managing buildings, and feedback collection.
 
 ---
 
-## 🚀 Features
+## Features
 - Browse campus buildings with search and category filters
 - Building details and Leaflet map integration
 - Admin UI for adding, editing, and deleting buildings
@@ -13,7 +15,7 @@ A lightweight Campus Tour Assistant with a React + Vite frontend and an Express 
 
 ---
 
-## 🧩 Tech Stack
+## Tech Stack
 - Frontend: React (Vite), Tailwind CSS, Leaflet, Axios
 - Backend: Node.js, Express
 - Database: Supabase (Postgres via `@supabase/supabase-js`)
@@ -22,7 +24,7 @@ A lightweight Campus Tour Assistant with a React + Vite frontend and an Express 
 
 ---
 
-## 📁 Project Structure (high level)
+## Project Structure (high level)
 - `Backend/` — Express API, models, controllers, uploads
 - `campus-tour-ui/` — Vite + React frontend
   - `src/components/` — UI components
@@ -31,7 +33,7 @@ A lightweight Campus Tour Assistant with a React + Vite frontend and an Express 
 
 ---
 
-## ⚙️ Prerequisites
+## Prerequisites
 - Node.js (14+)
 - npm (or yarn)
 - Supabase project (or Postgres compatible DB)
@@ -40,7 +42,7 @@ Ensure your Supabase instance has tables used by the app: `admins`, `buildings`,
 
 ---
 
-## 🔧 Environment variables
+## Environment variables
 Create a `.env` file in `Backend/` with at least:
 ```
 SUPABASE_URL=your_supabase_url
@@ -82,7 +84,7 @@ npm run lint    # run eslint (dev)
 
 ---
 
-## 🔌 API Reference (quick with examples)
+## API Reference (quick with examples)
 
 Base URL: `http://localhost:3000`
 
@@ -124,7 +126,7 @@ Feedback
 
 ---
 
-## 🧩 Schema notes
+## Schema notes
 The app expects Supabase tables like `buildings`, `admins`, and `feedback`. Typical fields (examples):
 - buildings: `id`, `name`, `category`, `description`, `images`, `lat`, `lng`, `hours`, `location`, `tags` (array), `floorinfo` (json)
 - admins: `admin_id`, `username`, `email`, `password` (hashed)
@@ -132,26 +134,7 @@ The app expects Supabase tables like `buildings`, `admins`, and `feedback`. Typi
 
 ---
 
-## 📦 Deployment (brief)
-Frontend
-- Deploy to Vercel or Netlify using the `campus-tour-ui` build (`npm run build`). Make sure to set any necessary environment variables for API URL in the deployment settings (or use Vite `VITE_` env vars).
-
-Backend
-- Deploy to Render / Fly / Heroku / Railway. Ensure `SUPABASE_URL`, `SUPABASE_KEY`, and `JWT_SECRET` are configured in the environment. Also ensure your service allows static file serving so `/uploads` remains available (or migrate uploads to object storage for production).
-
-DNS/Proxy
-- If using a custom domain, route frontend to the hosting provider and point API to your backend host. Enable HTTPS.
-
----
-
-## 📝 Notes & Tips
-- Images uploaded via the backend are stored in `Backend/uploads/buildings` and served at `/uploads/`.
-- Admin UI is available in the frontend (`/admin`) — register an admin via `/api/user/register` then login to use admin features.
-- To change the backend base URL in the frontend, update `url` in `campus-tour-ui/src/context/StoreContext.jsx` or refactor to use env vars.
-
----
-
-## 🤝 Contributing
+##  Contributing
 See `CONTRIBUTING.md` for contribution guidelines.
 
 ---
