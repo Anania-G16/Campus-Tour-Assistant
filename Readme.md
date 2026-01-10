@@ -1,6 +1,6 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE) [![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=white)](https://reactjs.org) [![Vite](https://img.shields.io/badge/Vite-%5E5-646cff?logo=vite&logoColor=white)](https://vitejs.dev) [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.1-38B2AC?logo=tailwindcss&logoColor=white)](https://tailwindcss.com) [![Node.js](https://img.shields.io/badge/Node.js-18-339933?logo=node.js&logoColor=white)](https://nodejs.org) [![Express](https://img.shields.io/badge/Express-5-000000?logo=express&logoColor=white)](https://expressjs.com) [![Supabase](https://img.shields.io/badge/Supabase-2-00abff?logo=supabase&logoColor=white)](https://supabase.com) [![Postgres](https://img.shields.io/badge/Postgres-15-316192?logo=postgres&logoColor=white)](https://www.postgresql.org) [![Leaflet](https://img.shields.io/badge/Leaflet-1.9-4DBF00?logo=leaflet&logoColor=white)](https://leafletjs.com)
 
-# Campus Tour Assistant 🏫🗺️
+# Campus Tour Assistant 
 
 A lightweight Campus Tour Assistant with a React + Vite frontend and an Express backend using Supabase for data storage. It provides a searchable campus map, building details, an admin panel for managing buildings, and feedback collection.
 
@@ -55,7 +55,7 @@ PORT=3000   # optional
 
 ---
 
-## 🛠️ Setup & Run
+##  Setup & Run
 
 Backend
 ```bash
