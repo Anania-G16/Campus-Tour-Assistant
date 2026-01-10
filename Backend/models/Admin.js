@@ -7,7 +7,7 @@ const createAdmin = async({ username, email, password }) => {
         .from('admins')
         .insert([{ username, email, password: hashedPassword }])
         .select()
-        .single();
+
 
     if (error) throw error;
     return data;
@@ -18,7 +18,7 @@ const getAdminByEmail = async(email) => {
         .from('admins')
         .select('*')
         .eq('email', email)
-        .single();
+
 
     if (error) return null;
     return data;

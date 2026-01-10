@@ -2,10 +2,10 @@ const Joi = require("joi");
 
 const buildingSchema = Joi.object({
     name: Joi.string().max(100).required(),
-    latitude: Joi.number().required(),
-    longitude: Joi.number().required(),
+    lat: Joi.number().required(),
+    lng: Joi.number().required(),
     category: Joi.string().max(50).optional(),
-    image: Joi.string().required(),
+    images: Joi.string().required(),
 });
 
 const validateBuilding = (req, res, next) => {

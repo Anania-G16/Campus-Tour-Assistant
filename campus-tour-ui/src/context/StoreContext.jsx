@@ -9,7 +9,7 @@ export const ContextProvider = ({ children }) => {
   const url = "http://localhost:3000";
   const navigate = useNavigate();
 
-  const [locations, setLocations] = useState();
+  const [locations, setLocations] = useState([]);
   const [token, setToken] = useState(localStorage.getItem("token") || null);
   const [isAuthenticated, setIsAuthenticated] = useState(!!token);
   const [darkMode, setDarkMode] = useState(() => {
@@ -58,7 +58,7 @@ export const ContextProvider = ({ children }) => {
           Authorization: `Bearer ${token}`,
         },
       });
-console.log(response.data);
+      console.log(response.data);
       if (response.data.success) {
         setLocations(response.data.buildings);
       } else {
@@ -70,13 +70,17 @@ console.log(response.data);
     }
   };
   useEffect(() => {
-  getBuildings();
-}, []);
+    getBuildings();
+  }, []);
+   useEffect(() => {
+    console.log(locations);
+  }, []);
 
   return (
     <storeContext.Provider
       value={{
-        token,url,
+        token,
+        url,
         isAuthenticated,
         setIsAuthenticated,
         adminLogin,
@@ -84,7 +88,8 @@ console.log(response.data);
         darkMode,
         toggleDarkMode,
         setToken,
-        getBuildings,locations
+        getBuildings,
+        locations,
       }}
     >
       {children}

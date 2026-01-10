@@ -13,7 +13,7 @@ const buildingRouter = express.Router();
 
 buildingRouter.get('/', getBuildings);
 buildingRouter.get('/:id', getBuilding);
-buildingRouter.post('/', validateBuilding, upload.single('images'), createBuilding);
+buildingRouter.post('/', upload.single('images'), createBuilding);
 buildingRouter.put('/:id', upload.single('images'), editBuilding);
 buildingRouter.delete('/:id', removeBuilding);
 

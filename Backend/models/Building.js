@@ -1,13 +1,11 @@
-const supabase = require('../db/connector.js')
-
-
+const supabase = require("../db/connector.js");
 
 const getBuildingById = async(id) => {
     const { data, error } = await supabase
-        .from('buildings')
-        .select('*')
-        .eq('building_id', id)
-        .single();
+        .from("buildings")
+        .select("*")
+        .eq("id", id)
+
 
     if (error) return null;
     return data;
@@ -15,10 +13,10 @@ const getBuildingById = async(id) => {
 
 const addBuilding = async(building) => {
     const { data, error } = await supabase
-        .from('buildings')
+        .from("buildings")
         .insert([building])
         .select()
-        .single();
+
 
     if (error) throw error;
     return data;
@@ -26,11 +24,11 @@ const addBuilding = async(building) => {
 
 const updateBuilding = async(id, building) => {
     const { data, error } = await supabase
-        .from('buildings')
+        .from("buildings")
         .update(building)
-        .eq('building_id', id)
+        .eq("id", id)
         .select()
-        .single();
+
 
     if (error) throw error;
     return data;
@@ -38,21 +36,20 @@ const updateBuilding = async(id, building) => {
 
 const deleteBuilding = async(id) => {
     const { data, error } = await supabase
-        .from('buildings')
+        .from("buildings")
         .delete()
-        .eq('building_id', id)
+        .eq("id", id)
         .select()
-        .single();
+
 
     if (error) throw error;
     return data;
 };
-
 
 module.exports = {
     addBuilding,
     updateBuilding,
     // getAllBuildings,
     deleteBuilding,
-    getBuildingById
-}
+    getBuildingById,
+};

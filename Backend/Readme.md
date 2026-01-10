@@ -3,6 +3,7 @@
 ---
 
 ## Table of Contents
+
 1. [Project Overview](#project-overview)
 2. [Database Design](#database-design)
    - [Tables](#tables)
@@ -21,11 +22,12 @@
 ---
 
 ## Project Overview
-This backend is built with **Node.js** and **PostgreSQL (Supabase)** to provide database management, admin authentication, and CRUD operations for a Campus Tour Assistant web application.  
 
-- **Database:** PostgreSQL hosted on Supabase  
-- **Backend:** Node.js  
-- **Authentication:** JWT + bcrypt  
+This backend is built with **Node.js** and **PostgreSQL (Supabase)** to provide database management, admin authentication, and CRUD operations for a Campus Tour Assistant web application.
+
+- **Database:** PostgreSQL hosted on Supabase
+- **Backend:** Node.js
+- **Authentication:** JWT + bcrypt
 
 ---
 
@@ -34,33 +36,33 @@ This backend is built with **Node.js** and **PostgreSQL (Supabase)** to provide 
 ### Tables
 
 **1. admins**
-| Field       | Type        | Constraints       |
+| Field | Type | Constraints |
 |------------|------------|-----------------|
-| admin_id   | SERIAL     | PRIMARY KEY     |
-| username   | VARCHAR(50)| UNIQUE, NOT NULL|
-| email      | VARCHAR(100)| UNIQUE, NOT NULL|
-| password   | TEXT       | NOT NULL        |
-| created_at | TIMESTAMP  | DEFAULT NOW()   |
+| admin_id | SERIAL | PRIMARY KEY |
+| username | VARCHAR(50)| UNIQUE, NOT NULL|
+| email | VARCHAR(100)| UNIQUE, NOT NULL|
+| password | TEXT | NOT NULL |
+| created_at | TIMESTAMP | DEFAULT NOW() |
 
 **2. buildings**
-| Field        | Type        | Constraints       |
+| Field | Type | Constraints |
 |-------------|------------|-----------------|
-| building_id | SERIAL     | PRIMARY KEY     |
-| name        | VARCHAR(100)| UNIQUE, NOT NULL|
-| lat         | DECIMAL(10,6)| NOT NULL      |
-| long        | DECIMAL(10,6)| NOT NULL      |
-| image       | TEXT       | NULL            |
-| description | TEXT       | NULL            |
-| category    | VARCHAR(50)| NULL            |
-| floor_info  | JSONB      | NULL            |
+| id | SERIAL | PRIMARY KEY |
+| name | VARCHAR(100)| UNIQUE, NOT NULL|
+| lat | DECIMAL(10,6)| NOT NULL |
+| long | DECIMAL(10,6)| NOT NULL |
+| image | TEXT | NULL |
+| description | TEXT | NULL |
+| category | VARCHAR(50)| NULL |
+| floor_info | JSONB | NULL |
 
 **3. feedback**
-| Field          | Type      | Constraints       |
+| Field | Type | Constraints |
 |---------------|-----------|-----------------|
-| feedback_id    | SERIAL   | PRIMARY KEY     |
-| subject        | VARCHAR(100)| NOT NULL      |
-| comment        | TEXT     | NOT NULL        |
-| date_submitted | TIMESTAMP| DEFAULT NOW()   |
+| feedback_id | SERIAL | PRIMARY KEY |
+| subject | VARCHAR(100)| NOT NULL |
+| comment | TEXT | NOT NULL |
+| date_submitted | TIMESTAMP| DEFAULT NOW() |
 
 ---
 
@@ -120,8 +122,8 @@ This backend is built with **Node.js** and **PostgreSQL (Supabase)** to provide 
   Only authenticated admins with a valid JWT can **create, update, or delete** data in the database.  
   This protects sensitive endpoints from unauthorized access.
 
-
 ### Environment Variables (.env)
+
 - SUPABASE_URL=https://<project-id>.supabase.co
 - SUPABASE_KEY= <your-service-key>
 - JWT_SECRET = your_secret_key

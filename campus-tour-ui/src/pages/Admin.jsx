@@ -6,28 +6,29 @@ import { locations } from "../data/locations";
 const DEFAULT_IMAGE = "/map_assets/upload_placeholder.png";
 
 export default function Admin() {
-  const [buildings, setBuildings] = useState(locations);
+  const [buildings, setBuildings] = useState([]);
+  // locations
   const [editingBuilding, setEditingBuilding] = useState(null);
   const [formData, setFormData] = useState({
     name: "",
     category: "",
     description: "",
-    floors: 1,
+    floorinfo: 1,
     rooms: 1,
     depts: "",
     images: "",
     lat: "",
     lng: "",
-    manualPath: "",
+
     hours: "",
-    locations: "",
+    location: "",
     tags: "",
   });
 
   // Fetch all buildings from backend
   const fetchBuildings = async () => {
     try {
-      const res = await axios.get("http://localhost:3000/api/buildings");
+      const res = await axios.get("http://localhost:3000/api/building");
       if (res.data.success) setBuildings(res.data.buildings);
     } catch (err) {
       console.error(err);
@@ -45,13 +46,13 @@ export default function Admin() {
       name: building.name,
       category: building.category,
       description: building.description,
-      floors: building.floorInfo?.floors || 1,
-      rooms: building.floorInfo?.rooms || 1,
-      depts: building.floorInfo?.depts?.join(", ") || "",
-      images: building.images?.join(", ") || "",
+      floors: building.floorinfo?.floors || 1,
+      rooms: building.floorinfo?.rooms || 1,
+      depts: building.floorinfo?.depts?.join(", ") || "",
+      images: building.images || "",
       lat: building.lat || building.coordinates?.[0] || "",
       lng: building.lng || building.coordinates?.[1] || "",
-      manualPath: building.manualPath?.map((p) => p.join(",")).join(";") || "",
+    
       hours: building.hours || "",
       location: building.location || "",
       tags: building.tags?.join(", ") || "",
@@ -68,32 +69,32 @@ export default function Admin() {
       name: formData.name,
       category: formData.category,
       description: formData.description,
-      floorInfo: {
+      floorinfo: {
         floors: parseInt(formData.floors),
         rooms: parseInt(formData.rooms),
         depts: formData.depts.split(",").map((d) => d.trim()),
       },
-      images: formData.images ? [formData.images] : [],
+      images: formData.images ,
       lat: parseFloat(formData.lat),
       lng: parseFloat(formData.lng),
-      manualPath: formData.manualPath
-        .split(";")
-        .map((coord) => coord.split(",").map(Number)),
+  
       hours: formData.hours,
       location: formData.location,
       tags: formData.tags.split(",").map((t) => t.trim()),
     };
 
+    console.log(buildingData);
+
     try {
       if (editingBuilding) {
         // Update building
         await axios.put(
-          `http://localhost:3000/api/buildings/${editingBuilding.id}`,
+          `http://localhost:3000/api/building/${editingBuilding.id}`,
           buildingData
         );
       } else {
         // Add new building
-        await axios.post("http://localhost:3000/api/buildings", buildingData);
+        await axios.post("http://localhost:3000/api/building", buildingData);
       }
       setEditingBuilding(null);
       setFormData({
@@ -106,7 +107,7 @@ export default function Admin() {
         images: "",
         lat: "",
         lng: "",
-        manualPath: "",
+    
         hours: "",
         location: "",
         tags: "",
@@ -121,7 +122,7 @@ export default function Admin() {
   const handleDelete = async (id) => {
     if (!confirm("Are you sure you want to delete this building?")) return;
     try {
-      await axios.delete(`http://localhost:3000/api/buildings/${id}`);
+      await axios.delete(`http://localhost:3000/api/building/${id}`);
       fetchBuildings();
     } catch (err) {
       console.error(err);
@@ -149,7 +150,7 @@ export default function Admin() {
                   images: "",
                   lat: "",
                   lng: "",
-                  manualPath: "",
+              
                   hours: "",
                   location: "",
                   tags: "",
@@ -293,14 +294,14 @@ export default function Admin() {
                 }
               />
             </div>
-            <textarea
+            {/* <textarea
               className="w-full p-2 border rounded h-20"
               placeholder="Manual Path (lat,lng;lat,lng;...)"
-              value={formData.manualPath}
+              value={formData.manualpath}
               onChange={(e) =>
-                setFormData({ ...formData, manualPath: e.target.value })
+                setFormData({ ...formData, manualpath: e.target.value })
               }
-            />
+            /> */}
             <input
               className="w-full p-2 border rounded"
               placeholder="Hours"
