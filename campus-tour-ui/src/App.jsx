@@ -12,28 +12,23 @@ import Admin from "./pages/Admin";
 import AdminLogin from "./pages/AdminLogin";
 import AdminFeedbackReview from "./pages/AdminFeedbackReview";
 import Feedback from "./pages/FeedBack";
-import { Toaster } from "react-hot-toast"; // Brought over from HEAD for notifications
+import { Toaster } from "react-hot-toast";
 import { storeContext } from "./context/storeContext";
 
 function App() {
   const { isAuthenticated, setIsAuthenticated } = useContext(storeContext);
-  // const [userRole, setUserRole] = useState(null);
   const { darkMode } = useTheme();
 
-  // SHARED STATES FOR THE MAP PAGE
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [onBuildingSelect, setOnBuildingSelect] = useState(null);
 
   return (
-    <Layout
-     
-    >
+    <Layout>
       <Toaster position="top-right" />
       <Routes>
         <Route path="/" element={<Home />} />
 
-        {/* SEARCH ROUTE (Interactive Map) */}
         <Route
           path="/search"
           element={
@@ -60,19 +55,15 @@ function App() {
             isAuthenticated ? (
               <Navigate to="/admin" replace />
             ) : (
-              <AdminLogin
-                setIsAuthenticated={setIsAuthenticated}
-              
-              />
+              <AdminLogin setIsAuthenticated={setIsAuthenticated} />
             )
           }
         />
 
-        {/* Protected Admin Routes */}
         <Route
           path="/admin"
           element={
-            isAuthenticated  ? (
+            isAuthenticated ? (
               <Admin />
             ) : (
               <Navigate to="/login" replace />

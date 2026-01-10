@@ -55,7 +55,7 @@ function MapHandler({ bounds, mapRef, onMapClick }) {
     return null;
 }
 
-export default function CampusMapContainer({ searchQuery, selectedCategory, onBuildingSelect }) {
+export default function CampusMapContainer({ searchQuery, selectedCategory, onBuildingSelect, isDarkMode }) {
     const [selectedBuilding, setSelectedBuilding] = useState(null);
     const [userLoc, setUserLoc] = useState({ lat: 9.04093889954351, lng: 38.76219059547216 });
     const [locationStatus, setLocationStatus] = useState("Initializing GPS...");
@@ -137,7 +137,7 @@ export default function CampusMapContainer({ searchQuery, selectedCategory, onBu
             const fullPath = [[userLoc.lat, userLoc.lng], ...pathCoords];
 
             const line = L.polyline(fullPath, {
-                color: '#0070f3',
+                color: isDarkMode ? '#3b82f6' : '#0070f3',
                 weight: 5,
                 opacity: 0.8,
                 dashArray: '10, 5', 
@@ -188,7 +188,13 @@ export default function CampusMapContainer({ searchQuery, selectedCategory, onBu
             <div className="flex-grow h-full w-full relative">
                 <LeafletMap center={[userLoc.lat, userLoc.lng]} zoom={18} zoomControl={false} style={{ height: "100%", width: "100%" }}>
                     <MapHandler bounds={CAMPUS_INFO?.bounds} mapRef={mapRef} onMapClick={() => {}} />
-                    <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+                    <TileLayer 
+                        url={isDarkMode 
+                            ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+                            : "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                        }
+                        attribution='&copy; OpenStreetMap contributors &copy; CARTO'
+                    />
                     
                     <Marker position={[userLoc.lat, userLoc.lng]} icon={L.divIcon({
                         className: 'user-location-icon',
@@ -210,18 +216,26 @@ export default function CampusMapContainer({ searchQuery, selectedCategory, onBu
                     ))}
                 </LeafletMap>
                 <div className="absolute bottom-6 left-6 z-[500] flex flex-col items-start gap-2">
-                    <span className="bg-white/90 backdrop-blur text-[10px] px-2 py-1 rounded shadow-sm font-mono">{locationStatus}</span>
-                    <button onClick={handleRecenter} className="bg-white p-3 rounded-full shadow-xl border hover:bg-gray-50 active:scale-95 transition-all">
+                    {/* Status Label */}
+                    <span className={`${isDarkMode ? 'bg-slate-800 text-slate-300 border-slate-700' : 'bg-white/90 text-black border-gray-200'} backdrop-blur text-[10px] px-2 py-1 rounded shadow-sm font-mono border`}>
+                        {locationStatus}
+                    </span>
+                    
+                    {/* Recenter Button */}
+                    <button 
+                        onClick={handleRecenter} 
+                        className={`${isDarkMode ? 'bg-slate-800 border-slate-700 text-slate-800' : 'bg-white border-gray-200 text-slate-800 hover:bg-gray-50'} p-3 rounded-full shadow-xl border active:scale-95 transition-all flex items-center`}
+                    >
                         📍 <span className="text-xs font-bold ml-1 hidden sm:inline">Recenter</span>
                     </button>
                 </div>
             </div>
             {selectedBuilding && (
-                <aside className="fixed bottom-0 left-0 right-0 z-[1000] bg-white rounded-t-3xl shadow-[0_-10px_25px_rgba(0,0,0,0.1)] lg:relative lg:w-96 lg:h-full lg:rounded-none lg:border-l">
-                    <div className="flex items-center justify-between p-4 border-b">
-                        <div className="w-12 h-1 bg-gray-200 rounded-full lg:hidden absolute top-2 left-1/2 -translate-x-1/2" />
-                        <h3 className="font-bold text-gray-800">Building Details</h3>
-                        <button onClick={() => setSelectedBuilding(null)} className="p-1 hover:bg-gray-100 rounded-full transition-colors"><X className="h-6 w-6 text-gray-500" /></button>
+                <aside className={`fixed bottom-0 left-0 right-0 z-[1000] ${isDarkMode ? 'bg-slate-900 border-slate-700 text-white' : 'bg-white border-l text-black'} rounded-t-3xl shadow-[0_-10px_25px_rgba(0,0,0,0.1)] lg:relative lg:w-96 lg:h-full lg:rounded-none lg:border-l`}>
+                    <div className={`flex items-center justify-between p-4 border-b ${isDarkMode ? 'border-slate-700' : 'border-gray-200'}`}>
+                        <div className={`w-12 h-1 ${isDarkMode ? 'bg-slate-700' : 'bg-gray-200'} rounded-full lg:hidden absolute top-2 left-1/2 -translate-x-1/2`} />
+                        <h3 className="font-bold">Building Details</h3>
+                        <button onClick={() => setSelectedBuilding(null)} className="p-1 hover:bg-gray-100/10 rounded-full transition-colors"><X className="h-6 w-6 text-gray-500" /></button>
                     </div>
                     <div className="max-h-[50vh] lg:max-h-[calc(100vh-120px)] overflow-y-auto">
                         <BuildingDetailsPanel building={selectedBuilding} />
