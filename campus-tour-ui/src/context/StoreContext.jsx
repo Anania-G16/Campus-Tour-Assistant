@@ -76,7 +76,7 @@ console.log(response.data);
   return (
     <storeContext.Provider
       value={{
-        token,
+        token,url,
         isAuthenticated,
         setIsAuthenticated,
         adminLogin,

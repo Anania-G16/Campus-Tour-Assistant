@@ -60,9 +60,9 @@ const getBuilding = async(req, res) => {
 // CREATE building
 const createBuilding = async(req, res) => {
     try {
-        const buildingData = req.body;
+        const buildingData = req.body;;
         if (req.file) {
-            buildingData.image = req.file.filename;
+            buildingData.images = req.file.filename;
             //   return res
             //     .status(404)
             //     .json({
@@ -71,6 +71,7 @@ const createBuilding = async(req, res) => {
             //       message: "image is required",
             //     });
         }
+        // console.log(buildingData);
 
         const newBuilding = await addBuilding(buildingData);
         res.status(201).json({ success: true, newBuilding });

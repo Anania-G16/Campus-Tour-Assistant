@@ -1,27 +1,38 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Send, Star } from "lucide-react";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { storeContext } from "../context/storeContext";
 
 export default function Feedback() {
+
+  const {url}=useContext(storeContext)
   const [rating, setRating] = useState(0);
   const [submitted, setSubmitted] = useState(false);
   const [data, setData] = useState({
-    Feedback: "",
-    email: "",
+    subject: "",
+    comment: "",
   });
 
-  const updateData = (e) => {
-    e.preventDefault();
-    const { name, value } = e.target;
 
-    setData((pre) => ({ ...pre, [name]: value }));
+  useEffect(()=>{
+    console.log(url);
+  },[])
+
+  const updateData = (e) => {
+    // e.preventDefault();
+    const { name, value } = e.target;
+    setData(pre => ({ ...pre, [name]: value }));
+    console.log(data);
   };
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
       const response = await axios.post(`${url}/api/feedback`, data);
+      console.log(response);
       if (response.data.success) {
         setSubmitted(true);
       } else {
@@ -85,9 +96,9 @@ export default function Feedback() {
               </label>
               <textarea
                 required
-                onChange={updateData}
-                name="feedback"
-                value={data.Feedback}
+                onChange={(e)=>updateData(e)}
+                name="comment"
+                value={data.comment}
                 rows={4}
                 placeholder="Tell us what worked well or what needs improvement..."
                 className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-primary-500 focus:outline-none"
@@ -100,9 +111,9 @@ export default function Feedback() {
                 Email (optional)
               </label>
               <input
-                value={data.email}
-                name="email"
-                onChange={updateData}
+                value={data.subject}
+                name="subject"
+                onChange={(e)=>updateData(e)}
                 type="email"
                 placeholder="you@example.com"
                 className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-primary-500 focus:outline-none"
