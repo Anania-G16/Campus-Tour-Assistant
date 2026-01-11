@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useTheme } from '../context/ThemeContext';
 
 function escapeHtml(str) {
@@ -16,6 +16,8 @@ const LayersIcon = () => (<svg xmlns="http://www.w3.org/2000/svg" className="h-5
 
 export default function BuildingDetailsPanel({ building }) {
   const { darkMode } = useTheme();
+
+
 
   if (!building) {
     return (

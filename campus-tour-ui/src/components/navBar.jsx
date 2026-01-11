@@ -21,6 +21,7 @@ const { isAuthenticated, setIsAuthenticated }=useContext(storeContext);
     { name: 'Feedback', path: '/feedback' },
   ];
 
+
   const adminLinks = [
     { name: 'Map', path: '/search' },
     { name: 'Categories', path: '/categories' },

@@ -26,6 +26,8 @@ export default function Categories() {
 
   const {getBuildings,locations}=useContext(storeContext)
 
+  const url="http://localhost:3000"
+
   useEffect(()=>{
     getBuildings()
   },[])
@@ -87,12 +89,12 @@ export default function Categories() {
             >
               <div className={`relative h-48 ${darkMode ? 'bg-slate-700' : 'bg-gray-100'}`}>
                 <img
-                  src={location.images?.[0] || location.image}
+                  src={`${url}/uploads/buildings/${location.images}`}
                   alt={location.name}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform"
                 />
               </div>
-
+{console.log(`${url}/uploads/buildings/${location.images}`)}
               <div className="p-5">
                 <h3 className={`text-lg font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>
                   {location.name}
