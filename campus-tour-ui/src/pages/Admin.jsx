@@ -236,9 +236,9 @@ export default function Admin() {
               <option value="">Select Category</option>
               <option value="Academic">Academic</option>
               <option value="Libraries">Libraries</option>
-              <option value="Dining">Sports</option>
-              <option value="Dining">Parking</option>
-              <option value="Dining">Outdoor</option>
+              <option value="Sports">Sports</option>
+              <option value="Parking">Parking</option>
+              <option value="Outdoor">Outdoor</option>
             </select>
             <div className="flex gap-2">
               <input
