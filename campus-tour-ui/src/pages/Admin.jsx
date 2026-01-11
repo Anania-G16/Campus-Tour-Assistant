@@ -13,10 +13,9 @@ export default function Admin() {
     name: "",
     category: "",
     description: "",
-    floorinfo: 1,
+    floors: 1,
     rooms: 1,
     depts: "",
-    images: "",
     lat: "",
     lng: "",
     nearestNode: "",
@@ -24,6 +23,9 @@ export default function Admin() {
     location: "",
     tags: "",
   });
+
+  const [imageFile, setImageFile] = useState(null); // REAL FILE
+  const [imagePreview, setImagePreview] = useState(""); // BLOB URL
 
   // Fetch all buildings from backend
   const fetchBuildings = async () => {
@@ -62,58 +64,54 @@ export default function Admin() {
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-    if (file) setFormData({ ...formData, images: URL.createObjectURL(file) });
+    if (!file) return;
+
+    setImageFile(file); // real file
+    setImagePreview(URL.createObjectURL(file)); // preview only
   };
 
   const handleSave = async () => {
-    const buildingData = {
-      name: formData.name,
-      category: formData.category,
-      description: formData.description,
-      nearestNode: formData.nearestNode,
-      floorinfo: {
-        floors: parseInt(formData.floors),
-        rooms: parseInt(formData.rooms),
+    const data = new FormData();
+
+    data.append("name", formData.name);
+    data.append("category", formData.category);
+    data.append("description", formData.description);
+    data.append("nearestNode", formData.nearestNode);
+    data.append("lat", formData.lat);
+    data.append("lng", formData.lng);
+    data.append("hours", formData.hours);
+    data.append("location", formData.location);
+    data.append("tags", formData.tags);
+
+    data.append(
+      "floorinfo",
+      JSON.stringify({
+        floors: Number(formData.floors),
+        rooms: Number(formData.rooms),
         depts: formData.depts.split(",").map((d) => d.trim()),
-      },
-      images: formData.images,
-      lat: parseFloat(formData.lat),
-      lng: parseFloat(formData.lng),
+      })
+    );
 
-      hours: formData.hours,
-      location: formData.location,
-      tags: formData.tags.split(",").map((t) => t.trim()),
-    };
-
-    console.log(buildingData);
+    if (imageFile) {
+      data.append("images", imageFile); // 🔥 REAL FILE
+    }
 
     try {
       if (editingBuilding) {
-        // Update building
         await axios.put(
           `http://localhost:3000/api/building/${editingBuilding.id}`,
-          buildingData
+          data,
+          { headers: { "Content-Type": "multipart/form-data" } }
         );
       } else {
-        // Add new building
-        await axios.post("http://localhost:3000/api/building", buildingData);
+        await axios.post("http://localhost:3000/api/building", data, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
       }
+
       setEditingBuilding(null);
-      setFormData({
-        name: "",
-        category: "",
-        description: "",
-        floors: 1,
-        rooms: 1,
-        depts: "",
-        images: "",
-        lat: "",
-        lng: "",
-        nearstNode: "",
-        hours: "",
-        location: "",
-        tags: "",
-      });
+      setImageFile(null);
+      setImagePreview("");
       fetchBuildings();
     } catch (err) {
       console.error(err);
@@ -205,7 +203,7 @@ export default function Admin() {
             {/* Image preview */}
             <div className="w-full h-48 border rounded-lg flex items-center justify-center overflow-hidden bg-gray-100">
               <img
-                src={formData.images || DEFAULT_IMAGE}
+                src={imagePreview || editingBuilding?.images || DEFAULT_IMAGE}
                 alt="Building"
                 className="object-cover w-full h-full"
               />
@@ -312,7 +310,7 @@ export default function Admin() {
                 setFormData({ ...formData, hours: e.target.value })
               }
             />
-              <input
+            <input
               className="w-full p-2 border rounded"
               placeholder="nearstNode"
               value={formData.nearestNode}

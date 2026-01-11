@@ -1,6 +1,8 @@
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Building2, MapPin, Clock, BookOpen, Dumbbell, UtensilsCrossed, Home, Stethoscope, Car, Trees } from 'lucide-react';
-import { locations } from '../data/locations';
+
+import { useContext, useEffect } from 'react';
+import { storeContext } from '../context/storeContext';
 
 const iconMap = {
   'Libraries': BookOpen,
@@ -14,6 +16,12 @@ const iconMap = {
 };
 
 export default function BuildingDetails() {
+
+  const {getBuildings,locations,url}=useContext(storeContext)
+ 
+   useEffect(()=>{
+     getBuildings()
+   },[])
   const { id } = useParams();
   const location = locations.find(loc => loc.id === parseInt(id));
 
@@ -55,7 +63,7 @@ export default function BuildingDetails() {
           <div className="lg:w-2/3">
             <div className="rounded-lg overflow-hidden shadow-lg">
               <img
-                src={location.images[0]}
+                src={`${url}/uploads/buildings/${location.images}`}
                 alt={location.name}
                 className="w-full h-[400px] lg:h-[500px] object-cover"
               />
