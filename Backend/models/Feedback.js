@@ -1,8 +1,8 @@
 const supabase = require('../db/connector.js')
-const addFeedback = async({ subject, comment }) => {
+const addFeedback = async({ email, subject, comment }) => {
     const { data, error } = await supabase
         .from('feedback')
-        .insert([{ subject, comment }])
+        .insert([{ email, subject, comment }])
         .select()
 
 
@@ -22,7 +22,7 @@ const getFeedbackById = async(id) => {
     const { data, error } = await supabase
         .from('feedback')
         .select('*')
-        .eq('feedback_id', id)
+        .eq('id', id)
 
 
     if (error) return null;
@@ -32,7 +32,7 @@ const deleteFeedback = async(id) => {
     const { data, error } = await supabase
         .from('feedback')
         .delete()
-        .eq('feedback_id', id)
+        .eq('id', id)
         .select()
 
 
