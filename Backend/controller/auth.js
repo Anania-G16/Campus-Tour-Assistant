@@ -5,6 +5,8 @@ const { getAdminByEmail, verifyPassword, createAdmin } = require('../models/Admi
 
 const loginAdmin = async(req, res) => {
     try {
+
+
         const { email, password } = req.body;
         // console.log(req.body);
         const admin = await getAdminByEmail(email);

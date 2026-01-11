@@ -17,7 +17,7 @@ const getAdminByEmail = async(email) => {
     const { data, error } = await supabase
         .from('admins')
         .select('*')
-        .eq('email', email)
+        .eq('email', email).single()
 
 
     if (error) return null;
