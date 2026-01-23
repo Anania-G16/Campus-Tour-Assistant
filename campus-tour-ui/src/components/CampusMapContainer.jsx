@@ -198,8 +198,11 @@ export default function CampusMapContainer({
     const startNode = getNearestNode(userLoc.lat, userLoc.lng);
     let shortestPath = null;
 
+    
     const entranceList = Array.isArray(building.nearestNode)
-      ? building.nearestNode
+    ? building.nearestNode
+    : typeof building.nearestNode === 'string' 
+      ? building.nearestNode.split(',').map(s => s.trim()) 
       : [building.nearestNode];
 
     entranceList.forEach((nodeId) => {
@@ -274,12 +277,14 @@ export default function CampusMapContainer({
   return (
     <div className="w-full h-full relative flex flex-col lg:flex-row">
       <div className="flex-grow h-full w-full relative">
-        <LeafletMap
-          center={[userLoc.lat, userLoc.lng]}
-          zoom={18}
-          zoomControl={false}
-          style={{ height: "100%", width: "100%" }}
-        >
+      <LeafletMap
+        center={[userLoc.lat, userLoc.lng]}
+        zoom={18}
+        minZoom={16}       
+        maxZoom={21}        
+        zoomControl={false}
+        style={{ height: "100%", width: "100%" }}
+      >
           <MapHandler
             bounds={CAMPUS_INFO?.bounds}
             mapRef={mapRef}
@@ -292,6 +297,8 @@ export default function CampusMapContainer({
                 : "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             }
             attribution="&copy; OpenStreetMap contributors &copy; CARTO"
+            maxZoom={21}      
+            maxNativeZoom={19}  
           />
 
           <Marker
