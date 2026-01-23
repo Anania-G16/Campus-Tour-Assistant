@@ -22,7 +22,7 @@ export default function About() {
     <div className={`min-h-screen ${darkMode ? 'bg-slate-950' : 'bg-white'}`}>
       
       {/* --- HERO SECTION --- */}
-      <section className="relative pt-20 pb-10 overflow-hidden text-center">
+      <section className="relative pt-16 md:pt-20 pb-8 md:pb-10 overflow-hidden text-center">
         <motion.div 
           initial="hidden"
           whileInView="visible"
@@ -30,10 +30,10 @@ export default function About() {
           variants={fadeInUp}
           className="max-w-7xl mx-auto px-6 relative z-10"
         >
-          <h1 className={`text-5xl md:text-6xl font-black tracking-tight mb-6 ${darkMode ? 'text-white' : 'text-slate-900'}`}>
+          <h1 className={`text-3xl md:text-6xl font-black tracking-tight mb-4 md:mb-6 ${darkMode ? 'text-white' : 'text-slate-900'}`}>
             About Campus <span className="text-[#646cff]">Tour Assistant</span>
           </h1>
-          <p className={`text-lg max-w-2xl mx-auto leading-relaxed opacity-80 ${darkMode ? 'text-slate-400' : 'text-slate-600'}`}>
+          <p className={`text-base md:text-lg max-w-2xl mx-auto leading-relaxed opacity-80 ${darkMode ? 'text-slate-400' : 'text-slate-600'}`}>
             Your comprehensive guide to navigating and exploring our campus. 
             Discover facilities and services available at your fingertips.
           </p>
@@ -41,18 +41,19 @@ export default function About() {
       </section>
 
       {/* --- MISSION SECTION --- */}
-      <section className="py-12 relative overflow-hidden">
+      <section className="py-8 md:py-12 relative overflow-hidden">
         <div className="max-w-6xl mx-auto px-6 relative z-10">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12 items-center">
             <motion.div 
               initial={{ opacity: 0, x: -50 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: false, amount: 0.3 }}
               transition={{ duration: 0.7 }}
+              className="text-center md:text-left"
             >
-              <h2 className={`text-4xl font-black mb-4 ${darkMode ? 'text-white' : 'text-slate-900'}`}>Our Mission</h2>
-              <div className="h-1.5 w-16 bg-[#646cff] rounded-full mb-6" />
-              <div className="space-y-4 text-base font-medium">
+              <h2 className={`text-3xl md:text-4xl font-black mb-4 ${darkMode ? 'text-white' : 'text-slate-900'}`}>Our Mission</h2>
+              <div className="h-1.5 w-16 bg-[#646cff] rounded-full mb-6 mx-auto md:mx-0" />
+              <div className="space-y-4 text-sm md:text-base font-medium">
                 <p className={darkMode ? 'text-slate-200' : 'text-slate-700'}>
                   We believe that every student and visitor should navigate campus with confidence. 
                   Our mission is to provide an accessible platform that makes finding any location quick and easy.
@@ -72,11 +73,11 @@ export default function About() {
               className="relative group"
             >
               <div className={`relative rounded-3xl overflow-hidden transition-all duration-500 group-hover:-translate-y-2 group-hover:shadow-2xl border ${darkMode ? 'border-white/10' : 'border-slate-200'}`}>
-                <img src="https://images.unsplash.com/photo-1562774053-701939374585?w=800" alt="Campus" className="w-full h-[320px] object-cover" />
+                <img src="https://images.unsplash.com/photo-1562774053-701939374585?w=800" alt="Campus" className="w-full h-[250px] md:h-[320px] object-cover" />
                 <div className="absolute bottom-4 left-4">
-                  <div className={`backdrop-blur-xl p-4 rounded-xl border ${darkMode ? 'bg-slate-900/80 border-white/20' : 'bg-white/90 border-slate-200 shadow-lg'}`}>
-                    <div className="text-3xl font-black text-[#646cff]">15+</div>
-                    <div className={`text-[9px] font-black uppercase tracking-widest ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>Campus Locations</div>
+                  <div className={`backdrop-blur-xl p-3 md:p-4 rounded-xl border ${darkMode ? 'bg-slate-900/80 border-white/20' : 'bg-white/90 border-slate-200 shadow-lg'}`}>
+                    <div className="text-2xl md:text-3xl font-black text-[#646cff]">15+</div>
+                    <div className={`text-[8px] md:text-[9px] font-black uppercase tracking-widest ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>Campus Locations</div>
                   </div>
                 </div>
               </div>
@@ -86,17 +87,17 @@ export default function About() {
       </section>
 
       {/* --- PLATFORM UTILITY --- */}
-      <section className="py-12">
+      <section className="py-8 md:py-12">
         <div className="max-w-6xl mx-auto px-6">
           <motion.div 
             initial="hidden"
             whileInView="visible"
             viewport={{ once: false, amount: 0.3 }}
             variants={fadeInUp}
-            className="text-center mb-10"
+            className="text-center mb-8 md:mb-10"
           >
-            <h2 className={`text-3xl font-black mb-2 ${darkMode ? 'text-white' : 'text-slate-900'}`}>Platform Utility</h2>
-            <p className={`text-base opacity-70 ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>Designed for the 5 Kilo Campus community</p>
+            <h2 className={`text-2xl md:text-3xl font-black mb-2 ${darkMode ? 'text-white' : 'text-slate-900'}`}>Platform Utility</h2>
+            <p className={`text-sm md:text-base opacity-70 ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>Designed for the 5 Kilo Campus community</p>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
@@ -124,19 +125,19 @@ export default function About() {
       </section>
 
       {/* --- PARTNERS SECTION --- */}
-      <section className="py-12">
+      <section className="py-8 md:py-12">
         <div className="max-w-7xl mx-auto px-6">
           <motion.div 
             initial="hidden"
             whileInView="visible"
             viewport={{ once: false, amount: 0.3 }}
             variants={fadeInUp}
-            className="text-center mb-10"
+            className="text-center mb-8 md:mb-10"
           >
-            <h2 className={`text-3xl font-black mb-2 ${darkMode ? 'text-white' : 'text-slate-900'}`}>Our Partners</h2>
-            <p className={`text-sm ${darkMode ? 'text-slate-400' : 'text-slate-600'}`}>Working together to serve our campus</p>
+            <h2 className={`text-2xl md:text-3xl font-black mb-2 ${darkMode ? 'text-white' : 'text-slate-900'}`}>Our Partners</h2>
+            <p className={`text-xs md:text-sm ${darkMode ? 'text-slate-400' : 'text-slate-600'}`}>Working together to serve our campus</p>
           </motion.div>
-          <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 max-w-5xl mx-auto">
             {team.map((member, index) => (
               <motion.div 
                 key={index} 
@@ -156,21 +157,20 @@ export default function About() {
       </section>
 
       {/* --- CONTACT CTA --- */}
-      <section className="pt-8 pb-16">
+      <section className="pt-4 pb-16 md:pb-24">
         <motion.div 
           initial={{ opacity: 0, scale: 0.98 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: false, amount: 0.5 }}
           transition={{ duration: 0.6 }}
-          className="max-w-2xl mx-auto px-6"
+          className="max-w-2xl mx-auto px-4 md:px-6"
         >
-          <div className={`relative group p-8 rounded-[2rem] border transition-all duration-500 overflow-hidden
+          <div className={`relative group p-6 md:p-8 rounded-[1.5rem] md:rounded-[2rem] border transition-all duration-500 overflow-hidden
             ${darkMode 
               ? "bg-slate-900/30 border-white/10 hover:border-[#646cff]/40 shadow-xl" 
               : "bg-white border-slate-200 shadow-sm hover:shadow-md"
             }`}
           >
-            {/* Interactive hover glow */}
             <div className={`absolute -inset-px opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none
               ${darkMode 
                 ? "bg-[radial-gradient(circle_at_50%_0%,rgba(100,108,255,0.1),transparent_50%)]" 
@@ -180,12 +180,12 @@ export default function About() {
 
             <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
               <div className="text-center md:text-left">
-                <h2 className={`text-2xl font-black tracking-tight mb-2 ${
+                <h2 className={`text-xl md:text-2xl font-black tracking-tight mb-2 ${
                   darkMode ? "text-white" : "text-slate-900"
                 }`}>
                   Have a <span className="text-[#646cff]">suggestion?</span>
                 </h2>
-                <p className={`text-sm max-w-[280px] leading-relaxed opacity-70 ${
+                <p className={`text-xs md:text-sm max-w-full md:max-w-[280px] leading-relaxed opacity-70 ${
                   darkMode ? "text-slate-400" : "text-slate-600"
                 }`}>
                   Help us optimize the campus experience for the community.
@@ -194,7 +194,7 @@ export default function About() {
 
               <Link 
                 to="/feedback" 
-                className={`flex items-center gap-2 px-6 py-3 text-sm font-bold rounded-xl transition-all duration-300
+                className={`w-full md:w-auto flex items-center justify-center gap-2 px-6 py-3 text-sm font-bold rounded-xl transition-all duration-300
                   ${darkMode 
                     ? "bg-white text-slate-950 hover:bg-[#646cff] hover:text-white" 
                     : "bg-slate-950 text-white hover:bg-[#646cff]"
