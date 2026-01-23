@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo, useRef, useContext } from "react";
+import { useNavigate } from 'react-router-dom';
 import {
   MapContainer as LeafletMap,
   TileLayer,
@@ -90,6 +91,7 @@ export default function CampusMapContainer({
   onBuildingSelect,
   isDarkMode,
 }) {
+  const { setSelectedBuildingId } = useContext(storeContext);
   //   const { getBuildings, locations } = useContext(storeContext);
 
   //   useEffect(() => {
@@ -103,6 +105,7 @@ export default function CampusMapContainer({
   //     console.log(locations);
   //   }, []);
   const [selectedBuilding, setSelectedBuilding] = useState(null);
+  const navigate = useNavigate();
 
   const [locations, setLocations] = useState([]);
 
@@ -194,6 +197,7 @@ export default function CampusMapContainer({
       setRouteLayer(null);
     }
     setSelectedBuilding({ ...building, loading: true });
+    if (setSelectedBuildingId) setSelectedBuildingId(building.id);
 
     const startNode = getNearestNode(userLoc.lat, userLoc.lng);
     let shortestPath = null;
@@ -243,10 +247,12 @@ export default function CampusMapContainer({
         },
         loading: false,
       });
+      if (setSelectedBuildingId) setSelectedBuildingId(building.id);
     } else {
       alert("Walking path not available for this location yet.");
       mapRef.current.flyTo([building.lat, building.lng], 18);
       setSelectedBuilding({ ...building, walking: null, loading: false });
+      if (setSelectedBuildingId) setSelectedBuildingId(building.id);
     }
   };
 
@@ -372,14 +378,25 @@ export default function CampusMapContainer({
             />
             <h3 className="font-bold">Building Details</h3>
             <button
-              onClick={() => setSelectedBuilding(null)}
+              onClick={() => {
+                setSelectedBuilding(null);
+                if (setSelectedBuildingId) setSelectedBuildingId(null);
+              }}
               className="p-1 hover:bg-gray-100/10 rounded-full transition-colors"
             >
               <X className="h-6 w-6 text-gray-500" />
             </button>
           </div>
           <div className="max-h-[50vh] lg:max-h-[calc(100%_-_120px)] overflow-y-auto">
-            <BuildingDetailsPanel building={selectedBuilding} />
+            <BuildingDetailsPanel
+              building={selectedBuilding}
+              onViewDetail={(b) => {
+                // close panel and navigate in-place
+                setSelectedBuilding(null);
+                if (setSelectedBuildingId) setSelectedBuildingId(null);
+                navigate(`/location/${b.id}`);
+              }}
+            />
           </div>
         </aside>
       )}

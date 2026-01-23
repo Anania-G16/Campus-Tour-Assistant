@@ -23,6 +23,9 @@ export const ContextProvider = ({ children }) => {
     localStorage.setItem("darkMode", JSON.stringify(darkMode));
     document.documentElement.classList.toggle("dark", darkMode);
   }, [darkMode]);
+  
+  // track which building (id) is currently selected for detail view
+  const [selectedBuildingId, setSelectedBuildingId] = useState(null);
 
   const toggleDarkMode = () => setDarkMode(!darkMode);
 
@@ -90,6 +93,8 @@ export const ContextProvider = ({ children }) => {
         setToken,
         getBuildings,
         locations,
+        selectedBuildingId,
+        setSelectedBuildingId,
       }}
     >
       {children}

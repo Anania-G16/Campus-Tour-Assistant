@@ -14,7 +14,7 @@ const LocationIcon = () => (<svg xmlns="http://www.w3.org/2000/svg" className="h
 const ClockIcon = () => (<svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>);
 const LayersIcon = () => (<svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>);
 
-export default function BuildingDetailsPanel({ building }) {
+export default function BuildingDetailsPanel({ building, onViewDetail }) {
   const { darkMode } = useTheme();
 
 
@@ -144,6 +144,15 @@ export default function BuildingDetailsPanel({ building }) {
             </div>
           </section>
         )}
+        {/* Footer: VIEW detail button */}
+        <div className={`p-4 border-t ${darkMode ? 'bg-slate-900 border-slate-700' : 'bg-white border-gray-100'}`}>
+          <button
+            onClick={() => onViewDetail && onViewDetail(building)}
+            className={`w-full inline-flex items-center justify-center px-4 py-3 rounded-lg font-semibold transition-colors ${darkMode ? 'bg-indigo-600 hover:bg-indigo-700 text-white' : 'bg-indigo-600 hover:bg-indigo-700 text-white'}`}
+          >
+            VIEW detail
+          </button>
+        </div>
       </div>
     </div>
   );

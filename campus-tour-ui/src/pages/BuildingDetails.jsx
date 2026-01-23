@@ -1,8 +1,11 @@
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, Building2, MapPin, Clock, BookOpen, Dumbbell, UtensilsCrossed, Home, Stethoscope, Car, Trees } from 'lucide-react';
-
-import { useContext, useEffect } from 'react';
+import { 
+  ArrowLeft, Building2, MapPin, Clock, BookOpen, 
+  Dumbbell, UtensilsCrossed, Home, Stethoscope, Car, Trees 
+} from 'lucide-react';
+import { useContext, useEffect, useMemo } from 'react';
 import { storeContext } from '../context/storeContext';
+import { useTheme } from '../context/ThemeContext';
 
 const iconMap = {
   'Libraries': BookOpen,
@@ -16,22 +19,27 @@ const iconMap = {
 };
 
 export default function BuildingDetails() {
-
-  const {getBuildings,locations,url}=useContext(storeContext)
- 
-   useEffect(()=>{
-     getBuildings()
-   },[])
+  const { getBuildings, locations, url } = useContext(storeContext);
+  const { darkMode } = useTheme();
   const { id } = useParams();
-  const location = locations.find(loc => loc.id === parseInt(id));
+
+  useEffect(() => {
+    getBuildings();
+  }, [getBuildings]);
+
+  // Memoize location lookup for performance
+  const location = useMemo(() => 
+    locations.find(loc => String(loc.id) === id), 
+    [locations, id]
+  );
 
   if (!location) {
     return (
-      <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Building Not Found</h1>
-          <Link to="/search" className="text-primary-600 hover:text-primary-700">
-            Back to Explore
+      <div className={`min-h-screen flex items-center justify-center ${darkMode ? 'bg-slate-950 text-white' : 'bg-white text-black'}`}>
+        <div className="text-center p-6">
+          <h1 className="text-3xl font-bold mb-4">Building Not Found</h1>
+          <Link to="/search" className="inline-flex items-center text-blue-500 hover:underline">
+            <ArrowLeft className="mr-2 h-5 w-5" /> Back to Explore
           </Link>
         </div>
       </div>
@@ -40,86 +48,101 @@ export default function BuildingDetails() {
 
   const Icon = iconMap[location.category] || Building2;
 
+  // Theme Classes
+  const theme = {
+    bg: darkMode ? 'bg-slate-950' : 'bg-gray-50',
+    card: darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-gray-200',
+    textPrimary: darkMode ? 'text-white' : 'text-black',
+    textSecondary: darkMode ? 'text-slate-400' : 'text-gray-600',
+    tagBg: darkMode ? 'bg-slate-800 text-slate-200' : 'bg-gray-200 text-gray-800',
+    accent: darkMode ? 'text-blue-400' : 'text-blue-600'
+  };
+
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Header */}
-        <div className="mb-6">
-          <h1 className="text-2xl font-bold text-primary-700 dark:text-primary-400 mb-4">
-            Building Details
-          </h1>
+    <div className={`min-h-screen transition-colors duration-300 ${theme.bg} ${theme.textPrimary}`}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-10">
+        
+        {/* Header Navigation */}
+        <header className="mb-8">
           <Link 
             to="/search" 
-            className="inline-flex items-center text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 text-sm"
+            className={`inline-flex items-center mb-4 transition-transform hover:-translate-x-1 ${theme.accent}`}
           >
-            <ArrowLeft className="h-4 w-4 mr-1" />
-            Back to map
+            <ArrowLeft className="h-5 w-5 mr-2" />
+            <span className="font-medium">Back to Map</span>
           </Link>
-        </div>
+          <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight">
+            Building Details
+          </h1>
+        </header>
 
-        {/* Content */}
-        <div className="flex flex-col lg:flex-row gap-8">
-          {/* Image */}
-          <div className="lg:w-2/3">
-            <div className="rounded-lg overflow-hidden shadow-lg">
+        {/* Responsive Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          
+          {/* Main Media Section */}
+          <div className="lg:col-span-8">
+            <div className="relative group rounded-2xl overflow-hidden shadow-2xl border border-transparent dark:border-slate-800">
               <img
                 src={`${url}/uploads/buildings/${location.images}`}
                 alt={location.name}
-                className="w-full h-[400px] lg:h-[500px] object-cover"
+                className="w-full h-[300px] sm:h-[450px] lg:h-[600px] object-cover transition-transform duration-500 group-hover:scale-105"
               />
+              <div className="absolute top-4 left-4">
+                <span className={`px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest shadow-lg ${theme.tagBg}`}>
+                  {location.category}
+                </span>
+              </div>
             </div>
           </div>
 
-          {/* Details Card */}
-          <div className="lg:w-1/3">
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
-              {/* Icon and Title */}
-              <div className="flex items-start space-x-4 mb-6">
-                <div className="p-3 bg-primary-100 dark:bg-primary-900/30 rounded-lg">
-                  <Icon className="h-8 w-8 text-primary-600 dark:text-primary-400" />
+          {/* Details Sidebar */}
+          <div className="lg:col-span-4 space-y-6">
+            <div className={`p-6 sm:p-8 rounded-2xl border shadow-sm ${theme.card}`}>
+              
+              {/* Identity */}
+              <div className="flex items-center gap-4 mb-8">
+                <div className={`p-4 rounded-xl ${darkMode ? 'bg-blue-500/10' : 'bg-blue-50'}`}>
+                  <Icon className={`h-8 w-8 ${theme.accent}`} />
                 </div>
-                <div>
-                  <h2 className="text-xl font-bold text-primary-700 dark:text-primary-400">
-                    {location.name}
-                  </h2>
-                </div>
+                <h2 className="text-2xl font-bold leading-tight">{location.name}</h2>
               </div>
 
-              {/* Details */}
-              <div className="space-y-4">
-                <div className="flex items-start space-x-3">
-                  <MapPin className="h-5 w-5 text-gray-400 mt-0.5" />
+              {/* Quick Info */}
+              <div className="space-y-5 mb-8">
+                <div className="flex items-start gap-3">
+                  <MapPin className={`h-5 w-5 mt-0.5 shrink-0 ${theme.accent}`} />
                   <div>
-                    <span className="text-gray-700 dark:text-gray-300">Location: </span>
-                    <span className="text-gray-600 dark:text-gray-400">{location.location || location.distance || 'Campus'}</span>
+                    <p className={`text-xs font-semibold uppercase tracking-wider ${theme.textSecondary}`}>Location</p>
+                    <p className="font-medium">{location.location || location.distance || 'Main Campus'}</p>
                   </div>
                 </div>
 
-                <div className="flex items-start space-x-3">
-                  <Clock className="h-5 w-5 text-gray-400 mt-0.5" />
+                <div className="flex items-start gap-3">
+                  <Clock className={`h-5 w-5 mt-0.5 shrink-0 ${theme.accent}`} />
                   <div>
-                    <span className="text-gray-700 dark:text-gray-300">Open hours: </span>
-                    <span className="text-gray-600 dark:text-gray-400">{location.hours}</span>
+                    <p className={`text-xs font-semibold uppercase tracking-wider ${theme.textSecondary}`}>Operations</p>
+                    <p className="font-medium">{location.hours || 'Hours not listed'}</p>
                   </div>
                 </div>
               </div>
 
               {/* Description */}
-              <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
-                <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
+              <div className={`pt-6 border-t ${darkMode ? 'border-slate-800' : 'border-gray-100'}`}>
+                <h3 className="text-sm font-bold mb-3 uppercase tracking-widest">About</h3>
+                <p className={`text-sm leading-relaxed ${theme.textSecondary}`}>
                   {location.description}
                 </p>
               </div>
 
-              {/* Tags */}
+              {/* Facilities/Tags */}
               {location.tags && location.tags.length > 0 && (
-                <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
-                  <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Facilities</h3>
+                <div className={`mt-8 pt-6 border-t ${darkMode ? 'border-slate-800' : 'border-gray-100'}`}>
+                  <h3 className="text-sm font-bold mb-4 uppercase tracking-widest">Available Facilities</h3>
                   <div className="flex flex-wrap gap-2">
                     {location.tags.map((tag, index) => (
                       <span
                         key={index}
-                        className="px-3 py-1 bg-gray-100 dark:bg-gray-700 rounded-full text-xs text-gray-600 dark:text-gray-400"
+                        className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${theme.tagBg} hover:opacity-80`}
                       >
                         {tag}
                       </span>
