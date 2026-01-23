@@ -90,40 +90,39 @@ export default function CampusMapContainer({
   onBuildingSelect,
   isDarkMode,
 }) {
-//   const { getBuildings, locations } = useContext(storeContext);
+  //   const { getBuildings, locations } = useContext(storeContext);
 
-//   useEffect(() => {
-//     const fetchBuildings = async () => {
-//       await getBuildings();
-//     };
-//     fetchBuildings();
-//   }, []);
+  //   useEffect(() => {
+  //     const fetchBuildings = async () => {
+  //       await getBuildings();
+  //     };
+  //     fetchBuildings();
+  //   }, []);
 
-//   useEffect(() => {
-//     console.log(locations);
-//   }, []);
+  //   useEffect(() => {
+  //     console.log(locations);
+  //   }, []);
   const [selectedBuilding, setSelectedBuilding] = useState(null);
 
-const [locations,setLocations]=useState([])
+  const [locations, setLocations] = useState([]);
 
-   const fetchBuildings = async () => {
-      try {
-        const res = await axios.get("http://localhost:3000/api/building");
-        if (res.data.success) setLocations(res.data.buildings);
-      } catch (err) {
-        console.error(err);
-        alert("Failed to fetch buildings");
-      }
-    };
-  
-    useEffect(() => {
-      fetchBuildings();
-    }, []);
+  const fetchBuildings = async () => {
+    try {
+      const res = await axios.get("http://localhost:3000/api/building");
+      if (res.data.success) setLocations(res.data.buildings);
+    } catch (err) {
+      console.error(err);
+      alert("Failed to fetch buildings");
+    }
+  };
 
-    useEffect(()=>{
-        console.log("location",locations);
-    },[locations])
+  useEffect(() => {
+    fetchBuildings();
+  }, []);
 
+  useEffect(() => {
+    console.log("location", locations);
+  }, [locations]);
 
   const [userLoc, setUserLoc] = useState({
     lat: 9.04093889954351,
@@ -151,7 +150,7 @@ const [locations,setLocations]=useState([])
           return Math.sqrt(dx * dx + dy * dy);
         },
       }),
-    [graph]
+    [graph],
   );
 
   useEffect(() => {
@@ -169,7 +168,7 @@ const [locations,setLocations]=useState([])
         setLocationStatus("Live GPS Active ✅");
       },
       () => setLocationStatus("Using Default Location (Gate)"),
-      { enableHighAccuracy: true }
+      { enableHighAccuracy: true },
     );
     return () => navigator.geolocation.clearWatch(watchId);
   }, []);
@@ -179,7 +178,7 @@ const [locations,setLocations]=useState([])
     let minDist = Infinity;
     Object.entries(nodes).forEach(([id, coords]) => {
       const dist = Math.sqrt(
-        Math.pow(lat - coords.lat, 2) + Math.pow(lng - coords.lng, 2)
+        Math.pow(lat - coords.lat, 2) + Math.pow(lng - coords.lng, 2),
       );
       if (dist < minDist) {
         minDist = dist;
@@ -261,7 +260,7 @@ const [locations,setLocations]=useState([])
         (b) =>
           b.name.toLowerCase().includes(q) ||
           b.category.toLowerCase().includes(q) ||
-          (b.tags && b.tags.some((tag) => tag.toLowerCase().includes(q)))
+          (b.tags && b.tags.some((tag) => tag.toLowerCase().includes(q))),
       );
     }
 
@@ -372,7 +371,7 @@ const [locations,setLocations]=useState([])
               <X className="h-6 w-6 text-gray-500" />
             </button>
           </div>
-          <div className="max-h-[50vh] lg:max-h-[calc(100vh-120px)] overflow-y-auto">
+          <div className="max-h-[50vh] lg:max-h-[calc(100%_-_120px)] overflow-y-auto">
             <BuildingDetailsPanel building={selectedBuilding} />
           </div>
         </aside>
