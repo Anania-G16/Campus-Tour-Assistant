@@ -2,127 +2,156 @@ import { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   BookOpen,
-  Coffee,
-  Home,
   Car,
   TreePine,
   Dumbbell,
   GraduationCap,
-  ChevronRight
+  MapPin,
+  ArrowUpRight,
+  LayoutGrid
 } from 'lucide-react';
-// import { locations } from '../data/locations';
 import { useTheme } from '../context/ThemeContext';
 import { storeContext } from '../context/storeContext';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const categoryButtons = [
-  { id: 'Academic', name: 'Academic', icon: GraduationCap, color: 'bg-red-50 text-red-600', border: 'border-red-100' },
-  { id: 'Libraries', name: 'Libraries', icon: BookOpen, color: 'bg-blue-50 text-blue-600', border: 'border-blue-100' },
-  { id: 'Sports', name: 'Sports', icon: Dumbbell, color: 'bg-green-50 text-green-600', border: 'border-green-100' },
-  { id: 'Outdoor', name: 'Outdoor', icon: TreePine, color: 'bg-emerald-50 text-emerald-600', border: 'border-emerald-100' },
-  { id: 'Parking', name: 'Parking', icon: Car, color: 'bg-gray-50 text-gray-600', border: 'border-gray-100' },
+  { id: 'All', name: 'All', icon: LayoutGrid, accent: '#646cff' },
+  { id: 'Academic', name: 'Academic', icon: GraduationCap, accent: '#ef4444' },
+  { id: 'Libraries', name: 'Libraries', icon: BookOpen, accent: '#3b82f6' },
+  { id: 'Sports', name: 'Sports', icon: Dumbbell, accent: '#22c55e' },
+  { id: 'Outdoor', name: 'Outdoor', icon: TreePine, accent: '#10b981' },
+  { id: 'Parking', name: 'Parking', icon: Car, accent: '#64748b' },
 ];
 
 export default function Categories() {
+  const { getBuildings, locations } = useContext(storeContext);
+  const url = "http://localhost:3000";
 
-  const {getBuildings,locations}=useContext(storeContext)
+  useEffect(() => {
+    getBuildings();
+  }, []);
 
-  const url="http://localhost:3000"
-
-  useEffect(()=>{
-    getBuildings()
-  },[])
   const { darkMode } = useTheme();
-  const [activeTab, setActiveTab] = useState('Academic');
+  const [activeTab, setActiveTab] = useState('All');
 
-  const filteredLocations = locations.filter(loc => loc.category === activeTab);
+  const filteredLocations = activeTab === 'All' 
+    ? locations 
+    : locations.filter(loc => loc.category === activeTab);
 
   return (
-    <div className={`min-h-screen ${darkMode ? 'bg-slate-900' : 'bg-white'}`}>
+    <div className={`min-h-screen transition-colors duration-500 ${darkMode ? 'bg-slate-950' : 'bg-white'}`}>
       
-      {/* Top Category Bar */}
-      <div
-        className={`sticky top-0 z-20 border-b overflow-x-auto no-scrollbar ${
-          darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-gray-200'
-        }`}
-      >
-        <div className="flex p-4 gap-4 max-w-7xl mx-auto">
-          {categoryButtons.map((cat) => (
-            <button
-              key={cat.id}
-              onClick={() => setActiveTab(cat.id)}
-              className={`flex items-center gap-2 px-6 py-3 rounded-2xl font-bold whitespace-nowrap transition-all border-2 ${
-                activeTab === cat.id
-                  ? `${cat.border} ${cat.color} shadow-sm`
-                  : darkMode
-                    ? 'border-transparent text-slate-400'
-                    : 'border-transparent text-gray-400'
-              }`}
-            >
-              <cat.icon size={20} />
-              {cat.name}
-            </button>
-          ))}
+      {/* --- TOP NAV --- */}
+      <div className={`sticky top-0 z-30 backdrop-blur-md border-b transition-all ${
+        darkMode ? 'bg-slate-950/50 border-white/5' : 'bg-white/70 border-slate-100'
+      }`}>
+        <div className="max-w-7xl mx-auto px-8 md:px-16">
+          <div className="flex items-center gap-2 py-4 overflow-x-auto no-scrollbar">
+            {categoryButtons.map((cat) => {
+              const isActive = activeTab === cat.id;
+              return (
+                <button
+                  key={cat.id}
+                  onClick={() => setActiveTab(cat.id)}
+                  className={`relative flex items-center gap-2 px-6 py-2 rounded-xl font-bold transition-all duration-300 whitespace-nowrap group ${
+                    isActive 
+                      ? (darkMode ? 'text-white' : 'text-slate-900') 
+                      : (darkMode ? 'text-slate-500 hover:text-slate-300' : 'text-slate-400 hover:text-slate-600')
+                  }`}
+                >
+                  {isActive && (
+                    <motion.div 
+                      layoutId="activeTabPill"
+                      className={`absolute inset-0 rounded-xl ${darkMode ? 'bg-white/10' : 'bg-slate-100'}`}
+                      transition={{ type: "spring", bounce: 0.15, duration: 0.5 }}
+                    />
+                  )}
+                  <cat.icon size={16} className="relative z-10" style={{ color: isActive ? cat.accent : 'inherit' }} />
+                  <span className="relative z-10 text-[11px] font-black uppercase tracking-wider">{cat.name}</span>
+                </button>
+              );
+            })}
+          </div>
         </div>
       </div>
 
-      {/* Content */}
-      <div className="max-w-7xl mx-auto p-6">
-        <h1 className={`text-3xl font-black ${darkMode ? 'text-white' : 'text-gray-900'}`}>
-          {activeTab}
-        </h1>
-        <p className={`${darkMode ? 'text-slate-400' : 'text-gray-500'} mb-8`}>
-          Found {filteredLocations.length} locations
-        </p>
+      <div className="max-w-7xl mx-auto px-8 md:px-20 py-12">
+        {/* --- CLEAN HEADER --- */}
+        <header className="mb-16">
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            key={activeTab}
+          >
+            <h1 className={`text-5xl font-black tracking-tighter ${darkMode ? 'text-white' : 'text-slate-900'}`}>
+              {activeTab}
+            </h1>
+            <p className={`text-sm font-medium mt-3 opacity-50 ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>
+              Showing {filteredLocations.length} results in this sector
+            </p>
+          </motion.div>
+        </header>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredLocations.map((location) => (
-            <Link
-              key={location.id}
-              to={`/search?q=${location.name}`}
-              className={`group rounded-3xl overflow-hidden transition-all border
-                ${
-                  darkMode
-                    ? 'bg-slate-800 border-slate-700 hover:shadow-xl'
-                    : 'bg-white border-gray-100 hover:shadow-lg'
-                }
-              `}
-            >
-              <div className={`relative h-48 ${darkMode ? 'bg-slate-700' : 'bg-gray-100'}`}>
-                <img
-                  src={`${url}/uploads/buildings/${location.images}`}
-                  alt={location.name}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform"
-                />
-              </div>
-{console.log(`${url}/uploads/buildings/${location.images}`)}
-              <div className="p-5">
-                <h3 className={`text-lg font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>
-                  {location.name}
-                </h3>
+        {/* --- THREE COLUMN GRID --- */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 lg:gap-14">
+          <AnimatePresence mode='popLayout'>
+            {filteredLocations.map((location) => (
+              <motion.div
+                layout
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                key={location.id}
+              >
+                <Link
+                  to={`/search?q=${location.name}`}
+                  className="group block relative h-full"
+                >
+                  {/* Slim, elegant image container */}
+                  <div className="relative h-48 overflow-hidden rounded-2xl mb-5 shadow-sm">
+                    <img
+                      src={`${url}/uploads/buildings/${location.images}`}
+                      alt={location.name}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-in-out"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                    
+                    {/* Tiny Action Indicator */}
+                    <div className={`absolute top-4 right-4 p-2 rounded-full backdrop-blur-md border border-white/20 text-white opacity-0 group-hover:opacity-100 transition-all ${darkMode ? 'bg-black/20' : 'bg-black/10'}`}>
+                      <ArrowUpRight size={14} />
+                    </div>
+                  </div>
 
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {location.floorInfo?.depts?.slice(0, 2).map((dept, i) => (
-                    <span
-                      key={i}
-                      className={`text-[10px] px-2 py-1 rounded font-bold uppercase ${
-                        darkMode ? 'bg-slate-700 text-slate-200' : 'bg-gray-100 text-gray-700'
-                      }`}
-                    >
-                      {dept}
-                    </span>
-                  )) || (
-                    <span
-                      className={`text-[10px] uppercase font-bold ${
-                        darkMode ? 'text-slate-400' : 'text-gray-400'
-                      }`}
-                    >
-                      {location.tags?.[0]}
-                    </span>
-                  )}
-                </div>
-              </div>
-            </Link>
-          ))}
+                  {/* Minimal Content */}
+                  <div className="px-1">
+                    <h3 className={`text-lg font-bold tracking-tight mb-2 group-hover:text-[#646cff] transition-colors ${darkMode ? 'text-white' : 'text-slate-900'}`}>
+                      {location.name}
+                    </h3>
+
+                    <div className="flex items-center gap-3">
+                      {location.floorInfo?.depts?.slice(0, 1).map((dept, i) => (
+                        <div
+                          key={i}
+                          className={`flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest ${
+                            darkMode ? 'text-slate-500' : 'text-slate-400'
+                          }`}
+                        >
+                          <MapPin size={12} className="text-[#646cff]" />
+                          {dept}
+                        </div>
+                      ))}
+                      {/* Only show category tag if on "All" tab */}
+                      {activeTab === 'All' && (
+                        <span className={`text-[9px] font-black uppercase tracking-[0.2em] px-2 py-0.5 rounded ${darkMode ? 'bg-white/5 text-slate-600' : 'bg-slate-100 text-slate-400'}`}>
+                          {location.category}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </Link>
+              </motion.div>
+            ))}
+          </AnimatePresence>
         </div>
       </div>
     </div>

@@ -1,31 +1,11 @@
-import { MapPin, Users, Target, Heart } from 'lucide-react';
+import React from 'react';
+import { Users, Zap, Compass, Target, Mail } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
+import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 
 export default function About() {
   const { darkMode } = useTheme();
-
-  const features = [
-    {
-      icon: MapPin,
-      title: 'Easy Navigation',
-      description: 'Find any building or facility on campus with our intuitive search and filter system.',
-    },
-    {
-      icon: Users,
-      title: 'Student-Focused',
-      description: 'Designed with students in mind, making campus exploration simple and efficient.',
-    },
-    {
-      icon: Target,
-      title: 'Accurate Information',
-      description: 'Up-to-date details about hours, services, and amenities for every location.',
-    },
-    {
-      icon: Heart,
-      title: 'Community Driven',
-      description: 'Built with feedback from students and staff to serve the campus community better.',
-    },
-  ];
 
   const team = [
     { name: 'Campus Services', role: 'Information Provider' },
@@ -33,197 +13,200 @@ export default function About() {
     { name: 'IT Department', role: 'Technical Support' },
   ];
 
+  const fadeInUp = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+  };
+
   return (
-    <div className={`min-h-screen ${darkMode ? 'bg-slate-900' : 'bg-white'}`}>
-      {/* Hero Section */}
-      <div>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          <div className="text-center max-w-3xl mx-auto">
-            <h1
-              className={`text-4xl font-bold mb-6 ${
-                darkMode ? 'text-white' : 'text-gray-900'
-              }`}
-            >
-              About Campus Tour Assistant
-            </h1>
-            <p
-              className={`text-lg ${
-                darkMode ? 'text-slate-400' : 'text-gray-600'
-              }`}
-            >
-              Your comprehensive guide to navigating and exploring our beautiful
-              campus. We're here to help you discover all the amazing facilities
-              and services available to you.
-            </p>
-          </div>
-        </div>
-      </div>
+    <div className={`min-h-screen ${darkMode ? 'bg-slate-950' : 'bg-white'}`}>
+      
+      {/* --- HERO SECTION --- */}
+      <section className="relative pt-20 pb-10 overflow-hidden text-center">
+        <motion.div 
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: false, amount: 0.3 }}
+          variants={fadeInUp}
+          className="max-w-7xl mx-auto px-6 relative z-10"
+        >
+          <h1 className={`text-5xl md:text-6xl font-black tracking-tight mb-6 ${darkMode ? 'text-white' : 'text-slate-900'}`}>
+            About Campus <span className="text-[#646cff]">Tour Assistant</span>
+          </h1>
+          <p className={`text-lg max-w-2xl mx-auto leading-relaxed opacity-80 ${darkMode ? 'text-slate-400' : 'text-slate-600'}`}>
+            Your comprehensive guide to navigating and exploring our campus. 
+            Discover facilities and services available at your fingertips.
+          </p>
+        </motion.div>
+      </section>
 
-      {/* Mission Section */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid md:grid-cols-2 gap-12 items-center">
-          <div className="p-8 rounded-2xl border shadow-sm bg-transparent">
-            <h2
-              className={`text-3xl font-bold mb-6 ${
-                darkMode ? 'text-white' : 'text-gray-900'
-              }`}
+      {/* --- MISSION SECTION --- */}
+      <section className="py-12 relative overflow-hidden">
+        <div className="max-w-6xl mx-auto px-6 relative z-10">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <motion.div 
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: false, amount: 0.3 }}
+              transition={{ duration: 0.7 }}
             >
-              Our Mission
-            </h2>
-            <p
-              className={`mb-4 font-medium leading-relaxed ${
-                darkMode ? 'text-slate-200' : 'text-gray-800'
-              }`}
-            >
-              We believe that every student, staff member, and visitor should be
-              able to navigate campus with confidence. Our mission is to provide
-              an accessible, user-friendly platform that makes finding any
-              location on campus quick and easy.
-            </p>
-            <p
-              className={`leading-relaxed ${
-                darkMode ? 'text-slate-300' : 'text-gray-700'
-              }`}
-            >
-              Whether you're a new student exploring campus for the first time, a
-              visitor attending an event, or a long-time community member looking
-              for a specific service, Campus Tour Assistant is here to guide you
-              every step of the way.
-            </p>
-          </div>
-
-          <div className="relative">
-            <img
-              src="https://images.unsplash.com/photo-1562774053-701939374585?w=600"
-              alt="Campus building"
-              className="rounded-2xl shadow-xl"
-            />
-            <div className="absolute -bottom-6 -left-6 bg-primary-600 text-white p-6 rounded-xl shadow-lg">
-              <div className="text-3xl font-bold">50+</div>
-              <div className="text-primary-100">Campus Locations</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Features Section */}
-      <div>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          <div className="text-center mb-12">
-            <h2
-              className={`text-3xl font-bold mb-4 ${
-                darkMode ? 'text-white' : 'text-gray-900'
-              }`}
-            >
-              Why Use Campus Tour Assistant?
-            </h2>
-            <p className={darkMode ? 'text-slate-400' : 'text-gray-600'}>
-              We've built features that make exploring campus a breeze
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {features.map((feature, index) => (
-              <div key={index} className="text-center">
-                <div
-                  className={`inline-flex items-center justify-center w-14 h-14 rounded-xl mb-4 ${
-                    darkMode ? 'bg-primary-900/30' : 'bg-primary-100'
-                  }`}
-                >
-                  <feature.icon
-                    className={`h-7 w-7 ${
-                      darkMode ? 'text-primary-400' : 'text-primary-600'
-                    }`}
-                  />
-                </div>
-                <h3
-                  className={`text-lg font-semibold mb-2 ${
-                    darkMode ? 'text-white' : 'text-gray-900'
-                  }`}
-                >
-                  {feature.title}
-                </h3>
-                <p className={darkMode ? 'text-slate-400' : 'text-gray-600'}>
-                  {feature.description}
+              <h2 className={`text-4xl font-black mb-4 ${darkMode ? 'text-white' : 'text-slate-900'}`}>Our Mission</h2>
+              <div className="h-1.5 w-16 bg-[#646cff] rounded-full mb-6" />
+              <div className="space-y-4 text-base font-medium">
+                <p className={darkMode ? 'text-slate-200' : 'text-slate-700'}>
+                  We believe that every student and visitor should navigate campus with confidence. 
+                  Our mission is to provide an accessible platform that makes finding any location quick and easy.
+                </p>
+                <p className={`opacity-70 ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>
+                  Campus Tour Assistant is here to guide you every step of the way, 
+                  bridging the gap between navigation and exploration.
                 </p>
               </div>
+            </motion.div>
+
+            <motion.div 
+              initial={{ opacity: 0, x: 50, rotate: 2 }}
+              whileInView={{ opacity: 1, x: 0, rotate: 0 }}
+              viewport={{ once: false, amount: 0.3 }}
+              transition={{ duration: 0.7 }}
+              className="relative group"
+            >
+              <div className={`relative rounded-3xl overflow-hidden transition-all duration-500 group-hover:-translate-y-2 group-hover:shadow-2xl border ${darkMode ? 'border-white/10' : 'border-slate-200'}`}>
+                <img src="https://images.unsplash.com/photo-1562774053-701939374585?w=800" alt="Campus" className="w-full h-[320px] object-cover" />
+                <div className="absolute bottom-4 left-4">
+                  <div className={`backdrop-blur-xl p-4 rounded-xl border ${darkMode ? 'bg-slate-900/80 border-white/20' : 'bg-white/90 border-slate-200 shadow-lg'}`}>
+                    <div className="text-3xl font-black text-[#646cff]">15+</div>
+                    <div className={`text-[9px] font-black uppercase tracking-widest ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>Campus Locations</div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* --- PLATFORM UTILITY --- */}
+      <section className="py-12">
+        <div className="max-w-6xl mx-auto px-6">
+          <motion.div 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: false, amount: 0.3 }}
+            variants={fadeInUp}
+            className="text-center mb-10"
+          >
+            <h2 className={`text-3xl font-black mb-2 ${darkMode ? 'text-white' : 'text-slate-900'}`}>Platform Utility</h2>
+            <p className={`text-base opacity-70 ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>Designed for the 5 Kilo Campus community</p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            {[
+              { title: "Efficiency", desc: "Reduces time spent locating specific rooms or offices.", icon: <Zap className="text-amber-400" size={28} /> },
+              { title: "Orientation", desc: "Eliminates navigational confusion via visual cues.", icon: <Compass className="text-rose-500" size={28} /> },
+              { title: "Precision", desc: "Verified data ensures high-accuracy routing.", icon: <Target className="text-blue-500" size={28} /> },
+            ].map((benefit, i) => (
+              <motion.div 
+                key={i} 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: false }}
+                transition={{ delay: i * 0.1 }}
+                whileHover={{ y: -5 }} 
+                className={`p-6 rounded-2xl border transition-all duration-300 flex flex-col items-center text-center ${darkMode ? "bg-slate-900/40 border-white/10 hover:border-[#646cff]/50" : "bg-white border-slate-200 shadow-sm hover:shadow-md hover:border-[#646cff]/30"}`}
+              >
+                <div className={`mb-4 p-3 rounded-full ${darkMode ? "bg-white/5" : "bg-slate-50"}`}>{benefit.icon}</div>
+                <h3 className={`text-lg font-bold mb-2 ${darkMode ? "text-white" : "text-slate-900"}`}>{benefit.title}</h3>
+                <p className={`text-sm leading-relaxed ${darkMode ? "text-slate-400" : "text-slate-600"}`}>{benefit.desc}</p>
+              </motion.div>
             ))}
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* Partners Section */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="text-center mb-12">
-          <h2
-            className={`text-3xl font-bold mb-4 ${
-              darkMode ? 'text-white' : 'text-gray-900'
+      {/* --- PARTNERS SECTION --- */}
+      <section className="py-12">
+        <div className="max-w-7xl mx-auto px-6">
+          <motion.div 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: false, amount: 0.3 }}
+            variants={fadeInUp}
+            className="text-center mb-10"
+          >
+            <h2 className={`text-3xl font-black mb-2 ${darkMode ? 'text-white' : 'text-slate-900'}`}>Our Partners</h2>
+            <p className={`text-sm ${darkMode ? 'text-slate-400' : 'text-slate-600'}`}>Working together to serve our campus</p>
+          </motion.div>
+          <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            {team.map((member, index) => (
+              <motion.div 
+                key={index} 
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: false }}
+                transition={{ delay: index * 0.1 }}
+                className={`rounded-xl p-6 transition-all duration-300 border text-center ${darkMode ? 'bg-slate-900/20 border-white/5' : 'bg-slate-50 border-slate-100 hover:bg-white hover:shadow-md'}`}
+              >
+                <Users className="h-6 w-6 text-[#646cff] mx-auto mb-4" />
+                <h3 className={`font-bold ${darkMode ? 'text-white' : 'text-slate-900'}`}>{member.name}</h3>
+                <p className={`text-xs ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>{member.role}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* --- CONTACT CTA --- */}
+      <section className="pt-8 pb-16">
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.98 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: false, amount: 0.5 }}
+          transition={{ duration: 0.6 }}
+          className="max-w-2xl mx-auto px-6"
+        >
+          <div className={`relative group p-8 rounded-[2rem] border transition-all duration-500 overflow-hidden
+            ${darkMode 
+              ? "bg-slate-900/30 border-white/10 hover:border-[#646cff]/40 shadow-xl" 
+              : "bg-white border-slate-200 shadow-sm hover:shadow-md"
             }`}
           >
-            Our Partners
-          </h2>
-          <p className={darkMode ? 'text-slate-400' : 'text-gray-600'}>
-            Working together to serve our campus community
-          </p>
-        </div>
+            {/* Interactive hover glow */}
+            <div className={`absolute -inset-px opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none
+              ${darkMode 
+                ? "bg-[radial-gradient(circle_at_50%_0%,rgba(100,108,255,0.1),transparent_50%)]" 
+                : "bg-[radial-gradient(circle_at_50%_0%,rgba(100,108,255,0.03),transparent_50%)]"
+              }`} 
+            />
 
-        <div className="grid md:grid-cols-3 gap-6">
-          {team.map((member, index) => (
-            <div
-              key={index}
-              className="rounded-xl p-6 shadow-md text-center bg-transparent"
-            >
-              <div
-                className={`w-16 h-16 rounded-full mx-auto mb-4 flex items-center justify-center ${
-                  darkMode ? 'bg-primary-900/30' : 'bg-primary-100'
-                }`}
-              >
-                <Users
-                  className={`h-8 w-8 ${
-                    darkMode ? 'text-primary-400' : 'text-primary-600'
-                  }`}
-                />
+            <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
+              <div className="text-center md:text-left">
+                <h2 className={`text-2xl font-black tracking-tight mb-2 ${
+                  darkMode ? "text-white" : "text-slate-900"
+                }`}>
+                  Have a <span className="text-[#646cff]">suggestion?</span>
+                </h2>
+                <p className={`text-sm max-w-[280px] leading-relaxed opacity-70 ${
+                  darkMode ? "text-slate-400" : "text-slate-600"
+                }`}>
+                  Help us optimize the campus experience for the community.
+                </p>
               </div>
-              <h3
-                className={`font-semibold ${
-                  darkMode ? 'text-white' : 'text-gray-900'
-                }`}
-              >
-                {member.name}
-              </h3>
-              <p className={darkMode ? 'text-slate-400' : 'text-gray-500'}>
-                {member.role}
-              </p>
-            </div>
-          ))}
-        </div>
-      </div>
 
-      {/* Contact CTA */}
-      <div className={darkMode ? 'bg-primary-800' : 'bg-primary-600'}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 text-center">
-          <h2 className="text-2xl font-bold text-white mb-4">
-            Have Questions or Suggestions?
-          </h2>
-          <p className="text-primary-100 mb-6">
-            We'd love to hear from you! Help us improve the campus experience for
-            everyone.
-          </p>
-          <a
-            href="https://mail.google.com/mail/?view=cm&fs=1&to=campustour2026.project@gmail.com&su=Campus%20Tour%20Assistant"
-            className={`inline-flex items-center px-6 py-3 font-semibold rounded-lg
-              transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md
-              ${
-                darkMode
-                  ? 'bg-slate-700 text-slate-100 hover:bg-slate-600'
-                  : 'bg-slate-200 text-slate-700 hover:bg-slate-300'
-              }
-            `}
-          >
-            Contact Us
-          </a>
-        </div>
-      </div>
+              <Link 
+                to="/feedback" 
+                className={`flex items-center gap-2 px-6 py-3 text-sm font-bold rounded-xl transition-all duration-300
+                  ${darkMode 
+                    ? "bg-white text-slate-950 hover:bg-[#646cff] hover:text-white" 
+                    : "bg-slate-950 text-white hover:bg-[#646cff]"
+                  }`}
+              >
+                <span>Give Feedback</span>
+                <Mail size={16} />
+              </Link>
+            </div>
+          </div>
+        </motion.div>
+      </section>
     </div>
   );
 }

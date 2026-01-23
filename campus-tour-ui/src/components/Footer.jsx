@@ -36,11 +36,7 @@ export default function Footer() {
   ];
 
   return (
-    <footer 
-      className={`${
-        darkMode ? "bg-slate-900 text-slate-300" : "bg-slate-50 text-slate-700"
-      }`}
-    >
+    <footer className="bg-slate-900 text-slate-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Brand Section */}
@@ -48,15 +44,13 @@ export default function Footer() {
             <Link to="/" className="flex items-center space-x-2">
               <div className="bg-primary-600 p-2 rounded-xl shadow-lg shadow-primary-900/20">
                 <MapPin
-                  className={`h-6 w-6 ${
-                    darkMode ? "text-white" : "text-slate-900"
+                  className={`h-6 w-6 "text-white" 
                   }`}
                 />
               </div>
 
               <span
-                className={`text-xl font-black tracking-tight ${
-                  darkMode ? "text-white" : "text-slate-900"
+                className={`text-xl font-black tracking-tight"text-white" 
                 }`}
               >
                 CampusTour
@@ -64,8 +58,7 @@ export default function Footer() {
             </Link>
 
             <p
-              className={`text-sm leading-relaxed ${
-                darkMode ? "text-slate-400" : "text-slate-600"
+              className={`text-sm leading-relaxed "text-slate-400" 
               }`}
             >
               Precision navigation for the 5 Kilo campus. Helping students find
@@ -77,16 +70,10 @@ export default function Footer() {
                 <a
                   key={social.label}
                   href={social.href}
-                  className={`p-2.5 rounded-xl transition-all duration-300 hover:bg-primary-600 hover:text-white
-          ${
-            darkMode
-              ? "bg-slate-800 text-slate-200"
-              : "bg-slate-200 text-slate-700"
-          }
-        `}
+                  className="group p-2.5 rounded-xl bg-slate-800"
                   aria-label={social.label}
                 >
-                  <social.icon className="h-5 w-5" />
+                  <social.icon className="h-5 w-5 stroke-slate-200 transition-colors group-hover:stroke-[#646cff]" />
                 </a>
               ))}
             </div>
@@ -95,8 +82,7 @@ export default function Footer() {
           {/* Navigation */}
           <div>
             <h3
-              className={`font-bold mb-5 text-sm uppercase tracking-widest ${
-                darkMode ? "text-white" : "text-slate-900"
+              className={`font-bold mb-5 text-sm uppercase tracking-widest pl-4 "text-white" 
               }`}
             >
               Platform
@@ -107,9 +93,10 @@ export default function Footer() {
                 <li key={link.name}>
                   <Link
                     to={link.path}
-                    className="text-slate-400 hover:text-primary-400 transition-colors flex items-center group"
+                    className="text-slate-400 hover:text-primary-400 transition-all duration-200
+                     flex items-center gap-2 transform-gpu hover:scale-[1.04]"
                   >
-                    <span className="w-0 group-hover:w-2 h-0.5 bg-primary-500 mr-0 group-hover:mr-2 transition-all"></span>
+                    <span className="w-2 h-0.5 bg-primary-500 opacity-0 group-hover:opacity-100 transition-opacity"></span>
                     {link.name}
                   </Link>
                 </li>
@@ -119,20 +106,21 @@ export default function Footer() {
 
           <div>
             <h3
-              className={`font-bold mb-5 text-sm uppercase tracking-widest ${
-                darkMode ? "text-white" : "text-slate-900"
+              className={`font-bold mb-5 text-sm uppercase tracking-widest pl-4  "text-white" 
               }`}
             >
               Categories
             </h3>
+
             <ul className="space-y-3 text-sm">
               {categoryLinks.map((cat) => (
                 <li key={cat.name}>
                   <Link
                     to={cat.path}
-                    className="text-slate-400 hover:text-primary-400 transition-colors flex items-center group"
+                    className="text-slate-400 hover:text-primary-400 transition-all duration-200
+                     flex items-center gap-2 transform-gpu hover:scale-[1.04]"
                   >
-                    <span className="w-0 group-hover:w-2 h-0.5 bg-primary-500 mr-0 group-hover:mr-2 transition-all"></span>
+                    <span className="w-2 h-0.5 bg-primary-500 opacity-0 group-hover:opacity-100 transition-opacity"></span>
                     {cat.name}
                   </Link>
                 </li>
@@ -143,8 +131,7 @@ export default function Footer() {
           {/* Campus Contact */}
           <div>
             <h3
-              className={`font-bold mb-5 text-sm uppercase tracking-widest ${
-                darkMode ? "text-white" : "text-slate-900"
+              className={`font-bold mb-5 text-sm uppercase tracking-widest"text-white" 
               }`}
             >
               Contact
@@ -176,26 +163,12 @@ export default function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-16 pt-8 border-t border-slate-800/50">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-[13px]">
-            <p className="text-slate-500">
-              © {currentYear} CampusTour. Designed for 5 Kilo Students.
-            </p>
-            <div className="flex space-x-8">
-              <Link
-                to="/privacy"
-                className="text-slate-500 hover:text-white transition-colors"
-              >
-                Privacy Policy
-              </Link>
-              <Link
-                to="/terms"
-                className="text-slate-500 hover:text-white transition-colors"
-              >
-                Terms of Use
-              </Link>
-            </div>
-          </div>
+
+        <div className="mt-3 pt-6 border-t border-slate-800/50">
+          <p className="text-slate-500 text-center">
+            © {currentYear} Campus Tour Assistant. All rights reserved. Addis
+            Ababa University.
+          </p>
         </div>
       </div>
     </footer>

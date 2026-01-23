@@ -1,12 +1,11 @@
-import { useContext, useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Menu, X, Lock, LogOut, Sun, Moon } from 'lucide-react';
-import { useTheme } from '../context/ThemeContext';
-import { storeContext } from '../context/storeContext';
+import { useContext, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Menu, X, Lock, LogOut, Sun, Moon } from "lucide-react";
+import { useTheme } from "../context/ThemeContext";
+import { storeContext } from "../context/storeContext";
 
 export default function Navbar() {
-
-const { isAuthenticated, setIsAuthenticated }=useContext(storeContext);
+  const { isAuthenticated, setIsAuthenticated } = useContext(storeContext);
 
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
@@ -14,79 +13,93 @@ const { isAuthenticated, setIsAuthenticated }=useContext(storeContext);
   const { darkMode, toggleDarkMode } = useTheme();
 
   const publicLinks = [
-    { name: 'Home', path: '/' },
-    { name: 'Map', path: '/search' },
-    { name: 'Categories', path: '/categories' },
-    { name: 'Contact', path: '/about' },
-    { name: 'Feedback', path: '/feedback' },
+    { name: "Home", path: "/" },
+    { name: "Map", path: "/search" },
+    { name: "Categories", path: "/categories" },
+    { name: "About", path: "/about" }, // Changed 'Contact' to 'About'
+    { name: "Feedback", path: "/feedback" },
   ];
 
-
   const adminLinks = [
-    { name: 'Map', path: '/search' },
-    { name: 'Categories', path: '/categories' },
-    { name: 'Feedback Review', path: '/admin/feedback' },
-    { name: 'Admin Dashboard', path: '/admin' },
+    { name: "Map", path: "/search" },
+    { name: "Categories", path: "/categories" },
+    { name: "Feedback Review", path: "/admin/feedback" },
+    { name: "Admin Dashboard", path: "/admin" },
   ];
 
   const handleLogout = () => {
     setIsAuthenticated(false);
-    navigate('/login');
+    navigate("/login");
   };
 
   return (
-    <nav className={`${darkMode ? 'bg-slate-900 text-blue-400' : 'bg-white text-blue-600'} sticky top-0 z-50`}>
+    <nav className="bg-[#0a1a2f] text-white sticky top-0 z-50 border-b border-white/5 shadow-xl">
       <div className="max-w-7xl mx-auto px-4 h-16 flex justify-between items-center">
+        {/* LOGO White */}
 
-        {/* LOGO */}
-        <Link to="/" className="flex items-center space-x-2 text-current font-bold">
-          <img src="/src/images/logo.png" alt="Addis Ababa University Logo" className="h-8 w-8 rounded-full" />
-          <span>ADDIS ABABA UNIVERSITY</span>
+        <Link to="/" className="flex items-center space-x-2 font-bold group">
+          <img
+            src="/src/images/logo.png"
+            alt="AAU Logo"
+            className="h-9 w-9 rounded-full"
+          />
+          <span className="text-white tracking-tight uppercase text-sm md:text-base px-3 py-2.5 transition-colors duration-300 group-hover:text-[#646cff]">
+            Addis Ababa University
+          </span>
         </Link>
 
         {/* DESKTOP */}
         <div className="hidden md:flex items-center space-x-6">
-          {isAuthenticated ? (
-            adminLinks.map(link => (
-              <Link
-                key={link.path}
-                to={link.path}
-                className={`${
-                  location.pathname === link.path
-                    ? 'text-current border-b-2'
-                    : 'text-current/80'
-                }`}
-              >
-                {link.name}
-              </Link>
-            ))
-          ) : (
-            publicLinks.map(link => (
-              <Link
-                key={link.path}
-                to={link.path}
-                className={`${
-                  location.pathname === link.path
-                    ? 'text-current border-b-2'
-                    : 'text-current/80'
-                }`}
-              >
-                {link.name}
-              </Link>
-            ))
-          )}
+          {isAuthenticated
+            ? adminLinks.map((link) => (
+                <Link
+                  key={link.path}
+                  to={link.path}
+                  className={`relative text-sm font-medium px-3 py-2.5 transition-all duration-300
+            ${
+              location.pathname === link.path
+                ? "text-white after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-full after:bg-[#646cff] after:content-['']"
+                : "text-white hover:text-[#646cff]"
+            }`}
+                >
+                  {link.name}
+                </Link>
+              ))
+            : publicLinks.map((link) => (
+                <Link
+                  key={link.path}
+                  to={link.path}
+                  className={`relative text-sm font-medium px-3 py-2.5 transition-all duration-300
+            ${
+              location.pathname === link.path
+                ? "text-white after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-full after:bg-[#646cff] after:content-['']"
+                : "text-white hover:text-[#646cff]"
+            }`}
+                >
+                  {link.name}
+                </Link>
+              ))}
 
           {/* Theme Toggle */}
+
           <button
             onClick={toggleDarkMode}
-            className="text-current hover:text-current/80 transition-colors"
+            className="text-white hover:text-[#646cff] focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 appearance-none"
             aria-label="Toggle theme"
           >
             {darkMode ? <Sun size={20} /> : <Moon size={20} />}
           </button>
 
           {!isAuthenticated && (
-            <Link to="/login" className="flex items-center gap-2 text-current">
+            <Link
+              to="/login"
+              className={`relative flex items-center gap-2 text-sm font-medium px-4 py-2.5 whitespace-nowrap transition-all duration-300
+      ${
+        location.pathname === "/login"
+          ? "text-white after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-full after:bg-[#646cff] after:content-['']"
+          : "text-white hover:text-[#646cff]"
+      }`}
+            >
               <Lock size={16} />
               Admin Login
             </Link>
@@ -95,7 +108,7 @@ const { isAuthenticated, setIsAuthenticated }=useContext(storeContext);
           {isAuthenticated ? (
             <button
               onClick={handleLogout}
-              className="flex items-center gap-2 text-current"
+              className="flex items-center gap-2 text-white transition-all duration-300 hover:text-[#646cff]  focus:outline-none focus:ring-0 active:outline-none"
             >
               <LogOut size={16} />
               Logout
@@ -104,15 +117,20 @@ const { isAuthenticated, setIsAuthenticated }=useContext(storeContext);
         </div>
 
         {/* MOBILE BUTTON */}
-        <button onClick={() => setIsOpen(!isOpen)} className="md:hidden text-current">
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className="md:hidden text-current"
+        >
           {isOpen ? <X /> : <Menu />}
         </button>
       </div>
 
       {/* MOBILE MENU */}
       {isOpen && (
-        <div className={`md:hidden ${darkMode ? 'bg-black' : 'bg-white'} p-4 space-y-3`}>
-          {publicLinks.map(link => (
+        <div
+          className={`md:hidden ${darkMode ? "bg-black" : "bg-white"} p-4 space-y-3`}
+        >
+          {(isAuthenticated ? adminLinks : publicLinks).map((link) => (
             <Link
               key={link.path}
               to={link.path}
@@ -130,7 +148,7 @@ const { isAuthenticated, setIsAuthenticated }=useContext(storeContext);
             aria-label="Toggle theme"
           >
             {darkMode ? <Sun size={16} /> : <Moon size={16} />}
-            {darkMode ? 'Light Mode' : 'Dark Mode'}
+            {darkMode ? "Light Mode" : "Dark Mode"}
           </button>
 
           {!isAuthenticated ? (
