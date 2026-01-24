@@ -1,151 +1,142 @@
 import { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { Search, MapPin, Building2 } from "lucide-react";
-// import { locations } from "../data/locations";
+import { Link, useNavigate } from "react-router-dom";
+import { Search, MapPin, Building2, Globe, Info, ArrowRight } from "lucide-react";
 import { useTheme } from "../context/ThemeContext";
 import { storeContext } from "../context/storeContext";
-
-const buildingCategories = [
-  { id: "library", name: "Library", icon: Building2 },
-  { id: "laboratory", name: "Laboratory", icon: Building2 },
-  { id: "admin", name: "Admin office", icon: Building2 },
-  { id: "cafeteria", name: "Cafeteria", icon: Building2 },
-  { id: "restroom", name: "Restroom", icon: Building2 },
-];
 
 export default function Home() {
   const { darkMode } = useTheme();
   const [searchQuery, setSearchQuery] = useState("");
+  const { getBuildings, locations, url } = useContext(storeContext);
+  const navigate = useNavigate();
 
+  useEffect(() => {
+    getBuildings();
+  }, [getBuildings]);
 
-  const {getBuildings,locations}=useContext(storeContext)
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/search?q=${searchQuery}`);
+    }
+  };
 
-  useEffect(()=>{
-    getBuildings()
-  },[])
-
-  const filteredLocations = locations.filter((loc) =>
-    loc.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // Theme variable mapping for clean code
+  const theme = {
+    text: darkMode ? "text-white" : "text-slate-900",
+    textMuted: darkMode ? "text-slate-400" : "text-slate-600",
+    bg: darkMode ? "bg-slate-950" : "bg-gray-50",
+    card: darkMode ? "bg-slate-900 border-slate-800" : "bg-white border-gray-100",
+  };
 
   return (
-    <div
-      className="min-h-screen relative bg-cover bg-center"
-      style={{ backgroundImage: "url('../../public/gateway.jpg')" }}
-    >
-      {/* Overlay to ensure text readability on image */}
-      <div className={`absolute inset-0 ${darkMode ? 'bg-slate-900/40' : 'bg-white/10'}`} />
+    <div className={`min-h-screen ${theme.bg} ${theme.text} transition-colors duration-300`}>
+      
+      {/* HERO SECTION */}
+      <div 
+        className="relative h-[60vh] min-h-[450px] flex flex-col items-center justify-center text-center px-4 bg-cover bg-center"
+        style={{ backgroundImage: "url('/gate.jpg')" }} // Ensure this path is correct in your public folder
+      >
+        {/* Dark Overlay for Readability */}
+        <div className="absolute inset-0 bg-black/40 z-0" />
 
-      {/* CONTENT */}
-      <div className="relative z-10 flex">
-        {/* Left Sidebar */}
-        <div
-          className={`w-64 min-h-screen ${
-            darkMode ? "bg-slate-900 text-slate-300" : "bg-white/95 text-slate-700"
-          } backdrop-blur-sm border-r ${darkMode ? 'border-slate-800' : 'border-gray-200'}`}
-        >
+        <div className="relative z-10 max-w-4xl w-full">
+          <h1 className="text-4xl md:text-6xl font-black text-white mb-2 drop-shadow-md">
+            WELCOME TO OUR
+          </h1>
+          <h2 className="text-3xl md:text-5xl font-black text-white mb-4 drop-shadow-md">
+            CAMPUS TOUR ASSISTANT
+          </h2>
+          <p className="text-lg md:text-xl text-white/90 mb-8 font-medium">
+            Discover, Navigate, Explore.
+          </p>
+
           {/* Search Bar */}
-          <div className="p-4 border-b border-gray-200/20">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search for areas..."
-                className={`w-full pl-10 pr-4 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 ${
-                  darkMode ? 'bg-slate-800 border-slate-700 text-white' : 'bg-white border-gray-200'
-                }`}
-              />
-            </div>
-          </div>
-
-          {/* Building List */}
-          <div className="p-4">
-            <h3 className="text-sm font-bold text-primary-600 mb-4 tracking-wider">
-              BUILDING LIST
-            </h3>
-            <div className="space-y-2">
-              {buildingCategories.map((category) => (
-                <Link
-                  key={category.id}
-                  to={`/search?q=${category.name}`}
-                  className="flex items-center space-x-3 p-2 rounded-lg transition-transform duration-200 hover:translate-x-2 hover:bg-primary-500/10"
-                >
-                  <Building2 className="h-5 w-5 text-primary-600" />
-                  <span className={darkMode ? "text-white" : "text-gray-700"}>
-                    {category.name}
-                  </span>
-                </Link>
-              ))}
-            </div>
-          </div>
-
-          {/* Search Results */}
-          {searchQuery && (
-            <div className="p-4 border-t border-gray-200/20">
-              <h4 className="text-xs font-semibold text-gray-500 mb-2 uppercase">Results</h4>
-              <div className="space-y-2 max-h-48 overflow-y-auto custom-scrollbar">
-                {filteredLocations.map((loc) => (
-                  <Link
-                    key={loc.id}
-                    to={`/location/${loc.id}`}
-                    className={`block p-2 text-sm rounded-lg transition-colors ${
-                      darkMode ? 'hover:bg-slate-800 text-slate-300' : 'hover:bg-gray-100 text-gray-700'
-                    }`}
-                  >
-                    {loc.name}
-                  </Link>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* Main Content */}
-        <div className="flex-1 flex flex-col items-center justify-center min-h-screen px-8">
-          {/* Welcome Card */}
-          <div className={`${darkMode ? 'bg-slate-900/80' : 'bg-white/90'} backdrop-blur-md rounded-3xl px-12 py-10 text-center mb-12 shadow-2xl border ${darkMode ? 'border-slate-700' : 'border-white'}`}>
-            <h1 className="text-4xl md:text-5xl font-black text-primary-600 leading-tight tracking-tight">
-              WELCOME TO OUR
-              <br />
-              CAMPUS
-              <br />
-              TOUR ASSISTANT
-            </h1>
-            <p className={`${darkMode ? 'text-slate-400' : 'text-gray-600'} mt-6 text-lg`}>
-              Feel at ease finding directions around campus
-            </p>
-          </div>
-
-          {/* Action Buttons */}
-          <div className="flex flex-wrap justify-center gap-6">
-            <Link
-              to="/search"
-              className="flex flex-col items-center justify-center w-44 h-36 bg-white/90 backdrop-blur-sm rounded-2xl border-2 border-primary-600 hover:bg-primary-600 hover:text-white group transition-all duration-300 shadow-xl"
-            >
-              <Search className="h-10 w-10 text-primary-600 mb-3 group-hover:text-white transition-colors" />
-              <span className="text-sm font-bold text-primary-700 group-hover:text-white">Search buildings</span>
-            </Link>
-
-            <Link
-              to="/search"
-              className="flex flex-col items-center justify-center w-44 h-36 bg-white/90 backdrop-blur-sm rounded-2xl border-2 border-primary-600 hover:bg-primary-600 hover:text-white group transition-all duration-300 shadow-xl"
-            >
-              <MapPin className="h-10 w-10 text-primary-600 mb-3 group-hover:text-white transition-colors" />
-              <span className="text-sm font-bold text-primary-700 group-hover:text-white">Interactive map</span>
-            </Link>
-
-            <Link
-              to="/categories"
-              className="flex flex-col items-center justify-center w-44 h-36 bg-white/90 backdrop-blur-sm rounded-2xl border-2 border-primary-600 hover:bg-primary-600 hover:text-white group transition-all duration-300 shadow-xl"
-            >
-              <Building2 className="h-10 w-10 text-primary-600 mb-3 group-hover:text-white transition-colors" />
-              <span className="text-sm font-bold text-primary-700 group-hover:text-white">Building details</span>
-            </Link>
-          </div>
+          <form onSubmit={handleSearch} className="relative max-w-2xl mx-auto">
+            <Search className="absolute left-5 top-1/2 -translate-y-1/2 h-6 w-6 text-slate-400" />
+            <input
+              type="text"
+              placeholder="Find buildings, services, or places..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-14 pr-6 py-4 md:py-5 rounded-full text-lg shadow-2xl focus:outline-none focus:ring-4 focus:ring-blue-500/50 text-slate-900 bg-white"
+            />
+          </form>
         </div>
       </div>
+
+      {/* QUICK ACCESS SECTION */}
+      <div className="max-w-7xl mx-auto px-6 py-16">
+        <h3 className={`text-xl font-bold mb-8 ${theme.text}`}>Quick Access</h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          
+          {/* Find Buildings Card */}
+          <Link to="/categories" className={`${theme.card} p-8 rounded-3xl shadow-xl hover:scale-105 transition-transform border flex flex-col items-center text-center`}>
+            <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-2xl mb-4">
+              <Search className="h-10 w-10 text-blue-500" />
+            </div>
+            <h4 className="text-xl font-bold mb-2">Find Buildings</h4>
+            <p className={theme.textMuted}>Locate specific facilities</p>
+          </Link>
+
+          {/* Interactive Map Card */}
+          <Link to="/search" className={`${theme.card} p-8 rounded-3xl shadow-xl hover:scale-105 transition-transform border flex flex-col items-center text-center`}>
+            <div className="p-4 bg-cyan-50 dark:bg-cyan-900/20 rounded-2xl mb-4">
+              <Globe className="h-10 w-10 text-cyan-500" />
+            </div>
+            <h4 className="text-xl font-bold mb-2">Interactive Map</h4>
+            <p className={theme.textMuted}>Visualize campus layout</p>
+          </Link>
+
+          {/* About Card */}
+          <Link to="/about" className={`${theme.card} p-8 rounded-3xl shadow-xl hover:scale-105 transition-transform border flex flex-col items-center text-center`}>
+            <div className="p-4 bg-emerald-50 dark:bg-emerald-900/20 rounded-2xl mb-4">
+              <Building2 className="h-10 w-10 text-emerald-500" />
+            </div>
+            <h4 className="text-xl font-bold mb-2">About Us</h4>
+            <p className={theme.textMuted}>Our services</p>
+          </Link>
+
+        </div>
+      </div>
+
+      {/* EXPLORE FURTHER SECTION */}
+      <div className="max-w-7xl mx-auto px-6 pb-20">
+
+        {/* Dynamic Gallery from Store Context */}
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+          {locations.slice(0, 5).map((loc) => (
+            <Link key={loc.id} to={`/location/${loc.id}`} className="group">
+              <div className="aspect-[4/3] rounded-2xl overflow-hidden mb-3 shadow-md">
+                <img 
+                  src={loc.images ? `${url}/uploads/buildings/${loc.images}` : '/placeholder.jpg'} 
+                  alt={loc.name}
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                />
+              </div>
+              <p className={`text-center font-semibold text-sm ${theme.textMuted} group-hover:text-blue-500 transition-colors`}>
+                {loc.name}
+              </p>
+            </Link>
+          ))}
+
+          {/* Fallback Static Cards if locations are empty */}
+          {locations.length === 0 && ["Historic Quad", "Campus Library", "Student Center", "Sports Complex", "Science Labs"].map((item, i) => (
+            <Link key={i} to="/categories" className="group">
+              <div className="aspect-[4/3] bg-slate-200 dark:bg-slate-800 rounded-2xl mb-3" />
+              <p className={`text-center font-semibold text-sm ${theme.textMuted}`}>{item}</p>
+            </Link>
+          ))}
+        </div>
+
+        {/* Small See All button below the gallery */}
+        <div className="mt-6 flex justify-center">
+          <Link to="/categories" className="px-4 py-2 bg-blue-600 text-white rounded-full text-sm font-semibold hover:opacity-90">
+            See all categories
+          </Link>
+        </div>
+      </div>
+
     </div>
   );
 }

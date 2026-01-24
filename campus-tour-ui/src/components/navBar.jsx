@@ -33,7 +33,11 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="bg-[#0a1a2f] text-white sticky top-0 z-50 border-b border-white/5 shadow-xl">
+    <nav
+      className={`sticky top-0 z-50 shadow-xl ${
+        darkMode ? "bg-slate-900 text-white border-b border-white/5" : "bg-white text-slate-900 border-b border-slate-200"
+      }`}
+    >
       <div className="max-w-7xl mx-auto px-4 h-16 flex justify-between items-center">
         {/* LOGO White */}
 
@@ -43,7 +47,7 @@ export default function Navbar() {
             alt="AAU Logo"
             className="h-9 w-9 rounded-full"
           />
-          <span className="text-white tracking-tight uppercase text-sm md:text-base px-3 py-2.5 transition-colors duration-300 group-hover:text-[#646cff]">
+          <span className={`tracking-tight uppercase text-sm md:text-base px-3 py-2.5 transition-colors duration-300 ${darkMode ? 'text-white group-hover:text-[#646cff]' : 'text-slate-900 group-hover:text-[#646cff]'}`}>
             Addis Ababa University
           </span>
         </Link>
@@ -56,10 +60,10 @@ export default function Navbar() {
                   key={link.path}
                   to={link.path}
                   className={`relative text-sm font-medium px-3 py-2.5 transition-all duration-300
-            ${
+                  ${
               location.pathname === link.path
-                ? "text-white after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-full after:bg-[#646cff] after:content-['']"
-                : "text-white hover:text-[#646cff]"
+                ? `${darkMode ? 'text-white' : 'text-slate-900'} after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-full after:bg-[#646cff] after:content-['']`
+                : `${darkMode ? 'text-white hover:text-[#646cff]' : 'text-slate-900 hover:text-[#646cff]'}`
             }`}
                 >
                   {link.name}
@@ -72,8 +76,8 @@ export default function Navbar() {
                   className={`relative text-sm font-medium px-3 py-2.5 transition-all duration-300
             ${
               location.pathname === link.path
-                ? "text-white after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-full after:bg-[#646cff] after:content-['']"
-                : "text-white hover:text-[#646cff]"
+                ? `${darkMode ? 'text-white' : 'text-slate-900'} after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-full after:bg-[#646cff] after:content-['']`
+                : `${darkMode ? 'text-white hover:text-[#646cff]' : 'text-slate-900 hover:text-[#646cff]'}`
             }`}
                 >
                   {link.name}
@@ -84,7 +88,7 @@ export default function Navbar() {
 
           <button
             onClick={toggleDarkMode}
-            className="text-white hover:text-[#646cff] focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 appearance-none"
+            className={`${darkMode ? 'text-white hover:text-[#646cff]' : 'text-slate-900 hover:text-[#646cff]'} focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 appearance-none`}
             aria-label="Toggle theme"
           >
             {darkMode ? <Sun size={20} /> : <Moon size={20} />}
@@ -96,8 +100,8 @@ export default function Navbar() {
               className={`relative flex items-center gap-2 text-sm font-medium px-4 py-2.5 whitespace-nowrap transition-all duration-300
       ${
         location.pathname === "/login"
-          ? "text-white after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-full after:bg-[#646cff] after:content-['']"
-          : "text-white hover:text-[#646cff]"
+          ? `${darkMode ? 'text-white' : 'text-slate-900'} after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-full after:bg-[#646cff] after:content-['']`
+          : `${darkMode ? 'text-white hover:text-[#646cff]' : 'text-slate-900 hover:text-[#646cff]'}`
       }`}
             >
               <Lock size={16} />
@@ -108,7 +112,7 @@ export default function Navbar() {
           {isAuthenticated ? (
             <button
               onClick={handleLogout}
-              className="flex items-center gap-2 text-white transition-all duration-300 hover:text-[#646cff]  focus:outline-none focus:ring-0 active:outline-none"
+              className={`flex items-center gap-2 ${darkMode ? 'text-white' : 'text-slate-900'} transition-all duration-300 hover:text-[#646cff]  focus:outline-none focus:ring-0 active:outline-none`}
             >
               <LogOut size={16} />
               Logout
@@ -117,50 +121,45 @@ export default function Navbar() {
         </div>
 
         {/* MOBILE BUTTON */}
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="md:hidden text-current"
-        >
+        <button onClick={() => setIsOpen(!isOpen)} className="md:hidden text-current">
           {isOpen ? <X /> : <Menu />}
         </button>
       </div>
 
       {/* MOBILE MENU */}
       {isOpen && (
-        <div
-          className={`md:hidden ${darkMode ? "bg-black" : "bg-white"} p-4 space-y-3`}
-        >
+        <div className={`md:hidden p-4 space-y-3 ${darkMode ? 'bg-slate-900 text-white' : 'bg-white text-slate-900'}`}>
           {(isAuthenticated ? adminLinks : publicLinks).map((link) => (
             <Link
               key={link.path}
               to={link.path}
               onClick={() => setIsOpen(false)}
-              className="block text-current"
+              className={`block relative px-3 py-2.5 transition-all duration-300 transform-gpu hover:scale-[1.04] ${
+                location.pathname === link.path
+                  ? `text-[#646cff] after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-full after:bg-[#646cff] after:content-['']`
+                  : `${darkMode ? 'text-white hover:text-[#646cff]' : 'text-slate-900 hover:text-[#646cff]'}` 
+              }`}
             >
               {link.name}
             </Link>
           ))}
 
           {/* Theme Toggle Mobile */}
-          <button
-            onClick={toggleDarkMode}
-            className="flex items-center gap-2 text-white"
-            aria-label="Toggle theme"
-          >
+          <button onClick={toggleDarkMode} className={`flex items-center gap-2 ${darkMode ? 'text-white hover:text-[#646cff]' : 'text-slate-900 hover:text-[#646cff]'}`} aria-label="Toggle theme">
             {darkMode ? <Sun size={16} /> : <Moon size={16} />}
             {darkMode ? "Light Mode" : "Dark Mode"}
           </button>
 
           {!isAuthenticated ? (
-            <Link to="/login" className="block text-white">
+            <Link to="/login" className={`${darkMode ? 'text-white hover:text-[#646cff]' : 'text-slate-900 hover:text-[#646cff]'} block px-3 py-2.5 transition-all duration-200`}>
               Admin Login
             </Link>
           ) : (
             <>
-              <Link to="/admin" className="block text-white">
+              <Link to="/admin" className={`${darkMode ? 'text-white hover:text-[#646cff]' : 'text-slate-900 hover:text-[#646cff]'} block px-3 py-2.5 transition-all duration-200`}>
                 Admin
               </Link>
-              <button onClick={handleLogout} className="block text-white">
+              <button onClick={handleLogout} className={`${darkMode ? 'text-white hover:text-[#646cff]' : 'text-slate-900 hover:text-[#646cff]'} block px-3 py-2.5 transition-all duration-200`}>
                 Logout
               </button>
             </>
