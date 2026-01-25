@@ -138,7 +138,7 @@ export default function Admin() {
   };
 
 
-   const handleDelete = async (id) => {
+  const handleDelete = async (id) => {
     if (!confirm("Are you sure you want to delete this building?")) return;
     try {
       await axios.delete(`http://localhost:3000/api/building/${id}`);
@@ -146,7 +146,7 @@ export default function Admin() {
     } catch (err) {
       console.error(err);
       alert("Failed to delete building");
-   
+
     }
   };
 
@@ -287,28 +287,40 @@ export default function Admin() {
               {/* Instruction Text Badge */}
               <div className="absolute bottom-2 left-2 z-[1000] pointer-events-none">
                 <span
-                  className={`px-2 py-1 rounded text-[10px] font-bold shadow-sm border ${
-                    darkMode
+                  className={`px-2 py-1 rounded text-[10px] font-bold shadow-sm border ${darkMode
                       ? "bg-slate-800/90 text-indigo-400 border-slate-700"
                       : "bg-white/90 text-indigo-600 border-gray-200"
-                  }`}
+                    }`}
                 >
                   📍 Click dots to select Nearest Nodes
                 </span>
               </div>
             </div>
-            {/* Image Section */}
-            <div className="flex items-center gap-4 p-2 border rounded dark:bg-slate-800 dark:border-slate-700">
-              <img
-                src={imagePreview || editingBuilding?.images || DEFAULT_IMAGE}
-                className="w-16 h-16 object-cover rounded shadow"
-              />
-              <label className="flex-1 cursor-pointer flex items-center gap-2 text-sm font-semibold">
-                <Upload size={16} /> Upload Photo
+            <div className={`flex items-center gap-4 p-3 border rounded-xl shadow-sm transition-all duration-300
+    ${darkMode
+                ? "bg-slate-900 border-slate-700 text-white"
+                : "bg-white border-gray-200 text-black"
+              }`}
+            >
+              {/* Image Preview */}
+              <div className="relative overflow-hidden rounded-lg">
+                <img
+                  src={imagePreview || editingBuilding?.images || DEFAULT_IMAGE}
+                  alt="Preview"
+                  className="w-16 h-16 object-cover shadow-md border dark:border-slate-800"
+                />
+              </div>
+              <label className="flex-1 cursor-pointer flex items-center gap-3 text-sm font-bold py-2 px-3 transition-colors duration-200 hover:text-blue-500 group">
+                <Upload
+                  size={18}
+                  className="text-gray-400 group-hover:text-blue-500 transition-colors duration-200"
+                />
+                <span className="tracking-tight">Upload Photo</span>
                 <input
                   type="file"
                   className="hidden"
                   onChange={handleImageChange}
+                  accept="image/*"
                 />
               </label>
             </div>
