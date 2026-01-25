@@ -1,7 +1,14 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Pencil, Trash2, Plus, Upload } from "lucide-react";
-import { MapContainer, TileLayer, Marker, CircleMarker, Tooltip, useMap } from "react-leaflet";
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  CircleMarker,
+  Tooltip,
+  useMap,
+} from "react-leaflet";
 import L from "leaflet";
 import { useTheme } from "../context/ThemeContext";
 import { nodes } from "../data/navigation";
@@ -47,7 +54,9 @@ export default function Admin() {
     }
   };
 
-  useEffect(() => { fetchBuildings(); }, []);
+  useEffect(() => {
+    fetchBuildings();
+  }, []);
 
   const handleEdit = (building) => {
     setEditingBuilding(building);
@@ -63,13 +72,17 @@ export default function Admin() {
       lng: building.lng || "",
       hours: building.hours || "",
       location: building.location || "",
-      tags: building.tags?.join(", ") || "",
+      tags: `{${building.tags?.join(", ")}}` || "",
     });
     setImagePreview("");
   };
-
+  useEffect(() => {
+    console.log(editingBuilding, formData);
+  }, [editingBuilding]);
   const handleNodeToggle = (nodeId) => {
-    const currentNodes = formData.nearestNode ? formData.nearestNode.split(",").map((s) => s.trim()) : [];
+    const currentNodes = formData.nearestNode
+      ? formData.nearestNode.split(",").map((s) => s.trim())
+      : [];
     const newNodes = currentNodes.includes(nodeId)
       ? currentNodes.filter((id) => id !== nodeId)
       : [...currentNodes, nodeId];
@@ -95,11 +108,14 @@ export default function Admin() {
     data.append("hours", formData.hours);
     data.append("location", formData.location);
     data.append("tags", formData.tags);
-    data.append("floorinfo", JSON.stringify({
+    data.append(
+      "floorinfo",
+      JSON.stringify({
         floors: Number(formData.floors),
         rooms: Number(formData.rooms),
         depts: formData.depts.split(",").map((d) => d.trim()),
-    }));
+      }),
+    );
 
     if (imageFile) data.append("images", imageFile);
 
@@ -121,31 +137,90 @@ export default function Admin() {
     }
   };
 
+
+   const handleDelete = async (id) => {
+    if (!confirm("Are you sure you want to delete this building?")) return;
+    try {
+      await axios.delete(`http://localhost:3000/api/building/${id}`);
+      fetchBuildings();
+    } catch (err) {
+      console.error(err);
+      alert("Failed to delete building");
+   
+    }
+  };
+
+
+
   return (
-    <div className={`min-h-screen p-8 transition-colors ${darkMode ? "bg-slate-950 text-white" : "bg-gray-50 text-gray-900"}`}>
+    <div
+      className={`min-h-screen p-8 transition-colors ${darkMode ? "bg-slate-950 text-white" : "bg-gray-50 text-gray-900"}`}
+    >
       <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-8">
-        
         {/* Buildings Table */}
-        <div className={`flex-1 rounded-xl border p-6 ${darkMode ? "bg-slate-900 border-slate-800" : "bg-white border-gray-200"}`}>
+        <div
+          className={`flex-1 rounded-xl border p-6 ${darkMode ? "bg-slate-900 border-slate-800" : "bg-white border-gray-200"}`}
+        >
           <div className="flex justify-between mb-6">
             <h2 className="text-xl font-bold">Campus Buildings</h2>
-            <button onClick={() => { setEditingBuilding(null); setFormData({ name: "", category: "", description: "", floors: 1, rooms: 1, depts: "", lat: "", lng: "", nearestNode: "", hours: "", location: "", tags: "" }); }} 
-                    className="bg-indigo-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-indigo-700 transition">
+            <button
+              onClick={() => {
+                setEditingBuilding(null);
+                setFormData({
+                  name: "",
+                  category: "",
+                  description: "",
+                  floors: 1,
+                  rooms: 1,
+                  depts: "",
+                  lat: "",
+                  lng: "",
+                  nearestNode: "",
+                  hours: "",
+                  location: "",
+                  tags: "",
+                });
+              }}
+              className="bg-indigo-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-indigo-700 transition"
+            >
               <Plus size={18} /> Add New
             </button>
           </div>
           <table className="w-full text-sm text-left">
-            <thead className={`${darkMode ? "bg-slate-800/50" : "bg-gray-50"} uppercase text-xs font-bold text-gray-500`}>
-              <tr><th className="p-4">Name</th><th className="p-4">Category</th><th className="p-4 text-center">Actions</th></tr>
+            <thead
+              className={`${darkMode ? "bg-slate-800/50" : "bg-gray-50"} uppercase text-xs font-bold text-gray-500`}
+            >
+              <tr>
+                <th className="p-4">Name</th>
+                <th className="p-4">Category</th>
+                <th className="p-4 text-center">Actions</th>
+              </tr>
             </thead>
-            <tbody className={`divide-y ${darkMode ? "divide-slate-800" : "divide-gray-200"}`}>
+            <tbody
+              className={`divide-y ${darkMode ? "divide-slate-800" : "divide-gray-200"}`}
+            >
               {buildings.map((b) => (
-                <tr key={b.id} className={darkMode ? "hover:bg-slate-800/30" : "hover:bg-gray-50"}>
+                <tr
+                  key={b.id}
+                  className={
+                    darkMode ? "hover:bg-slate-800/30" : "hover:bg-gray-50"
+                  }
+                >
                   <td className="p-4 font-medium">{b.name}</td>
                   <td className="p-4">{b.category}</td>
                   <td className="p-4 flex justify-center gap-2">
-                    <button onClick={() => handleEdit(b)} className="p-2 text-blue-500 hover:bg-blue-100 rounded"><Pencil size={16} /></button>
-                    <button onClick={() => handleDelete(b.id)} className="p-2 text-red-500 hover:bg-red-100 rounded"><Trash2 size={16} /></button>
+                    <button
+                      onClick={() => handleEdit(b)}
+                      className="p-2 text-blue-500 hover:bg-blue-100 rounded"
+                    >
+                      <Pencil size={16} />
+                    </button>
+                    <button
+                      onClick={() => handleDelete(b.id)}
+                      className="p-2 text-red-500 hover:bg-red-100 rounded"
+                    >
+                      <Trash2 size={16} />
+                    </button>
                   </td>
                 </tr>
               ))}
@@ -154,55 +229,107 @@ export default function Admin() {
         </div>
 
         {/* Form Sidebar */}
-        <div className={`w-full lg:w-[450px] rounded-xl border p-6 h-fit sticky top-8 ${darkMode ? "bg-slate-900 border-slate-800" : "bg-white border-gray-200"}`}>
-          <h2 className="text-xl font-bold mb-6">{editingBuilding ? "Edit Building" : "Add Building"}</h2>
-          
+        <div
+          className={`w-full lg:w-[450px] rounded-xl border p-6 h-fit sticky top-8 ${darkMode ? "bg-slate-900 border-slate-800" : "bg-white border-gray-200"}`}
+        >
+          <h2 className="text-xl font-bold mb-6">
+            {editingBuilding ? "Edit Building" : "Add Building"}
+          </h2>
+
           <div className="space-y-4 max-h-[75vh] overflow-y-auto pr-2 custom-scrollbar">
             {/* Map Picker */}
-        <div className={`w-full h-64 border rounded-lg overflow-hidden relative ${darkMode ? "border-slate-700" : "border-gray-200"}`}>
-          <MapContainer center={[9.0409, 38.7621]} zoom={17} style={{ height: "100%", width: "100%" }}>
-            <ChangeView center={[Number(formData.lat), Number(formData.lng)]} />
-            <TileLayer url={darkMode ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png" : "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"} />
-            
-            {formData.lat && formData.lng && <Marker position={[Number(formData.lat), Number(formData.lng)]} />}
-            
-            {Object.entries(nodes).map(([id, coords]) => (
-              <CircleMarker key={id} center={[coords.lat, coords.lng]} radius={6} 
-                pathOptions={{ 
-                    color: formData.nearestNode.includes(id) ? "#4f46e5" : "#94a3b8", 
-                    fillOpacity: 1,
-                    fillColor: formData.nearestNode.includes(id) ? "#818cf8" : "#cbd5e1"
-                }}
-                eventHandlers={{ click: () => handleNodeToggle(id) }}>
-                <Tooltip>ID: {id}</Tooltip>
-              </CircleMarker>
-            ))}
-          </MapContainer>
+            <div
+              className={`w-full h-64 border rounded-lg overflow-hidden relative ${darkMode ? "border-slate-700" : "border-gray-200"}`}
+            >
+              <MapContainer
+                center={[9.0409, 38.7621]}
+                zoom={17}
+                style={{ height: "100%", width: "100%" }}
+              >
+                <ChangeView
+                  center={[Number(formData.lat), Number(formData.lng)]}
+                />
+                <TileLayer
+                  url={
+                    darkMode
+                      ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+                      : "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  }
+                />
 
-          {/* Instruction Text Badge */}
-          <div className="absolute bottom-2 left-2 z-[1000] pointer-events-none">
-            <span className={`px-2 py-1 rounded text-[10px] font-bold shadow-sm border ${
-              darkMode 
-                ? "bg-slate-800/90 text-indigo-400 border-slate-700" 
-                : "bg-white/90 text-indigo-600 border-gray-200"
-            }`}>
-              📍 Click dots to select Nearest Nodes
-            </span>
-          </div>
-        </div>
-                    {/* Image Section */}
+                {formData.lat && formData.lng && (
+                  <Marker
+                    position={[Number(formData.lat), Number(formData.lng)]}
+                  />
+                )}
+
+                {Object.entries(nodes).map(([id, coords]) => (
+                  <CircleMarker
+                    key={id}
+                    center={[coords.lat, coords.lng]}
+                    radius={6}
+                    pathOptions={{
+                      color: formData.nearestNode.includes(id)
+                        ? "#4f46e5"
+                        : "#94a3b8",
+                      fillOpacity: 1,
+                      fillColor: formData.nearestNode.includes(id)
+                        ? "#818cf8"
+                        : "#cbd5e1",
+                    }}
+                    eventHandlers={{ click: () => handleNodeToggle(id) }}
+                  >
+                    <Tooltip>ID: {id}</Tooltip>
+                  </CircleMarker>
+                ))}
+              </MapContainer>
+
+              {/* Instruction Text Badge */}
+              <div className="absolute bottom-2 left-2 z-[1000] pointer-events-none">
+                <span
+                  className={`px-2 py-1 rounded text-[10px] font-bold shadow-sm border ${
+                    darkMode
+                      ? "bg-slate-800/90 text-indigo-400 border-slate-700"
+                      : "bg-white/90 text-indigo-600 border-gray-200"
+                  }`}
+                >
+                  📍 Click dots to select Nearest Nodes
+                </span>
+              </div>
+            </div>
+            {/* Image Section */}
             <div className="flex items-center gap-4 p-2 border rounded dark:bg-slate-800 dark:border-slate-700">
-               <img src={imagePreview || editingBuilding?.images || DEFAULT_IMAGE} className="w-16 h-16 object-cover rounded shadow" />
-               <label className="flex-1 cursor-pointer flex items-center gap-2 text-sm font-semibold">
-                 <Upload size={16} /> Upload Photo
-                 <input type="file" className="hidden" onChange={handleImageChange} />
-               </label>
+              <img
+                src={imagePreview || editingBuilding?.images || DEFAULT_IMAGE}
+                className="w-16 h-16 object-cover rounded shadow"
+              />
+              <label className="flex-1 cursor-pointer flex items-center gap-2 text-sm font-semibold">
+                <Upload size={16} /> Upload Photo
+                <input
+                  type="file"
+                  className="hidden"
+                  onChange={handleImageChange}
+                />
+              </label>
             </div>
 
             {/* Inputs */}
-            <input className="admin-input" placeholder="Building Name" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} />
-            
-            <select className="admin-input" value={formData.category} onChange={(e) => setFormData({ ...formData, category: e.target.value })}>
+            <input
+              className="admin-input"
+              placeholder="Building Name"
+              value={formData.name}
+              onChange={(e) =>
+                setFormData({ ...formData, name: e.target.value })
+              }
+            />
+
+            <select
+              className="admin-input"
+              value={formData.category}
+              onChange={(e) =>
+                setFormData({ ...formData, category: e.target.value })
+              }
+            >
               <option value="">Select Category</option>
               <option value="Academic">Academic</option>
               <option value="Libraries">Libraries</option>
@@ -212,24 +339,101 @@ export default function Admin() {
             </select>
 
             <div className="flex gap-2">
-              <input type="number" className="admin-input w-1/2" placeholder="Floors" value={formData.floors} onChange={(e) => setFormData({ ...formData, floors: e.target.value })} />
-              <input type="number" className="admin-input w-1/2" placeholder="Rooms" value={formData.rooms} onChange={(e) => setFormData({ ...formData, rooms: e.target.value })} />
+              <input
+                type="number"
+                className="admin-input w-1/2"
+                placeholder="Floors"
+                value={formData.floors}
+                onChange={(e) =>
+                  setFormData({ ...formData, floors: e.target.value })
+                }
+              />
+              <input
+                type="number"
+                className="admin-input w-1/2"
+                placeholder="Rooms"
+                value={formData.rooms}
+                onChange={(e) =>
+                  setFormData({ ...formData, rooms: e.target.value })
+                }
+              />
             </div>
 
-            <textarea className="admin-input h-16" placeholder="Departments (comma separated)" value={formData.depts} onChange={(e) => setFormData({ ...formData, depts: e.target.value })} />
-            <textarea className="admin-input h-20" placeholder="Description" value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} />
+            <textarea
+              className="admin-input h-16"
+              placeholder="Departments (comma separated)"
+              value={formData.depts}
+              onChange={(e) =>
+                setFormData({ ...formData, depts: e.target.value })
+              }
+            />
+            <textarea
+              className="admin-input h-20"
+              placeholder="Description"
+              value={formData.description}
+              onChange={(e) =>
+                setFormData({ ...formData, description: e.target.value })
+              }
+            />
 
             <div className="flex gap-2">
-              <input type="number" step="any" className="admin-input w-1/2" placeholder="Lat" value={formData.lat} onChange={(e) => setFormData({ ...formData, lat: e.target.value })} />
-              <input type="number" step="any" className="admin-input w-1/2" placeholder="Lng" value={formData.lng} onChange={(e) => setFormData({ ...formData, lng: e.target.value })} />
+              <input
+                type="number"
+                step="any"
+                className="admin-input w-1/2"
+                placeholder="Lat"
+                value={formData.lat}
+                onChange={(e) =>
+                  setFormData({ ...formData, lat: e.target.value })
+                }
+              />
+              <input
+                type="number"
+                step="any"
+                className="admin-input w-1/2"
+                placeholder="Lng"
+                value={formData.lng}
+                onChange={(e) =>
+                  setFormData({ ...formData, lng: e.target.value })
+                }
+              />
             </div>
 
-            <input className="admin-input border-indigo-500 bg-indigo-50/10" placeholder="Nearest Nodes (Click Map Dots)" value={formData.nearestNode} readOnly />
-            <input className="admin-input" placeholder="Hours (e.g. 8:00 AM - 5:00 PM)" value={formData.hours} onChange={(e) => setFormData({ ...formData, hours: e.target.value })} />
-            <input className="admin-input" placeholder="Location Description" value={formData.location} onChange={(e) => setFormData({ ...formData, location: e.target.value })} />
-            <input className="admin-input" placeholder="Tags (comma separated)" value={formData.tags} onChange={(e) => setFormData({ ...formData, tags: e.target.value })} />
+            <input
+              className="admin-input border-indigo-500 bg-indigo-50/10"
+              placeholder="Nearest Nodes (Click Map Dots)"
+              value={formData.nearestNode}
+              readOnly
+            />
+            <input
+              className="admin-input"
+              placeholder="Hours (e.g. 8:00 AM - 5:00 PM)"
+              value={formData.hours}
+              onChange={(e) =>
+                setFormData({ ...formData, hours: e.target.value })
+              }
+            />
+            <input
+              className="admin-input"
+              placeholder="Location Description"
+              value={formData.location}
+              onChange={(e) =>
+                setFormData({ ...formData, location: e.target.value })
+              }
+            />
+            <input
+              className="admin-input"
+              placeholder="Tags (comma separated)  like {a,b,c}"
+              value={formData.tags}
+              onChange={(e) =>
+                setFormData({ ...formData, tags: e.target.value })
+              }
+            />
 
-            <button onClick={handleSave} className="w-full bg-indigo-600 text-white py-3 rounded-xl font-bold hover:bg-indigo-700 transition">
+            <button
+              onClick={handleSave}
+              className="w-full bg-indigo-600 text-white py-3 rounded-xl font-bold hover:bg-indigo-700 transition"
+            >
               {editingBuilding ? "Update Building" : "Save New Building"}
             </button>
           </div>
@@ -245,9 +449,16 @@ export default function Admin() {
           background: ${darkMode ? "#1e293b" : "white"};
           outline: none;
         }
-        .admin-input:focus { border-color: #4f46e5; }
-        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #4f46e5; border-radius: 10px; }
+        .admin-input:focus {
+          border-color: #4f46e5;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: #4f46e5;
+          border-radius: 10px;
+        }
       `}</style>
     </div>
   );

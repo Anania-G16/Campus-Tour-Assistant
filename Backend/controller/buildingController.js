@@ -89,7 +89,7 @@ const editBuilding = async(req, res) => {
         const { id } = req.params;
         const buildingData = req.body;
         if (req.file) {
-            buildingData.image = req.file.filename;
+            buildingData.images = req.file.filename;
         }
 
         const updatedBuilding = await updateBuilding(id, buildingData);
