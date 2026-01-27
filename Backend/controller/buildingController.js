@@ -118,7 +118,7 @@ const removeBuilding = async(req, res) => {
                 if (err) console.error("Failed to delete image file:", err);
             });
         }
-        res.json({ succcess: true, message: "Building deleted", deletedBuilding });
+        res.json({ success: true, message: "Building deleted", deletedBuilding });
     } catch (err) {
         console.error(err);
         res

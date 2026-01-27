@@ -16,6 +16,7 @@ import { nodes, EDGES } from "../data/navigation";
 import BuildingDetailsPanel from "./BuildingDetailsPanel";
 import { storeContext } from "../context/storeContext";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 const calculatePathDistance = (pathCoords) => {
   if (!pathCoords || pathCoords.length < 2) return null;
@@ -115,7 +116,7 @@ export default function CampusMapContainer({
       if (res.data.success) setLocations(res.data.buildings);
     } catch (err) {
       console.error(err);
-      alert("Failed to fetch buildings");
+      toast.error("Failed to fetch buildings");
     }
   };
 
@@ -171,7 +172,7 @@ export default function CampusMapContainer({
         setLocationStatus("Live GPS Active ✅");
       },
       () => setLocationStatus("Using Default Location (Gate)"),
-      { enableHighAccuracy: true },
+      { enableHighAccuracy: true, timeout: 1000, maximumAge: 0 },
     );
     return () => navigator.geolocation.clearWatch(watchId);
   }, []);

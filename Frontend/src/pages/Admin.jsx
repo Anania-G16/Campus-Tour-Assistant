@@ -13,6 +13,7 @@ import L from "leaflet";
 import { useTheme } from "../context/ThemeContext";
 import { nodes } from "../data/navigation";
 import "leaflet/dist/leaflet.css";
+import toast from "react-hot-toast";
 
 const DEFAULT_IMAGE = "/map_assets/upload_placeholder.png";
 
@@ -130,10 +131,11 @@ export default function Admin() {
       setImageFile(null);
       setImagePreview("");
       fetchBuildings();
-      alert("Saved successfully!");
+      // alert("Saved successfully!");
+      toast.success("Saved successfully!");
     } catch (err) {
       console.error(err);
-      alert("Save failed");
+      toast.error("Save failed");
     }
   };
 
@@ -141,11 +143,15 @@ export default function Admin() {
   const handleDelete = async (id) => {
     if (!confirm("Are you sure you want to delete this building?")) return;
     try {
-      await axios.delete(`http://localhost:3000/api/building/${id}`);
+      const response = await axios.delete(`http://localhost:3000/api/building/${id}`);
+
+      if(response.data.success){
+        toast.success("Building deleted successfully");
+      }
       fetchBuildings();
     } catch (err) {
       console.error(err);
-      alert("Failed to delete building");
+      toast.error("Failed to delete building");
 
     }
   };
