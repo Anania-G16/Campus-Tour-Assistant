@@ -73,7 +73,7 @@ export default function About() {
               className="relative group"
             >
               <div className={`relative rounded-3xl overflow-hidden transition-all duration-500 group-hover:-translate-y-2 group-hover:shadow-2xl border ${darkMode ? 'border-white/10' : 'border-slate-200'}`}>
-                <img src="https://images.unsplash.com/photo-1562774053-701939374585?w=800" alt="Campus" className="w-full h-[250px] md:h-[320px] object-cover" />
+                <img src="gate.jpg" alt="Campus" className="w-full h-[250px] md:h-[320px] object-cover" />
                 <div className="absolute bottom-4 left-4">
                   <div className={`backdrop-blur-xl p-3 md:p-4 rounded-xl border ${darkMode ? 'bg-slate-900/80 border-white/20' : 'bg-white/90 border-slate-200 shadow-lg'}`}>
                     <div className="text-2xl md:text-3xl font-black text-[#646cff]">15+</div>

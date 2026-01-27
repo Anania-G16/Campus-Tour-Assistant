@@ -4,6 +4,7 @@ import { storeContext } from "../context/storeContext";
 import { ChevronRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { useTheme } from "../context/ThemeContext"; // Imported theme hook
+import toast from "react-hot-toast";
 
 function AdminLogin() {
   const { adminLogin } = useContext(storeContext);
@@ -109,8 +110,10 @@ function AdminLogin() {
 
           <p className="text-sm text-slate-400 text-center mt-8 font-medium">
             New Admin?{" "}
-            <span className="text-[#646cff] font-bold hover:underline cursor-pointer transition-all ml-1">
-              Sign up
+            <span onClick={()=>{
+              toast.info('Feature not done for now')
+            }} className="text-[#646cff] font-bold hover:underline cursor-pointer transition-all ml-1">
+             Contact Admin
             </span>
           </p>
         </div>

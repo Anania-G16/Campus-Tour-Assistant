@@ -88,7 +88,7 @@ export default function Feedback() {
               <form onSubmit={handleSubmit} className="space-y-5">
                 
                 {/* Rating */}
-                <div className="space-y-2.5">
+                {/* <div className="space-y-2.5">
                   <label className="text-[10px] font-bold tracking-widest uppercase opacity-40 px-1">Rate Experience</label>
                   <div className={`flex justify-around p-3 rounded-xl border border-dashed transition-colors ${darkMode ? 'border-white/10 bg-white/5' : 'border-slate-200 bg-slate-50'}`}>
                     {[1, 2, 3, 4, 5].map((star) => (
@@ -109,7 +109,7 @@ export default function Feedback() {
                       </button>
                     ))}
                   </div>
-                </div>
+                </div> */}
 
                 {/* Subject */}
                 <div className="space-y-1.5">
